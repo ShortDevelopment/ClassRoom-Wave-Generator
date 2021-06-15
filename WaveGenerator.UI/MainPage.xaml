@@ -100,21 +100,21 @@
                     <UserControl Height="15" />
 
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}">
-                Dises App ist OpenSource!
+                        Dises App ist OpenSource!
                 
-                <LineBreak />
-                <LineBreak />
+                        <LineBreak />
+                        <LineBreak />
                 
-                Wave Generator
-                <LineBreak />
+                        Wave Generator
+                        <LineBreak />
                 
-                © <Run Text="{x:Bind UI_CurrentYear}" /> Lukas Kurz
-                (<Hyperlink UnderlineStyle="None" NavigateUri="https://shortdevelopment.github.io/">@ShortDevelopment</Hyperlink>)
+                        © <Run Text="{x:Bind UI_CurrentYear}" /> Lukas Kurz
+                        (<Hyperlink UnderlineStyle="None" NavigateUri="https://shortdevelopment.github.io/">@ShortDevelopment</Hyperlink>)
                 
-                <LineBreak />
-                <LineBreak />
+                        <LineBreak />
+                        <LineBreak />
                 
-                <Hyperlink UnderlineStyle="None" NavigateUri="https://github.com/ShortDevelopment/ClassRoom-Manager/">QuellCode auf GitHub</Hyperlink>
+                        <Hyperlink UnderlineStyle="None" NavigateUri="https://github.com/ShortDevelopment/ClassRoom-Wave-Generator/">QuellCode auf GitHub</Hyperlink>  
                     </TextBlock>
 
                 </StackPanel>

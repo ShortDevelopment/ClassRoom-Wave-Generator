@@ -56,9 +56,14 @@ namespace WaveGenerator.UI
         /// </summary>
         private void RenderLoop()
         {
+            // Setting high priority
+            Thread.CurrentThread.Priority = ThreadPriority.Highest;
+
+            // Initializing helpers
             var generater = new Generation.WaveGenerator(WaveSettings);
             var renderer = new WaveRenderer(MainCanvas, RenderSettings);
 
+            // Time animation intervals
             const int timeStep = 100;
 
             var CurrentDispatcher = Dispatcher;

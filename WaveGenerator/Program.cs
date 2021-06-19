@@ -8,12 +8,20 @@ namespace WaveGenerator
         [STAThread]
         static void Main()
         {
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            Form1 MainForm = new Form1();
+            MainForm.Show();
+            MainForm.ShowSplashScreen();
+
+            Application.DoEvents();
+
             using (new UI.App())
             {
-                Application.SetHighDpiMode(HighDpiMode.SystemAware);
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new Form1());
+                MainForm.LoadXamlContent();
+                Application.Run(MainForm);
             }
         }
     }

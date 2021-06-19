@@ -125,7 +125,7 @@ namespace WaveGenerator.UI
 
         private void StepAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            CurrentAnimationTime += 1000;
+            CurrentAnimationTime += (int)Math.Round((1f / 16f) * WaveSettings.Period * 1000);
         }
 
         #endregion
@@ -172,7 +172,7 @@ namespace WaveGenerator.UI
             {
                 try
                 {
-                    WaveSettings.Amplitude = double.Parse(AmplitudeTextBox.Text);                    
+                    WaveSettings.Amplitude = double.Parse(AmplitudeTextBox.Text);
                 }
                 catch { }
                 LoadSettings();

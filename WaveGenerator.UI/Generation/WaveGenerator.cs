@@ -52,5 +52,22 @@ namespace WaveGenerator.UI.Generation
             return list.ToArray();
         }
 
+        /// <summary>
+        /// Calculates the angle of the "Zeiger"
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public double CalculateZeigerAngle(double t)
+        {
+            #region Math Proxy
+            const double π = Math.PI;
+            #endregion
+
+            double T = Settings.Period;
+            double ω = 2 * π * 1 / T;
+
+            return -ω * t;
+        }
+
     }
 }

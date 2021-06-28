@@ -1,4 +1,6 @@
-﻿namespace WaveGenerator.UI.Rendering
+﻿using System.Numerics;
+
+namespace WaveGenerator.UI.Rendering
 {
     public class RenderSettings
     {
@@ -16,5 +18,10 @@
         /// Sets wether the coordinate system is rendered in the background
         /// </summary>
         public bool ShowCoordinateSystem { get; set; } = true;
+
+        /// <summary>
+        /// Offset of all points
+        /// </summary>
+        public Vector2 Offset { get; set; } = new Vector2(0, 0);
     }
 }

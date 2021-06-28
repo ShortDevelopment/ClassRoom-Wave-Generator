@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using WaveGenerator.UI.Generation;
@@ -78,8 +79,18 @@ namespace WaveGenerator.UI
                 // Generate wave
                 var data = generater.Generate(CurrentAnimationTime / 1000.0);
 
+                // Generate "Zeiger"
+                var angle = generater.CalculateZeigerAngle(CurrentAnimationTime / 1000.0);
+
                 // Render wave
-                CurrentDispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.High, () => { renderer.Render(data); });
+                CurrentDispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.High, () =>
+                {
+                    double radius = WaveSettings.Amplitude * renderer.YUnit;
+                    RenderSettings.Offset = new System.Numerics.Vector2((float)radius * 2, 0);
+
+                    renderer.Render(data);
+                    renderer.RenderZeiger(angle, new System.Numerics.Vector2(0, 0), radius);
+                });
 
                 // Handling timing
                 if (IsRunning)

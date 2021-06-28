@@ -23,7 +23,22 @@ namespace WaveGenerator.UI
         private void MainPage_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             LoadSettings();
+
+            this.KeyDown += MainPage_KeyDown;
+
             Task.Run(RenderLoop);
+        }
+
+        private void MainPage_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if(e.Key == Windows.System.VirtualKey.Left)
+            {
+                InvokeSingleStepReverse();
+            }
+            else if(e.Key == Windows.System.VirtualKey.Right)
+            {
+                InvokeSingleStep();
+            }
         }
 
         #endregion
@@ -136,7 +151,16 @@ namespace WaveGenerator.UI
 
         private void StepAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
+            InvokeSingleStep();
+        }
+
+        private void InvokeSingleStep()
+        {
             CurrentAnimationTime += (int)Math.Round((1f / 16f) * WaveSettings.Period * 1000);
+        }
+        private void InvokeSingleStepReverse()
+        {
+            CurrentAnimationTime -= (int)Math.Round((1f / 16f) * WaveSettings.Period * 1000);
         }
 
         #endregion

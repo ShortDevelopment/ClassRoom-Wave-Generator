@@ -8,13 +8,14 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel Padding="30,10,30,10">
+    <ScrollViewer>
+        <StackPanel Padding="30,10,30,10">
 
-        <UserControl Height="20" />
-        <TextBlock Text="Info zu dieser App" Style="{StaticResource SubtitleTextBlockStyle}"/>
-        <UserControl Height="15" />
+            <UserControl Height="20" />
+            <TextBlock Text="Info zu dieser App" Style="{StaticResource SubtitleTextBlockStyle}"/>
+            <UserControl Height="15" />
 
-        <TextBlock Style="{StaticResource BodyTextBlockStyle}">
+            <TextBlock Style="{StaticResource BodyTextBlockStyle}">
                 Dises App ist OpenSource!
                 
                 <LineBreak />
@@ -30,7 +31,8 @@
                 <LineBreak />
                 
                 <Hyperlink UnderlineStyle="None" NavigateUri="https://github.com/ShortDevelopment/ClassRoom-Wave-Generator/">QuellCode auf GitHub</Hyperlink>
-        </TextBlock>
+            </TextBlock>
 
-    </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
 </Page>

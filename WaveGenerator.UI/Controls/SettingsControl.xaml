@@ -9,7 +9,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid>
+    <ScrollViewer>
         <StackPanel Padding="30,10,30,10">
 
             <UserControl Height="20" />
@@ -37,6 +37,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBox Header="Amplitude in m" Name="AmplitudeTextBox" Margin="0,0,10,0" Grid.Column="0" KeyDown="AmplitudeTextBox_KeyDown" />
             </Grid>
+
         </StackPanel>
-    </Grid>
+    </ScrollViewer>
 </UserControl>

@@ -9,6 +9,13 @@
         <controls:XamlControlsResources>
             <controls:XamlControlsResources.MergedDictionaries>
                 <!-- Other app resources here -->
+                <ResourceDictionary>
+                    <ResourceDictionary.ThemeDictionaries>
+                        <ResourceDictionary x:Key="Default">
+                            <Color x:Key="ApplicationPageBackgroundThemeBrush">#F9F9F9</Color>
+                        </ResourceDictionary>
+                    </ResourceDictionary.ThemeDictionaries>
+                </ResourceDictionary>
             </controls:XamlControlsResources.MergedDictionaries>
         </controls:XamlControlsResources>
     </Application.Resources>

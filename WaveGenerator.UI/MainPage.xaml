@@ -4,132 +4,31 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WaveGenerator.UI"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <ScrollViewer>
-        <Grid>            
-            <Grid>
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="250" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-
-                <Canvas Background="#efefef" Name="MainCanvas" Grid.Row="0" />
-
-                <controls:GridSplitter
-                Grid.Row="1"
-                Background="#efefef"
-                Foreground="White"
-                FontSize="13">
-                    <controls:GridSplitter.Element>
-                        <Grid>
-                            <TextBlock HorizontalAlignment="Center"
-                            IsHitTestVisible="False"
-                            VerticalAlignment="Center"
-                            Text="&#xE76F;"
-                            Foreground="Black"
-                            FontFamily="Segoe MDL2 Assets" />
-                        </Grid>
-                    </controls:GridSplitter.Element>
-                </controls:GridSplitter>
-
-                <StackPanel Grid.Row="2">
-                    <StackPanel Orientation="Horizontal">
-                        <CommandBar DefaultLabelPosition="Right" Background="Transparent">
-                            <AppBarButton Label="Play" Name="PlayAppBarButton" Click="PlayAppBarButton_Click">
-                                <AppBarButton.Icon>
-                                    <FontIcon Glyph="&#xE768;" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                            <AppBarButton Label="Pause" IsEnabled="False" Name="PauseAppBarButton" Click="PauseAppBarButton_Click">
-                                <AppBarButton.Icon>
-                                    <FontIcon Glyph="&#xE769;" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                            <AppBarSeparator />
-                            <AppBarButton Label="Einzelschritt" Name="StepAppBarButton" Click="StepAppBarButton_Click">
-                                <AppBarButton.Icon>
-                                    <FontIcon Glyph="&#xEB9D;" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                            <AppBarSeparator />
-                            <AppBarButton Label="Reset" IsEnabled="False" Name="ResetAppBarButton" Click="ResetAppBarButton_Click">
-                                <AppBarButton.Icon>
-                                    <FontIcon Glyph="&#xE72C;" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                        </CommandBar>
-                    </StackPanel>
-
-                    <StackPanel Padding="30,10,30,10">
-
-                        <UserControl Height="20" />
-                        <TextBlock Text="Einstellungen" Style="{StaticResource SubtitleTextBlockStyle}"/>
-                        <UserControl Height="15" />
-
-                        <TextBlock Text="(Enter zum Bestätigen dücken)" />
-                        <UserControl Height="15" />
-
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <TextBox Header="Wellenlänge λ in m" Name="WaveLengthTextBox" Margin="0,0,10,0" Grid.Column="0" KeyDown="WaveLengthTextBox_KeyDown" />
-                            <TextBox Header="Periodendauer T in s" Name="PeriodTextBox" Margin="10,0,0,0" Grid.Column="1" KeyDown="PeriodTextBox_KeyDown" />
-                        </Grid>
-
-                        <UserControl Height="20" />
-
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <TextBox Header="Amplitude in m" Name="AmplitudeTextBox" Margin="0,0,10,0" Grid.Column="0" KeyDown="AmplitudeTextBox_KeyDown" />
-                        </Grid>
-                    </StackPanel>
-
-                    <StackPanel Padding="30,10,30,10">
-
-                        <UserControl Height="20" />
-                        <TextBlock Text="Info zu dieser App" Style="{StaticResource SubtitleTextBlockStyle}"/>
-                        <UserControl Height="15" />
-
-                        <TextBlock Style="{StaticResource BodyTextBlockStyle}">
-                        Dises App ist OpenSource!
-                
-                        <LineBreak />
-                        <LineBreak />
-                
-                        Wave Generator
-                        <LineBreak />
-                
-                        © <Run Text="{x:Bind UI_CurrentYear}" /> Lukas Kurz
-                        (<Hyperlink UnderlineStyle="None" NavigateUri="https://shortdevelopment.github.io/">@ShortDevelopment</Hyperlink>)
-                
-                        <LineBreak />
-                        <LineBreak />
-                
-                        <Hyperlink UnderlineStyle="None" NavigateUri="https://github.com/ShortDevelopment/ClassRoom-Wave-Generator/">QuellCode auf GitHub</Hyperlink>
-                        </TextBlock>
-
-                    </StackPanel>
-                </StackPanel>
-            </Grid>
-
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5">
-                <Button Background="White" Margin="5" ToolTipService.ToolTip="Teilen">
-                    <FontIcon Glyph="&#xE72D;" Foreground="Black" />
-                </Button>
-                <Button Background="White" Margin="5" ToolTipService.ToolTip="Bild exportieren">
-                    <FontIcon Glyph="&#xEE71;" Foreground="Black" />
-                </Button>
-            </StackPanel>
-        </Grid>
-    </ScrollViewer>
+    <controls:NavigationView IsBackButtonVisible="Collapsed" PaneTitle="Wave Generator" SelectionChanged="NavigationView_SelectionChanged_1">
+        <controls:NavigationView.MenuItems>
+            <controls:NavigationViewItem Content="Normale Welle" Tag="normal_wave">
+                <controls:NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xEA52;" />
+                </controls:NavigationViewItem.Icon>
+            </controls:NavigationViewItem>
+            <controls:NavigationViewItemSeparator />
+            <controls:NavigationViewItemHeader Content="Reflektion" />
+            <controls:NavigationViewItem Content="Einfache Reflektion" Tag="reflecting_waves">
+                <controls:NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xEA3D;" />
+                </controls:NavigationViewItem.Icon>
+            </controls:NavigationViewItem>
+            <controls:NavigationViewItemHeader Content="Interferenz" />
+            <controls:NavigationViewItem Content="2 Wellen" Tag="interferenz_2_waves">
+                <controls:NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xEA3C;" />
+                </controls:NavigationViewItem.Icon>
+            </controls:NavigationViewItem>
+        </controls:NavigationView.MenuItems>
+        <Frame x:Name="MainContentFrame" />
+    </controls:NavigationView>
 </Page>

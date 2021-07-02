@@ -1,0 +1,42 @@
+﻿<UserControl
+    x:Class="WaveGenerator.UI.Controls.WaveSettingsControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WaveGenerator.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid>
+        <StackPanel Padding="30,10,30,10">
+
+            <UserControl Height="20" />
+            <TextBlock Text="Einstellungen" Style="{StaticResource SubtitleTextBlockStyle}"/>
+            <UserControl Height="15" />
+
+            <TextBlock Text="(Enter zum Bestätigen dücken)" />
+            <UserControl Height="15" />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBox Header="Wellenlänge λ in m" Name="WaveLengthTextBox" Margin="0,0,10,0" Grid.Column="0" KeyDown="WaveLengthTextBox_KeyDown" />
+                <TextBox Header="Periodendauer T in s" Name="PeriodTextBox" Margin="10,0,0,0" Grid.Column="1" KeyDown="PeriodTextBox_KeyDown" />
+            </Grid>
+
+            <UserControl Height="20" />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBox Header="Amplitude in m" Name="AmplitudeTextBox" Margin="0,0,10,0" Grid.Column="0" KeyDown="AmplitudeTextBox_KeyDown" />
+            </Grid>
+        </StackPanel>
+    </Grid>
+</UserControl>

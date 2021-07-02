@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace WaveGenerator
@@ -11,6 +12,8 @@ namespace WaveGenerator
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.RealTime;
 
             Form1 MainForm = new Form1();
             MainForm.Show();

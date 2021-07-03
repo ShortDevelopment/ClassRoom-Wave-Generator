@@ -17,7 +17,7 @@ namespace WaveGenerator.UI
             MainContentFrame.Navigate(typeof(DefaultWavePage));
         }
 
-        private void NavigationView_SelectionChanged_1(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewSelectionChangedEventArgs args)
+        private void NavigationView_SelectionChanged(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewSelectionChangedEventArgs args)
         {
             switch ((sender.SelectedItem as Microsoft.UI.Xaml.Controls.NavigationViewItem).Tag)
             {
@@ -25,8 +25,16 @@ namespace WaveGenerator.UI
                     MainContentFrame.Navigate(typeof(DefaultWavePage));
                     break;
 
+                case "reflecting_waves":
+                    MainContentFrame.Navigate(typeof(ReflectionWavePage));
+                    break;
+
                 default:
-                    MainContentFrame.Navigate(typeof(SettingsPage));
+                    if (args.IsSettingsSelected)
+                        MainContentFrame.Navigate(typeof(SettingsPage));
+                    else
+                        MainContentFrame.Navigate(typeof(ComingSoonPage));
+
                     break;
             }
         }

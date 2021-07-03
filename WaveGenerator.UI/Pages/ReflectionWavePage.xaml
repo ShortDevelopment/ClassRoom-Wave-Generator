@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="WaveGenerator.UI.DefaultWavePage"
+    x:Class="WaveGenerator.UI.ReflectionWavePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WaveGenerator.UI"
@@ -9,7 +9,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <ScrollViewer>
-        <Grid>            
+        <Grid>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="250" />

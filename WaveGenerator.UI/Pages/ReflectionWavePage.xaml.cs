@@ -7,12 +7,12 @@ using Windows.UI.Xaml.Controls;
 
 namespace WaveGenerator.UI
 {
-    public sealed partial class DefaultWavePage : Page
+    public sealed partial class ReflectionWavePage : Page
     {
 
         #region System // FrameWork
 
-        public DefaultWavePage()
+        public ReflectionWavePage()
         {
             this.InitializeComponent();
             this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Required;
@@ -98,14 +98,14 @@ namespace WaveGenerator.UI
                 var angle = generater.CalculateZeigerAngle(CurrentAnimationTime / 1000.0);
 
                 // Render wave
-                _ = CurrentDispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.High, () =>
-                  {
-                      double radius = WaveSettings.Amplitude * renderer.YUnit;
-                      RenderSettings.Offset = new System.Numerics.Vector2((float)radius * 2, 0);
+                CurrentDispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.High, () =>
+                {
+                    double radius = WaveSettings.Amplitude * renderer.YUnit;
+                    RenderSettings.Offset = new System.Numerics.Vector2((float)radius * 2, 0);
 
-                      renderer.Render(data);
-                      renderer.RenderZeiger(angle, new System.Numerics.Vector2(0, 0), radius);
-                  });
+                    renderer.Render(data);
+                    renderer.RenderZeiger(angle, new System.Numerics.Vector2(0, 0), radius);
+                });
 
                 // Handling timing
                 if (IsRunning)

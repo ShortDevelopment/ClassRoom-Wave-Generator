@@ -1,9 +1,18 @@
-﻿using System;
+﻿using Microsoft.Graphics.Canvas;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
 using WaveGenerator.UI.Generation;
 using WaveGenerator.UI.Rendering;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Graphics.Imaging;
+using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace WaveGenerator.UI
 {
@@ -16,6 +25,10 @@ namespace WaveGenerator.UI
         {
             this.InitializeComponent();
             this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Required;
+
+            IntPtr hwnd = Process.GetCurrentProcess().MainWindowHandle;
+            DataTransferManager dataTransferManager = Interop.DataTransferManagerInterop.GetForWindow(hwnd);
+            dataTransferManager.DataRequested += DataTransferManager_DataRequested;
 
             this.Loaded += MainPage_Loaded;
         }
@@ -31,11 +44,11 @@ namespace WaveGenerator.UI
 
         private void MainPage_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
-            if(e.Key == Windows.System.VirtualKey.Left)
+            if (e.Key == Windows.System.VirtualKey.Left)
             {
                 InvokeSingleStepReverse();
             }
-            else if(e.Key == Windows.System.VirtualKey.Right)
+            else if (e.Key == Windows.System.VirtualKey.Right)
             {
                 InvokeSingleStep();
             }
@@ -165,5 +178,43 @@ namespace WaveGenerator.UI
         }
 
         #endregion
+
+        #region Share & Export
+
+        private void ShareButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            // DataTransferManager.ShowShareUI();
+            Interop.DataTransferManagerInterop.ShowShareUIForWindow(Process.GetCurrentProcess().MainWindowHandle);
+        }
+
+        private async void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        {
+            DataRequest request = args.Request;
+
+            DataRequestDeferral deferral = request.GetDeferral();
+
+            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap();
+            await renderTargetBitmap.RenderAsync(MainCanvas);
+
+            var pixels = (await renderTargetBitmap.GetPixelsAsync()).ToArray();
+
+            IRandomAccessStream stream = new InMemoryRandomAccessStream();
+
+            var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, stream);
+            encoder.SetPixelData(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied, (uint)renderTargetBitmap.PixelWidth, (uint)renderTargetBitmap.PixelHeight, 96, 96, pixels);
+            await encoder.FlushAsync();
+            stream.Seek(0);
+            request.Data.SetBitmap(RandomAccessStreamReference.CreateFromStream(stream));
+
+            var props = request.Data.Properties;
+            props.ApplicationName = "Wave Generator";
+            props.Title = "Welle teilen";
+            props.Description = "Snapshot der aktuelle Welle teilen";
+
+            deferral.Complete();
+        }
+
+        #endregion
+
     }
 }

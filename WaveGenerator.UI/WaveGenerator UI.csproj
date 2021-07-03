@@ -124,6 +124,7 @@
     </Compile>
     <Compile Include="Generation\WaveGenerator.cs" />
     <Compile Include="Generation\WaveSettings.cs" />
+    <Compile Include="Interop\DataTransferManagerInterop.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -186,6 +187,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.6.0-prerelease.210623001</Version>
+    </PackageReference>
+    <PackageReference Include="UWP.API.DotNet.Interop.Wrappers">
+      <Version>0.9.2-preview</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />

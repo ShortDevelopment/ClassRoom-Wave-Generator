@@ -7,7 +7,14 @@ namespace WaveGenerator.UI
     {
         public MainPage()
         {
-            this.InitializeComponent();            
+            this.InitializeComponent();
+
+            this.Loaded += MainPage_Loaded;
+        }
+
+        private void MainPage_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            MainContentFrame.Navigate(typeof(DefaultWavePage));
         }
 
         private void NavigationView_SelectionChanged_1(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewSelectionChangedEventArgs args)

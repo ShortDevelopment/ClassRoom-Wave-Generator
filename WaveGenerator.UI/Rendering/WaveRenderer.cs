@@ -24,6 +24,16 @@ namespace WaveGenerator.UI.Rendering
         {
             this.Canvas = canvas;
             this.Settings = settings;
+
+            this.Canvas.SizeChanged += Canvas_SizeChanged;
+        }
+
+        private void Canvas_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
+        {
+            Canvas.Clip = new RectangleGeometry()
+            {
+                Rect = new Windows.Foundation.Rect(0, 0, Canvas.ActualWidth, Canvas.ActualHeight)
+            };
         }
 
         public void Render(Vector2[] points)
@@ -75,30 +85,32 @@ namespace WaveGenerator.UI.Rendering
             // Calculate position
             Canvas.SetTop(circle, (Canvas.ActualHeight / 2) - radius);
 
-            // == // Zeiger // == //
-
             // Add to canvas
             Canvas.Children.Add(circle);
 
-            Line line = new Line();
-            line.StrokeThickness = 1;
-            line.Stroke = new SolidColorBrush(Colors.Green);
+            // == // Zeiger // == //
 
-            // Calculate position
-            line.X1 = radius + position.X * unit;
-            line.Y1 = (Canvas.ActualHeight / 2) + position.Y * unit;
-            line.X2 = line.X1 + Math.Cos(angle) * radius + position.X * unit;
-            line.Y2 = line.Y1 + Math.Sin(angle) * radius + position.Y * unit;
+            Vector2 pos1 = new Vector2((float)(radius + position.X * unit), (float)((Canvas.ActualHeight / 2) + position.Y * unit));
+            DrawLine(pos1,
+                new Vector2((float)(pos1.X + Math.Cos(angle) * radius + position.X * unit), (float)(pos1.Y + Math.Sin(angle) * radius + position.Y * unit)), 1, Colors.Green);
 
-            // Add to canvas
-            Canvas.Children.Add(line);
+            // == // ŝ Renderer // == //
+
+            float height = (float)(Canvas.ActualHeight / 2) + Settings.Offset.Y + (float)(Math.Sin(angle) * radius);
+            DrawLine(new Vector2(0, height),
+                new Vector2((float)Canvas.ActualWidth, height), 1, Colors.Gray);
         }
 
         private void DrawLine(Vector2 p1, Vector2 p2, double thickness = 1)
         {
+            DrawLine(p1, p2, thickness, Colors.Black);
+        }
+
+        private void DrawLine(Vector2 p1, Vector2 p2, double thickness, Color color)
+        {
             Line line = new Line();
             line.StrokeThickness = thickness;
-            line.Stroke = new SolidColorBrush(Colors.Black);
+            line.Stroke = new SolidColorBrush(color);
 
             // Calculate position
             line.X1 = p1.X;

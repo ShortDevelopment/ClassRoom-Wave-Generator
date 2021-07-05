@@ -131,6 +131,7 @@
     <Compile Include="Generation\WaveGenerator.cs" />
     <Compile Include="Generation\WaveSettings.cs" />
     <Compile Include="Interop\DataTransferManagerInterop.cs" />
+    <Compile Include="Interop\FrameContentPage.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

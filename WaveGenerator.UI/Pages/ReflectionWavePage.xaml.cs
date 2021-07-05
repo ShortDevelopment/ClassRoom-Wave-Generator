@@ -23,10 +23,10 @@ namespace WaveGenerator.UI
         private void MainPage_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             WaveSettingsControl.LoadSettings();
-
             this.KeyDown += MainPage_KeyDown;
-
             Task.Run(RenderLoop);
+
+            this.Loaded -= MainPage_Loaded;
         }
 
         private void MainPage_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)

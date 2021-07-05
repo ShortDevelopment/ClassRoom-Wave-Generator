@@ -23,5 +23,10 @@ namespace WaveGenerator.UI.Rendering
         /// Offset of all points
         /// </summary>
         public Vector2 Offset { get; set; } = new Vector2(0, 0);
+
+        /// <summary>
+        /// Sets if the renderer should stick all points to the right side
+        /// </summary>
+        public bool RTL { get; set; } = false;
     }
 }

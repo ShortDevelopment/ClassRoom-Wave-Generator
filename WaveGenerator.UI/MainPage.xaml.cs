@@ -14,7 +14,7 @@ namespace WaveGenerator.UI
 
         private void MainPage_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            MainContentFrame.Navigate(typeof(DefaultWavePage));
+            NavigationView.SelectedItem = NavigationView.MenuItems[0];
         }
 
         private void NavigationView_SelectionChanged(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewSelectionChangedEventArgs args)
@@ -25,7 +25,7 @@ namespace WaveGenerator.UI
                     MainContentFrame.Navigate(typeof(DefaultWavePage));
                     break;
 
-                case "reflecting_waves":
+                case "reflecting_waves_x":
                     MainContentFrame.Navigate(typeof(ReflectionWavePage));
                     break;
 

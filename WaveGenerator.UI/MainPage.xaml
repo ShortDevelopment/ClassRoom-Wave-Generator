@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <controls:NavigationView IsBackButtonVisible="Collapsed" PaneTitle="Wave Generator" SelectionChanged="NavigationView_SelectionChanged" Background="#F3F3F3">
+    <controls:NavigationView Name="NavigationView" IsBackButtonVisible="Collapsed" PaneTitle="Wave Generator" SelectionChanged="NavigationView_SelectionChanged" Background="#F3F3F3">
         <controls:NavigationView.MenuItems>
             <controls:NavigationViewItem Content="Normale Welle" Tag="normal_wave">
                 <controls:NavigationViewItem.Icon>

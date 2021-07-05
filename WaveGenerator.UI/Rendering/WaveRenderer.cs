@@ -94,10 +94,10 @@ namespace WaveGenerator.UI.Rendering
             Canvas.Children.Add(line);
         }
 
-        private void DrawLine(Vector2 p1, Vector2 p2)
+        private void DrawLine(Vector2 p1, Vector2 p2, double thickness = 1)
         {
             Line line = new Line();
-            line.StrokeThickness = 1;
+            line.StrokeThickness = thickness;
             line.Stroke = new SolidColorBrush(Colors.Black);
 
             // Calculate position
@@ -112,8 +112,32 @@ namespace WaveGenerator.UI.Rendering
 
         private void RenderCoordinateSystem(double xunit, double yunit)
         {
-            // Base line
-            DrawLine(new Vector2(0, (float)(Canvas.ActualHeight / 2)), new Vector2((float)Canvas.ActualWidth, (float)(Canvas.ActualHeight / 2)));
+            // X-Axis
+            DrawLine(new Vector2(0, (float)(Canvas.ActualHeight / 2) + Settings.Offset.Y),
+                new Vector2((float)Canvas.ActualWidth, (float)(Canvas.ActualHeight / 2) + Settings.Offset.Y));
+
+            // Y-Axis
+            DrawLine(new Vector2(Settings.Offset.X, (float)Canvas.ActualHeight),
+                new Vector2(Settings.Offset.X, 0));
+
+            for (double x = 0; x < Canvas.ActualWidth; x += xunit)
+            {
+                double thickness = 0.25;
+                if (x % (xunit * 5) == 0)
+                    thickness = 0.5;
+
+                DrawLine(new Vector2(Settings.Offset.X + (float)x, (float)Canvas.ActualHeight),
+                    new Vector2(Settings.Offset.X + (float)x, 0), thickness);
+            }
+            for (double y = 0; y < Canvas.ActualHeight; y += yunit)
+            {
+                double thickness = 0.25;
+                if (y % (yunit * 5) == 0)
+                    thickness = 0.5;
+
+                DrawLine(new Vector2(Settings.Offset.X, (float)y + Settings.Offset.Y),
+                new Vector2((float)Canvas.ActualWidth, (float)y + Settings.Offset.Y), thickness);
+            }
         }
 
         public double YUnit

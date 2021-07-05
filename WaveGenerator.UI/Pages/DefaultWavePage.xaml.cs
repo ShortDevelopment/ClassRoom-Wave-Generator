@@ -4,10 +4,11 @@ using System.Threading.Tasks;
 using WaveGenerator.UI.Generation;
 using WaveGenerator.UI.Rendering;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 namespace WaveGenerator.UI
 {
-    public sealed partial class DefaultWavePage : Page
+    public sealed partial class DefaultWavePage : Interop.FrameContentPage
     {
 
         #region System // FrameWork
@@ -23,10 +24,10 @@ namespace WaveGenerator.UI
         private void MainPage_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             WaveSettingsControl.LoadSettings();
-
             this.KeyDown += MainPage_KeyDown;
-
             Task.Run(RenderLoop);
+
+            this.Loaded -= MainPage_Loaded;
         }
 
         private void MainPage_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
@@ -86,6 +87,9 @@ namespace WaveGenerator.UI
 
             while (CurrentDispatcher != null)
             {
+                if (!IsPageVisibleInFrame)
+                    continue;
+
                 // Sync settings
                 generater.Settings = WaveSettings;
                 RenderSettings.YStepCount = WaveSettings.Amplitude + 1;

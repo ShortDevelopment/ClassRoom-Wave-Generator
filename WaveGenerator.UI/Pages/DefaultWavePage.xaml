@@ -1,6 +1,6 @@
 ﻿<interop:FrameContentPage
     xmlns:interop="using:WaveGenerator.UI.Interop"
-    x:Class="WaveGenerator.UI.DefaultWavePage"
+    x:Class="WaveGenerator.UI.Pages.DefaultWavePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WaveGenerator.UI"

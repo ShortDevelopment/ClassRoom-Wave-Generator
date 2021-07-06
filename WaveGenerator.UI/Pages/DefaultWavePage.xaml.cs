@@ -3,10 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using WaveGenerator.UI.Generation;
 using WaveGenerator.UI.Rendering;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
 
-namespace WaveGenerator.UI
+namespace WaveGenerator.UI.Pages
 {
     public sealed partial class DefaultWavePage : Interop.FrameContentPage
     {

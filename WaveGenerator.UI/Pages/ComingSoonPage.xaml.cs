@@ -1,6 +1,6 @@
 ﻿using Windows.UI.Xaml.Controls;
 
-namespace WaveGenerator.UI
+namespace WaveGenerator.UI.Pages
 {
     public sealed partial class ComingSoonPage : Page
     {

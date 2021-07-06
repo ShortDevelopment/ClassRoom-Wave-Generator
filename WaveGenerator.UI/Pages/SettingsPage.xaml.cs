@@ -8,7 +8,6 @@ namespace WaveGenerator.UI.Pages
         public SettingsPage()
         {
             this.InitializeComponent();
-            this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Required;
         }
 
         public string UI_CurrentYear { get; } = DateTime.Now.ToString("yyyy");

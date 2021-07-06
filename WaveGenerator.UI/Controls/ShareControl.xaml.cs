@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
+using WaveGenerator.UI.Interop;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Graphics.Imaging;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
@@ -20,7 +25,7 @@ namespace WaveGenerator.UI.Controls
                 return;
 
             IntPtr hwnd = Process.GetCurrentProcess().MainWindowHandle;
-            DataTransferManager dataTransferManager = Interop.DataTransferManagerInterop.GetForWindow(hwnd);
+            DataTransferManager dataTransferManager = DataTransferManagerInterop.GetForWindow(hwnd);
             dataTransferManager.DataRequested += DataTransferManager_DataRequested;
         }
 
@@ -30,20 +35,12 @@ namespace WaveGenerator.UI.Controls
         private async void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
         {
             DataRequest request = args.Request;
-
             DataRequestDeferral deferral = request.GetDeferral();
 
-            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap();
-            await renderTargetBitmap.RenderAsync(MainCanvas);
-
-            var pixels = (await renderTargetBitmap.GetPixelsAsync()).ToArray();
+            RenderTargetBitmap renderTargetBitmap = await RenderImage();
 
             IRandomAccessStream stream = new InMemoryRandomAccessStream();
-
-            var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, stream);
-            encoder.SetPixelData(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied, (uint)renderTargetBitmap.PixelWidth, (uint)renderTargetBitmap.PixelHeight, 96, 96, pixels);
-            await encoder.FlushAsync();
-            stream.Seek(0);
+            await WriteImageToStream(renderTargetBitmap, stream);
             request.Data.SetBitmap(RandomAccessStreamReference.CreateFromStream(stream));
 
             var props = request.Data.Properties;
@@ -56,9 +53,47 @@ namespace WaveGenerator.UI.Controls
 
         private void ShareButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            // DataTransferManager.ShowShareUI();
-            Interop.DataTransferManagerInterop.ShowShareUIForWindow(Process.GetCurrentProcess().MainWindowHandle);
+            DataTransferManagerInterop.ShowShareUIForWindow(Process.GetCurrentProcess().MainWindowHandle);
         }
 
+        private async void SaveButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            FileSavePicker picker = new FileSavePicker();
+
+            ((IInitializeWithWindow)(object)picker).Initialize(Process.GetCurrentProcess().MainWindowHandle);
+
+            picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+            picker.FileTypeChoices.Add("Bild", new List<string>() { ".jpeg" });
+            StorageFile file = await picker.PickSaveFileAsync();
+            if (file != null)
+            {
+                RenderTargetBitmap renderTargetBitmap = await RenderImage();
+
+                using (IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite))
+                {
+                    await WriteImageToStream(renderTargetBitmap, stream);
+                }
+            }
+        }
+
+        private async Task WriteImageToStream(RenderTargetBitmap bitmap, IRandomAccessStream stream)
+        {
+            byte[] pixels = (await bitmap.GetPixelsAsync()).ToArray();
+
+            const int dpi = 150; // 96;
+
+            BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, stream);
+            encoder.SetPixelData(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied, (uint)bitmap.PixelWidth, (uint)bitmap.PixelHeight, dpi, dpi, pixels);
+            await encoder.FlushAsync();
+
+            stream.Seek(0);
+        }
+
+        private async Task<RenderTargetBitmap> RenderImage()
+        {
+            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap();
+            await renderTargetBitmap.RenderAsync(MainCanvas);
+            return renderTargetBitmap;
+        }
     }
 }

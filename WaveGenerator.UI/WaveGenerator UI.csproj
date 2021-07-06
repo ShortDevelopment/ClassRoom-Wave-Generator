@@ -123,6 +123,8 @@
       <DependentUpon>SimulationCommandBarControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Generation\WaveReflectionInfo.cs" />
+    <Compile Include="Interop\DataTransferManagerInterop.cs" />
+    <Compile Include="Interop\IInitializeWithWindow.cs" />
     <Compile Include="Pages\ComingSoonPage.xaml.cs">
       <DependentUpon>ComingSoonPage.xaml</DependentUpon>
     </Compile>
@@ -135,7 +137,6 @@
     <Compile Include="Generation\Wave.cs" />
     <Compile Include="Generation\WaveGenerator.cs" />
     <Compile Include="Generation\WaveSettings.cs" />
-    <Compile Include="Interop\DataTransferManagerInterop.cs" />
     <Compile Include="Interop\FrameContentPage.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -220,11 +221,7 @@
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.6.0-prerelease.210623001</Version>
     </PackageReference>
-    <PackageReference Include="UWP.API.DotNet.Interop.Wrappers">
-      <Version>0.9.2-preview</Version>
-    </PackageReference>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

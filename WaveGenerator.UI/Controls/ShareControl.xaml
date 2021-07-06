@@ -11,11 +11,11 @@
     HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5">
 
     <StackPanel Orientation="Horizontal">
+        <Button Background="White" Margin="5" ToolTipService.ToolTip="Bild exportieren" Style="{ThemeResource ButtonRevealStyle}" Click="SaveButton_Click">
+            <FontIcon Glyph="&#xE74E;" Foreground="Black" />
+        </Button>
         <Button Background="White" Margin="5" ToolTipService.ToolTip="Teilen" Style="{ThemeResource ButtonRevealStyle}" Click="ShareButton_Click">
             <FontIcon Glyph="&#xE72D;" Foreground="Black" />
-        </Button>
-        <Button Background="White" Margin="5" ToolTipService.ToolTip="Bild exportieren" Style="{ThemeResource ButtonRevealStyle}">
-            <FontIcon Glyph="&#xEE71;" Foreground="Black" />
-        </Button>
+        </Button>        
     </StackPanel>
 </UserControl>

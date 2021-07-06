@@ -20,7 +20,7 @@
                 </Grid.RowDefinitions>
 
                 <Grid Background="#efefef"  Padding="30,0,30,0" Grid.Row="0">
-                    <Canvas Name="MainCanvas" />
+                    <Canvas Background="#efefef" Name="MainCanvas" />
                 </Grid>
 
                 <controls:GridSplitter

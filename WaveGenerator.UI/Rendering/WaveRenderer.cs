@@ -144,7 +144,7 @@ namespace WaveGenerator.UI.Rendering
                 DrawLine(new Vector2(Settings.Offset.X + (float)x, (float)Canvas.ActualHeight),
                     new Vector2(Settings.Offset.X + (float)x, 0), thickness);
             }
-            for (double y = 0; y < Canvas.ActualHeight; y += yunit)
+            for (double y = (Canvas.ActualHeight / 2) - yunit * (int)((Canvas.ActualHeight / 2 / yunit) + 1); y < Canvas.ActualHeight; y += yunit)
             {
                 double thickness = 0.25;
                 if (y % (yunit * 5) == 0)
@@ -155,13 +155,7 @@ namespace WaveGenerator.UI.Rendering
             }
         }
 
-        public double YUnit
-        {
-            get
-            {
-                return Canvas.ActualHeight / (Settings.YStepCount * 2);
-            }
-        }
+        public double YUnit => Canvas.ActualHeight / (Settings.YStepCount * 2);
 
         public static Vector2[] GenerateTestData(int count = 10)
         {

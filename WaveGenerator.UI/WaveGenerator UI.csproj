@@ -128,6 +128,7 @@
     <Compile Include="Controls\ShareControl.xaml.cs">
       <DependentUpon>ShareControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Generation\Wave.cs" />
     <Compile Include="Generation\WaveGenerator.cs" />
     <Compile Include="Generation\WaveSettings.cs" />
     <Compile Include="Interop\DataTransferManagerInterop.cs" />

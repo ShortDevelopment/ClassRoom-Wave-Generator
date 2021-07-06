@@ -23,7 +23,7 @@ namespace WaveGenerator.UI.Generation
         /// <param name="count">Number of part in wave in units</param>
         /// <param name="distance">Distance between each part in units</param>
         /// <returns></returns>
-        public Vector2[] Generate(double tₒ, int count = 40, double distance = 0.25)
+        public Wave Generate(double tₒ, int count = 40, double distance = 0.25)
         {
             #region Math Proxy
             const double π = Math.PI;
@@ -49,7 +49,7 @@ namespace WaveGenerator.UI.Generation
             {
                 list.Add(new Vector2((float)x, (float)s(x)));
             }
-            return list.ToArray();
+            return new Wave(list.ToArray());
         }
 
         /// <summary>

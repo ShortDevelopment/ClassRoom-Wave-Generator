@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using WaveGenerator.UI.Generation;
 using Windows.UI;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -36,8 +37,10 @@ namespace WaveGenerator.UI.Rendering
             };
         }
 
-        public void Render(Vector2[] points)
+        public void Render(Wave wave)
         {
+            Vector2[] points = wave.data;
+
             // Clear canvas
             Canvas.Children.Clear();
 

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Reflection;
 using Windows.UI.Xaml.Controls;
 
 namespace WaveGenerator.UI.Pages
@@ -11,5 +13,20 @@ namespace WaveGenerator.UI.Pages
         }
 
         public string UI_CurrentYear { get; } = DateTime.Now.ToString("yyyy");
+
+        public FileVersionInfo UI_VersionInfo
+        {
+            get
+            {
+                try
+                {
+                    return FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+        }
     }
 }

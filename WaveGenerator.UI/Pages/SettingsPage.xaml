@@ -16,12 +16,7 @@
             <UserControl Height="15" />
 
             <TextBlock Style="{StaticResource BodyTextBlockStyle}">
-                Dises App ist OpenSource!
-                
-                <LineBreak />
-                <LineBreak />
-                
-                Wave Generator
+                Wave Generator <Run Text="{x:Bind UI_VersionInfo.FileVersion}" /> 
                 <LineBreak />
                 
                 © <Run Text="{x:Bind UI_CurrentYear}" /> Lukas Kurz
@@ -30,6 +25,7 @@
                 <LineBreak />
                 <LineBreak />
                 
+                Dises App ist OpenSource!<LineBreak />                
                 <Hyperlink UnderlineStyle="None" NavigateUri="https://github.com/ShortDevelopment/ClassRoom-Wave-Generator/">QuellCode auf GitHub</Hyperlink>
             </TextBlock>
 

@@ -1,4 +1,6 @@
-﻿<Page
+﻿<pages:SimulationPageBase
+    xmlns:pages="using:WaveGenerator.UI.Pages"
+    xmlns:interop="using:WaveGenerator.UI.Interop"
     x:Class="WaveGenerator.UI.Pages.ReflectionWavePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -39,38 +41,13 @@
                 </controls:GridSplitter>
 
                 <StackPanel Grid.Row="2" Padding="30,0,30,0">
-                    <StackPanel Orientation="Horizontal">
-                        <CommandBar DefaultLabelPosition="Right" Background="Transparent">
-                            <AppBarButton Label="Play" Name="PlayAppBarButton" Click="PlayAppBarButton_Click">
-                                <AppBarButton.Icon>
-                                    <FontIcon Glyph="&#xE768;" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                            <AppBarButton Label="Pause" IsEnabled="False" Name="PauseAppBarButton" Click="PauseAppBarButton_Click">
-                                <AppBarButton.Icon>
-                                    <FontIcon Glyph="&#xE769;" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                            <AppBarSeparator />
-                            <AppBarButton Label="Einzelschritt" Name="StepAppBarButton" Click="StepAppBarButton_Click">
-                                <AppBarButton.Icon>
-                                    <FontIcon Glyph="&#xEB9D;" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                            <AppBarSeparator />
-                            <AppBarButton Label="Reset" IsEnabled="False" Name="ResetAppBarButton" Click="ResetAppBarButton_Click">
-                                <AppBarButton.Icon>
-                                    <FontIcon Glyph="&#xE72C;" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                        </CommandBar>
-                    </StackPanel>
+                    <controls1:SimulationCommandBarControl BasePage="{x:Bind CurrentInstance}" />
 
-                    <controls1:WaveSettingsControl x:Name="WaveSettingsControl" WaveSettings="{x:Bind WaveSettings}" />
+                    <controls1:WaveSettingsControl x:Name="WaveSettingsControl" WaveSettings="{x:Bind WaveSettings}" RenderSettings="{x:Bind RenderSettings}" />
                 </StackPanel>
             </Grid>
 
             <controls1:ShareControl MainCanvas="{x:Bind MainCanvas}" />
         </Grid>
     </ScrollViewer>
-</Page>
+</pages:SimulationPageBase>

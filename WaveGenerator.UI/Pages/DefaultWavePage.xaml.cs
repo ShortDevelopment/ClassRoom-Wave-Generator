@@ -1,31 +1,24 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading;
 using WaveGenerator.UI.Generation;
 using WaveGenerator.UI.Rendering;
+using Windows.UI;
 
 namespace WaveGenerator.UI.Pages
 {
-    public sealed partial class DefaultWavePage : Interop.FrameContentPage
+    public sealed partial class DefaultWavePage : SimulationPageBase
     {
 
         #region System // FrameWork
 
-        public DefaultWavePage()
+        public DefaultWavePage() : base()
         {
             this.InitializeComponent();
-            this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Required;
-
-            this.Loaded += MainPage_Loaded;
         }
 
-        private void MainPage_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        protected override void OnLoaded()
         {
             WaveSettingsControl.LoadSettings();
             this.KeyDown += MainPage_KeyDown;
-            Task.Run(RenderLoop);
-
-            this.Loaded -= MainPage_Loaded;
         }
 
         private void MainPage_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
@@ -44,32 +37,10 @@ namespace WaveGenerator.UI.Pages
 
         #region Animation
 
-        #region State Variables
-
-        /// <summary>
-        /// Gets wether animation is running
-        /// </summary>
-        public bool IsRunning { get; private set; } = false;
-
-        /// <summary>
-        /// Time in ms
-        /// </summary>
-        public int CurrentAnimationTime { get; private set; } = 0;
-
-        /// <summary>
-        /// Internally used to stop <see cref="MainPage.RenderLoop"/>
-        /// </summary>
-        bool ShouldStopAnimation = false;
-
-        #endregion
-
-        public WaveSettings WaveSettings { get; private set; } = new WaveSettings();
-        public RenderSettings RenderSettings { get; private set; } = new RenderSettings();
-
         /// <summary>
         /// Handles rendering calls and time
         /// </summary>
-        private void RenderLoop()
+        protected override void RenderLoop()
         {
             // Setting high priority
             Thread.CurrentThread.Priority = ThreadPriority.Highest;
@@ -105,6 +76,10 @@ namespace WaveGenerator.UI.Pages
                       double radius = WaveSettings.Amplitude * renderer.YUnit;
                       RenderSettings.Offset = new System.Numerics.Vector2((float)radius * 2, 0);
 
+                      renderer.ClearCanvas();
+
+                      renderer.RenderCoordinateSystem(Colors.Gray);
+
                       renderer.Render(data);
                       renderer.RenderZeiger(angle, new System.Numerics.Vector2(0, 0), radius);
                   });
@@ -116,54 +91,6 @@ namespace WaveGenerator.UI.Pages
                 }
                 Thread.Sleep(timeStep);
             }
-        }
-
-        #endregion
-
-        #region UI        
-
-        #region CommandBar
-
-        private void PlayAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            IsRunning = true;
-
-            PlayAppBarButton.IsEnabled = false;
-            PauseAppBarButton.IsEnabled = true;
-
-            ResetAppBarButton.IsEnabled = true;
-        }
-
-        private void PauseAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            IsRunning = false;
-
-            PlayAppBarButton.IsEnabled = true;
-            PauseAppBarButton.IsEnabled = false;
-        }
-
-        private void StepAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            InvokeSingleStep();
-        }
-
-        private void ResetAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            CurrentAnimationTime = 0;
-
-            if (!IsRunning)
-                ResetAppBarButton.IsEnabled = false;
-        }
-
-        #endregion
-
-        private void InvokeSingleStep()
-        {
-            CurrentAnimationTime += (int)Math.Round((1f / 16f) * WaveSettings.Period * 1000);
-        }
-        private void InvokeSingleStepReverse()
-        {
-            CurrentAnimationTime -= (int)Math.Round((1f / 16f) * WaveSettings.Period * 1000);
         }
 
         #endregion

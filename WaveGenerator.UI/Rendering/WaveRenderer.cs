@@ -11,6 +11,9 @@ namespace WaveGenerator.UI.Rendering
 {
     public class WaveRenderer
     {
+
+        #region Settings
+
         /// <summary>
         /// Gets undelaying <see cref="Windows.UI.Xaml.Controls.Canvas"/>
         /// </summary>
@@ -20,6 +23,8 @@ namespace WaveGenerator.UI.Rendering
         /// Gets or sets <see cref="RenderSettings"/>
         /// </summary>
         public RenderSettings Settings { get; set; }
+
+        #endregion
 
         public WaveRenderer(Canvas canvas, RenderSettings settings)
         {
@@ -37,17 +42,48 @@ namespace WaveGenerator.UI.Rendering
             };
         }
 
+        #region Render Methods
+
+        public void ClearCanvas() => Canvas.Children.Clear();
+
+        public void RenderCoordinateSystem(Color color)
+        {
+            double xunit = XUnit;
+            double yunit = YUnit;
+
+            // X-Axis
+            DrawLine(new Vector2(0, (float)(Canvas.ActualHeight / 2) + Settings.Offset.Y),
+                new Vector2((float)Canvas.ActualWidth, (float)(Canvas.ActualHeight / 2) + Settings.Offset.Y));
+
+            // Y-Axis
+            DrawLine(new Vector2(Settings.Offset.X, (float)Canvas.ActualHeight),
+                new Vector2(Settings.Offset.X, 0));
+
+            for (double x = 0; x < Canvas.ActualWidth; x += xunit)
+            {
+                double thickness = 0.25;
+                if (x % (xunit * 5) == 0)
+                    thickness = 0.5;
+
+                DrawLine(new Vector2(Settings.Offset.X + (float)x, (float)Canvas.ActualHeight),
+                    new Vector2(Settings.Offset.X + (float)x, 0), thickness, color);
+            }
+            for (double y = (Canvas.ActualHeight / 2) - yunit * (int)((Canvas.ActualHeight / 2 / yunit) + 1); y < Canvas.ActualHeight; y += yunit)
+            {
+                double thickness = 0.25;
+                if (y % (yunit * 5) == 0)
+                    thickness = 0.5;
+
+                DrawLine(new Vector2(Settings.Offset.X, (float)y + Settings.Offset.Y),
+                new Vector2((float)Canvas.ActualWidth, (float)y + Settings.Offset.Y), thickness, color);
+            }
+        }
+
         public void Render(Wave wave)
         {
             Vector2[] points = wave.data;
 
-            // Clear canvas
-            Canvas.Children.Clear();
-
             double unit = YUnit;
-
-            if (Settings.ShowCoordinateSystem)
-                RenderCoordinateSystem(unit, unit);
 
             for (int i = 0; i < points.Length; i++)
             {
@@ -59,12 +95,15 @@ namespace WaveGenerator.UI.Rendering
                 circle.Width = Settings.Radius;
                 circle.Height = Settings.Radius;
 
-                // Calculate position                
-                Canvas.SetLeft(circle, unit * point.X - (Settings.Radius / 2) + Settings.Offset.X);
+                // Calculate position
+                if (wave.RTL)
+                    Canvas.SetLeft(circle, Canvas.ActualWidth - (unit * point.X - (Settings.Radius / 2) + Settings.Offset.X));
+                else
+                    Canvas.SetLeft(circle, unit * point.X - (Settings.Radius / 2) + Settings.Offset.X);
                 Canvas.SetTop(circle, (Canvas.ActualHeight / 2) - (unit * point.Y) - (Settings.Radius / 2) + Settings.Offset.Y);
 
                 // Set style
-                circle.Fill = new SolidColorBrush(Colors.Red);
+                circle.Fill = new SolidColorBrush(wave.color);
                 circle.StrokeThickness = 0;
 
                 // Add to canvas
@@ -101,8 +140,20 @@ namespace WaveGenerator.UI.Rendering
 
             float height = (float)(Canvas.ActualHeight / 2) + Settings.Offset.Y + (float)(Math.Sin(angle) * radius);
             DrawLine(new Vector2(0, height),
-                new Vector2((float)Canvas.ActualWidth, height), 1, Colors.Gray);
+                new Vector2((float)Canvas.ActualWidth, height), 1, Colors.Green);
         }
+
+        public void RenderReflectionWall(WaveReflectionInfo reflectionInfo)
+        {
+            float x = (float)(XUnit * reflectionInfo.EndPosition + Settings.Offset.X);
+            DrawLine(new Vector2(x, 0),
+                new Vector2(x, (float)Canvas.ActualHeight),
+                3, Colors.Red);
+        }
+
+        #endregion
+
+        #region Helper Functions
 
         private void DrawLine(Vector2 p1, Vector2 p2, double thickness = 1)
         {
@@ -125,36 +176,9 @@ namespace WaveGenerator.UI.Rendering
             Canvas.Children.Add(line);
         }
 
-        private void RenderCoordinateSystem(double xunit, double yunit)
-        {
-            // X-Axis
-            DrawLine(new Vector2(0, (float)(Canvas.ActualHeight / 2) + Settings.Offset.Y),
-                new Vector2((float)Canvas.ActualWidth, (float)(Canvas.ActualHeight / 2) + Settings.Offset.Y));
+        #endregion
 
-            // Y-Axis
-            DrawLine(new Vector2(Settings.Offset.X, (float)Canvas.ActualHeight),
-                new Vector2(Settings.Offset.X, 0));
-
-            for (double x = 0; x < Canvas.ActualWidth; x += xunit)
-            {
-                double thickness = 0.25;
-                if (x % (xunit * 5) == 0)
-                    thickness = 0.5;
-
-                DrawLine(new Vector2(Settings.Offset.X + (float)x, (float)Canvas.ActualHeight),
-                    new Vector2(Settings.Offset.X + (float)x, 0), thickness);
-            }
-            for (double y = (Canvas.ActualHeight / 2) - yunit * (int)((Canvas.ActualHeight / 2 / yunit) + 1); y < Canvas.ActualHeight; y += yunit)
-            {
-                double thickness = 0.25;
-                if (y % (yunit * 5) == 0)
-                    thickness = 0.5;
-
-                DrawLine(new Vector2(Settings.Offset.X, (float)y + Settings.Offset.Y),
-                new Vector2((float)Canvas.ActualWidth, (float)y + Settings.Offset.Y), thickness);
-            }
-        }
-
+        public double XUnit => YUnit;
         public double YUnit => Canvas.ActualHeight / (Settings.YStepCount * 2);
 
         public static Vector2[] GenerateTestData(int count = 10)

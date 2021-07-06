@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
+using Windows.UI;
 
 namespace WaveGenerator.UI.Generation
 {
@@ -67,6 +69,46 @@ namespace WaveGenerator.UI.Generation
             double ω = 2 * π * 1 / T;
 
             return -ω * t;
+        }
+
+        public Wave MirrorWave(Wave wave)
+        {
+            WaveReflectionInfo reflectionInfo = Settings.Reflection;
+            Wave resultWave = new Wave();
+            resultWave.color = Colors.Blue;
+            // resultWave.RTL = true; ⚡
+
+            resultWave.data = wave.data.Where((p) => p.X >= reflectionInfo.EndPosition).Select((p) => new Vector2((float)(reflectionInfo.EndPosition - (p.X - reflectionInfo.EndPosition)), p.Y)).ToArray();
+
+            if (!reflectionInfo.HasFreeEnd)
+                resultWave.data = resultWave.data.Select((p) => new Vector2(p.X, -1 * p.Y)).ToArray();
+
+            return resultWave;
+        }
+
+        public Wave MergeWaves(Wave[] waves)
+        {
+            Wave resultWave = new Wave();
+            resultWave.color = Colors.Red;
+
+            Dictionary<float, float> points = new Dictionary<float, float>();
+
+            for (int wi = 0; wi < waves.Length; wi++)
+            {
+                Wave wave = waves[wi];
+                for (int i = 0; i < wave.data.Length; i++)
+                {
+                    Vector2 p = wave.data[i];
+                    if (points.ContainsKey(p.X))
+                        points[p.X] += p.Y;
+                    else
+                        points.Add(p.X, p.Y);
+                }
+            }
+
+            resultWave.data = points.Select((x) => new Vector2(x.Key, x.Value)).ToArray();
+
+            return resultWave;
         }
 
     }

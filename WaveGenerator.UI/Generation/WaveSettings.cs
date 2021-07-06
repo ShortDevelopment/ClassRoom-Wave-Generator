@@ -16,5 +16,10 @@
         /// Sets the period (T)
         /// </summary>
         public double Period { get; set; } = 6;
+
+        /// <summary>
+        /// Sets info about the reflection of the wave. "null" if the wave should ot be reflected.
+        /// </summary>
+        public WaveReflectionInfo Reflection { get; set; } = null;
     }
 }

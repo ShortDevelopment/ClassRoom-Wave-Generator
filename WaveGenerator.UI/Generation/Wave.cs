@@ -1,16 +1,20 @@
 ﻿using System.Numerics;
+using Windows.UI;
 
 namespace WaveGenerator.UI.Generation
 {
     public struct Wave
     {
-        public bool isRTL;
-        public Vector2[] data;
+        public bool RTL { get; set; }
+        public Vector2[] data { get; set; }
 
-        public Wave(Vector2[] data, bool isRTL = false)
+        public Color color { get; set; }
+
+        public Wave(Vector2[] data, bool RTL = false)
         {
             this.data = data;
-            this.isRTL = isRTL;
+            this.RTL = RTL;
+            this.color = Colors.Black;
         }
     }
 }

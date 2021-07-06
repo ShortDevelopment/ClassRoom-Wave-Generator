@@ -25,7 +25,7 @@ namespace WaveGenerator.UI
                     MainContentFrame.Navigate(typeof(DefaultWavePage));
                     break;
 
-                case "reflecting_waves_x":
+                case "reflecting_waves":
                     MainContentFrame.Navigate(typeof(ReflectionWavePage));
                     break;
 

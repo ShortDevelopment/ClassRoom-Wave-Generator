@@ -6,8 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="400">
+    d:DesignHeight="600"
+    d:DesignWidth="700">
 
     <StackPanel Padding="30,10,30,10">
 
@@ -36,6 +36,41 @@
             </Grid.ColumnDefinitions>
             <TextBox Header="Amplitude in m" Name="AmplitudeTextBox" Margin="0,0,10,0" Grid.Column="0" KeyDown="AmplitudeTextBox_KeyDown" />
         </Grid>
+
+        <StackPanel Name="ReflectionSettingsContainer">
+            <UserControl Height="20" />
+            <TextBlock Text="Reflektion" Style="{StaticResource SubtitleTextBlockStyle}"/>
+            <UserControl Height="15" />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <CheckBox x:Name="HasFreeEnd_CheckBox" Content="Loses Ende" Grid.Column="0" Checked="ReflectionSettings_CheckBox_Checked" Unchecked="ReflectionSettings_CheckBox_Checked" />
+            </Grid>
+
+            <UserControl Height="15" />
+            <TextBlock Text="Darstellung" Style="{StaticResource CaptionTextBlockStyle}"/>
+            <UserControl Height="10" />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <CheckBox x:Name="ShowIncomingWave_CheckBox" Content="Ankommende Welle" Grid.Column="0" Checked="ReflectionSettings_CheckBox_Checked" Unchecked="ReflectionSettings_CheckBox_Checked" />
+                <CheckBox x:Name="ShowResultingWave_CheckBox" Content="Resultierende Welle" Grid.Column="1" Checked="ReflectionSettings_CheckBox_Checked" Unchecked="ReflectionSettings_CheckBox_Checked" />
+            </Grid>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <CheckBox x:Name="ShowReflectedWave_CheckBox" Content="Reflektierte Welle" Grid.Column="0" Checked="ReflectionSettings_CheckBox_Checked" Unchecked="ReflectionSettings_CheckBox_Checked" />
+            </Grid>
+        </StackPanel>
 
     </StackPanel>
 </UserControl>

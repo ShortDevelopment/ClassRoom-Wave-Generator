@@ -15,18 +15,19 @@ namespace WaveGenerator.UI.Rendering
         public double YStepCount { get; set; } = 2;
 
         /// <summary>
-        /// Sets wether the coordinate system is rendered in the background
-        /// </summary>
-        public bool ShowCoordinateSystem { get; set; } = true;
-
-        /// <summary>
         /// Offset of all points
         /// </summary>
         public Vector2 Offset { get; set; } = new Vector2(0, 0);
 
-        /// <summary>
-        /// Sets if the renderer should stick all points to the right side
-        /// </summary>
-        public bool RTL { get; set; } = false;
+        #region Reflection
+
+        public bool ShowIncomingWave { get; set; } = true;
+
+        public bool ShowReflectedWave { get; set; } = true;
+
+        public bool ShowResultingWave { get; set; } = true;
+
+        #endregion
+
     }
 }

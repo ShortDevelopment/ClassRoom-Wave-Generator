@@ -1,7 +1,7 @@
 ﻿<pages:SimulationPageBase
     xmlns:pages="using:WaveGenerator.UI.Pages"
     xmlns:interop="using:WaveGenerator.UI.Interop"
-    x:Class="WaveGenerator.UI.Pages.ReflectionWavePage"
+    x:Class="WaveGenerator.UI.Pages.InterferencePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WaveGenerator.UI"
@@ -43,7 +43,17 @@
                 <StackPanel Grid.Row="2" Padding="30,0,30,0">
                     <controls1:SimulationCommandBarControl BasePage="{x:Bind CurrentInstance}" />
 
-                    <controls1:WaveSettingsControl x:Name="WaveSettingsControl" WaveSettings="{x:Bind WaveSettings}" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="1" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <controls1:WaveSettingsControl Grid.Column="0" x:Name="Wave1SettingsControl" WaveSettings="{x:Bind WaveSettings}" />
+                        <StackPanel Grid.Column="1" Background="Gray" Margin="0,15,0,15" />
+                        <controls1:WaveSettingsControl Grid.Column="2" x:Name="Wave2SettingsControl" WaveSettings="{x:Bind Wave2Settings}" />
+                    </Grid>
+
                     <controls1:RenderSettingsControl x:Name="RenderSettingsControl"  RenderSettings="{x:Bind RenderSettings}" />
                 </StackPanel>
             </Grid>

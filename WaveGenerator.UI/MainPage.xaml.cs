@@ -29,6 +29,10 @@ namespace WaveGenerator.UI
                     MainContentFrame.Navigate(typeof(ReflectionWavePage));
                     break;
 
+                case "interferenz_2_waves":
+                    MainContentFrame.Navigate(typeof(InterferencePage));
+                    break;
+
                 default:
                     if (args.IsSettingsSelected)
                         MainContentFrame.Navigate(typeof(SettingsPage));

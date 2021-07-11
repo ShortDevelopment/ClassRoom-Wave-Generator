@@ -119,6 +119,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\RenderSettingsControl.xaml.cs">
+      <DependentUpon>RenderSettingsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SimulationCommandBarControl.xaml.cs">
       <DependentUpon>SimulationCommandBarControl.xaml</DependentUpon>
     </Compile>
@@ -128,8 +131,8 @@
     <Compile Include="Pages\ComingSoonPage.xaml.cs">
       <DependentUpon>ComingSoonPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SettingsControl.xaml.cs">
-      <DependentUpon>SettingsControl.xaml</DependentUpon>
+    <Compile Include="Controls\WaveSettingsControl.xaml.cs">
+      <DependentUpon>WaveSettingsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ShareControl.xaml.cs">
       <DependentUpon>ShareControl.xaml</DependentUpon>
@@ -140,6 +143,9 @@
     <Compile Include="Interop\FrameContentPage.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\InterferencePage.xaml.cs">
+      <DependentUpon>InterferencePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ReflectionWavePage.xaml.cs">
       <DependentUpon>ReflectionWavePage.xaml</DependentUpon>
@@ -175,6 +181,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\RenderSettingsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\SimulationCommandBarControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -183,7 +193,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\SettingsControl.xaml">
+    <Page Include="Controls\WaveSettingsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -194,6 +204,10 @@
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\InterferencePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\ReflectionWavePage.xaml">
       <Generator>MSBuild:Compile</Generator>

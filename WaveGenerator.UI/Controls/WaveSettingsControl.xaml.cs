@@ -1,5 +1,4 @@
 ﻿using WaveGenerator.UI.Generation;
-using WaveGenerator.UI.Rendering;
 using Windows.UI.Xaml.Controls;
 
 namespace WaveGenerator.UI.Controls
@@ -12,7 +11,6 @@ namespace WaveGenerator.UI.Controls
         }
 
         public WaveSettings WaveSettings { get; set; }
-        public RenderSettings RenderSettings { get; set; }
 
         bool loadedSettings = false;
 
@@ -27,10 +25,6 @@ namespace WaveGenerator.UI.Controls
                 ReflectionSettingsContainer.Visibility = Windows.UI.Xaml.Visibility.Visible;
 
                 HasFreeEnd_CheckBox.IsChecked = WaveSettings.Reflection.HasFreeEnd;
-
-                ShowIncomingWave_CheckBox.IsChecked = RenderSettings.ShowIncomingWave;
-                ShowReflectedWave_CheckBox.IsChecked = RenderSettings.ShowReflectedWave;
-                ShowResultingWave_CheckBox.IsChecked = RenderSettings.ShowResultingWave;
             }
             else
             {
@@ -89,10 +83,6 @@ namespace WaveGenerator.UI.Controls
                 return;
 
             WaveSettings.Reflection.HasFreeEnd = (bool)HasFreeEnd_CheckBox.IsChecked;
-
-            RenderSettings.ShowIncomingWave = (bool)ShowIncomingWave_CheckBox.IsChecked;
-            RenderSettings.ShowReflectedWave = (bool)ShowReflectedWave_CheckBox.IsChecked;
-            RenderSettings.ShowResultingWave = (bool)ShowResultingWave_CheckBox.IsChecked;
         }
     }
 }

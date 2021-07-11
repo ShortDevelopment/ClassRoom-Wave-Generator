@@ -6,21 +6,20 @@ using Windows.UI;
 
 namespace WaveGenerator.UI.Pages
 {
-    public sealed partial class ReflectionWavePage : SimulationPageBase
+    public sealed partial class InterferencePage : SimulationPageBase
     {
 
         #region System // FrameWork
 
-        public ReflectionWavePage() : base()
+        public InterferencePage() : base()
         {
             this.InitializeComponent();
-
-            WaveSettings.Reflection = new WaveReflectionInfo();
         }
 
         protected override void OnLoaded()
         {
-            WaveSettingsControl.LoadSettings();
+            Wave1SettingsControl.LoadSettings();
+            Wave2SettingsControl.LoadSettings();
             RenderSettingsControl.LoadSettings();
             this.KeyDown += MainPage_KeyDown;
         }
@@ -39,9 +38,9 @@ namespace WaveGenerator.UI.Pages
 
         #endregion
 
-        #region Animation
+        public WaveSettings Wave2Settings { get; private set; } = new WaveSettings();
 
-        Stopwatch watch = new Stopwatch();
+        #region Animation
 
         /// <summary>
         /// Handles rendering calls and time
@@ -53,6 +52,7 @@ namespace WaveGenerator.UI.Pages
 
             // Initializing helpers
             var generater = new Generation.WaveGenerator(WaveSettings);
+            var generater2 = new Generation.WaveGenerator(Wave2Settings);
             var renderer = new WaveRenderer(MainCanvas, RenderSettings);
 
             // Time animation intervals
@@ -66,13 +66,11 @@ namespace WaveGenerator.UI.Pages
                     continue;
 
                 // Sync settings
-                generater.Settings = WaveSettings;
                 RenderSettings.YStepCount = WaveSettings.Amplitude + 1;
-                renderer.Settings = RenderSettings;
 
                 // Generate wave
                 var primaryWave = generater.Generate(CurrentAnimationTime / 1000.0);
-                var secondaryWave = generater.MirrorWave(primaryWave);
+                var secondaryWave = generater2.Generate(CurrentAnimationTime / 1000.0);
                 var resultingWave = generater.MergeWaves(new[] { primaryWave, secondaryWave });
 
                 // Render wave
@@ -90,20 +88,15 @@ namespace WaveGenerator.UI.Pages
                         renderer.Render(secondaryWave);
                     if (RenderSettings.ShowResultingWave)
                         renderer.Render(resultingWave);
-
-                    renderer.RenderReflectionWall(WaveSettings.Reflection);
                 });
 
                 // Handling timing
                 if (IsRunning)
                 {
-                    CurrentAnimationTime += (int)watch.ElapsedMilliseconds;
+                    CurrentAnimationTime += timeStep;
                 }
 
-                watch.Reset();
-                watch.Start();
                 Thread.Sleep(timeStep);
-                watch.Stop();
             }
         }
 

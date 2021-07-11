@@ -49,28 +49,6 @@
                 </Grid.ColumnDefinitions>
                 <CheckBox x:Name="HasFreeEnd_CheckBox" Content="Loses Ende" Grid.Column="0" Checked="ReflectionSettings_CheckBox_Checked" Unchecked="ReflectionSettings_CheckBox_Checked" />
             </Grid>
-
-            <UserControl Height="15" />
-            <TextBlock Text="Darstellung" Style="{StaticResource CaptionTextBlockStyle}"/>
-            <UserControl Height="10" />
-
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <CheckBox x:Name="ShowIncomingWave_CheckBox" Content="Ankommende Welle" Grid.Column="0" Checked="ReflectionSettings_CheckBox_Checked" Unchecked="ReflectionSettings_CheckBox_Checked" />
-                <CheckBox x:Name="ShowResultingWave_CheckBox" Content="Resultierende Welle" Grid.Column="1" Checked="ReflectionSettings_CheckBox_Checked" Unchecked="ReflectionSettings_CheckBox_Checked" />
-            </Grid>
-
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <CheckBox x:Name="ShowReflectedWave_CheckBox" Content="Reflektierte Welle" Grid.Column="0" Checked="ReflectionSettings_CheckBox_Checked" Unchecked="ReflectionSettings_CheckBox_Checked" />
-            </Grid>
         </StackPanel>
-
     </StackPanel>
 </UserControl>

@@ -43,7 +43,7 @@
                 <StackPanel Grid.Row="2" Padding="30,0,30,0">
                     <controls1:SimulationCommandBarControl BasePage="{x:Bind CurrentInstance}" />
 
-                    <controls1:WaveSettingsControl x:Name="WaveSettingsControl" WaveSettings="{x:Bind WaveSettings}" RenderSettings="{x:Bind RenderSettings}" />
+                    <controls1:WaveSettingsControl x:Name="WaveSettingsControl" WaveSettings="{x:Bind WaveSettings}" />
                 </StackPanel>
             </Grid>
 

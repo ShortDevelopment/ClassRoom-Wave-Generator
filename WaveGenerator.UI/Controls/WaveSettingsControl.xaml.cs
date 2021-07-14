@@ -25,6 +25,7 @@ namespace WaveGenerator.UI.Controls
                 ReflectionSettingsContainer.Visibility = Windows.UI.Xaml.Visibility.Visible;
 
                 HasFreeEnd_CheckBox.IsChecked = WaveSettings.Reflection.HasFreeEnd;
+                EndDistanceTextBox.Text = WaveSettings.Reflection.EndPosition.ToString();
             }
             else
             {
@@ -75,6 +76,19 @@ namespace WaveGenerator.UI.Controls
             }
         }
 
+        private void EndDistanceTextBox_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                try
+                {
+                    WaveSettings.Reflection.EndPosition = double.Parse(EndDistanceTextBox.Text);
+                }
+                catch { }
+                LoadSettings();
+            }
+        }
+
         #endregion
 
         private void ReflectionSettings_CheckBox_Checked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -84,5 +98,6 @@ namespace WaveGenerator.UI.Controls
 
             WaveSettings.Reflection.HasFreeEnd = (bool)HasFreeEnd_CheckBox.IsChecked;
         }
+       
     }
 }

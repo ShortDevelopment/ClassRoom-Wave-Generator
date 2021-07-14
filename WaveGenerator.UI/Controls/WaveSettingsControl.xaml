@@ -46,8 +46,9 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <CheckBox x:Name="HasFreeEnd_CheckBox" Content="Loses Ende" Grid.Column="0" Checked="ReflectionSettings_CheckBox_Checked" Unchecked="ReflectionSettings_CheckBox_Checked" />
+                </Grid.ColumnDefinitions>                
+                <TextBox Header="Ende in m" Name="EndDistanceTextBox" Margin="0,0,10,0" Grid.Column="0" KeyDown="EndDistanceTextBox_KeyDown"/>
+                <CheckBox x:Name="HasFreeEnd_CheckBox" VerticalAlignment="Bottom" Content="Loses Ende" Grid.Column="1" Checked="ReflectionSettings_CheckBox_Checked" Unchecked="ReflectionSettings_CheckBox_Checked" />
             </Grid>
         </StackPanel>
     </StackPanel>

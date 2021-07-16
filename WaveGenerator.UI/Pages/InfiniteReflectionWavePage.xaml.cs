@@ -1,20 +1,18 @@
-﻿using System.Diagnostics;
-using System.Threading;
+﻿using System.Threading;
 using WaveGenerator.UI.Generation;
 using WaveGenerator.UI.Rendering;
 using Windows.UI;
 
 namespace WaveGenerator.UI.Pages
 {
-    public sealed partial class ReflectionWavePage : SimulationPageBase
+    public sealed partial class InfiniteReflectionWavePage : SimulationPageBase
     {
 
         #region System // FrameWork
 
-        public ReflectionWavePage() : base()
+        public InfiniteReflectionWavePage() : base()
         {
             this.InitializeComponent();
-
             WaveSettings.Reflection = new WaveReflectionInfo();
         }
 
@@ -40,8 +38,6 @@ namespace WaveGenerator.UI.Pages
         #endregion
 
         #region Animation
-
-        Stopwatch watch = new Stopwatch();
 
         /// <summary>
         /// Handles rendering calls and time
@@ -71,40 +67,28 @@ namespace WaveGenerator.UI.Pages
                 renderer.Settings = RenderSettings;
 
                 // Generate wave
-                var primaryWave = generater.Generate(CurrentAnimationTime / 1000.0);
-                //var secondaryWave = generater.MirrorWave(primaryWave);
-                var secondaryWave = generater.GenerateReflectedWave(CurrentAnimationTime / 1000.0);
-                var resultingWave = generater.MergeWaves(new[] { primaryWave, secondaryWave });
+                var data = generater.GenerateReflectedWaveBothSides(CurrentAnimationTime / 1000.0);
+
+                // Generate "Zeiger"
+                var angle = generater.CalculateZeigerAngle(CurrentAnimationTime / 1000.0);
 
                 // Render wave
-                _ = CurrentDispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                {
-                    double radius = WaveSettings.Amplitude * renderer.YUnit;
+                _ = CurrentDispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.High, () =>
+                  {
+                      renderer.ClearCanvas();
 
-                    renderer.ClearCanvas();
+                      renderer.RenderCoordinateSystem(Colors.Gray);
 
-                    renderer.RenderCoordinateSystem(Colors.Gray);
-
-                    if (RenderSettings.ShowIncomingWave)
-                        renderer.Render(primaryWave);
-                    if (RenderSettings.ShowReflectedWave)
-                        renderer.Render(secondaryWave);
-                    if (RenderSettings.ShowResultingWave)
-                        renderer.Render(resultingWave);
-
-                    renderer.RenderReflectionWall(WaveSettings.Reflection);
-                });
+                      renderer.Render(data);
+                      renderer.RenderReflectionWall(WaveSettings.Reflection);
+                  });
 
                 // Handling timing
                 if (IsRunning)
                 {
-                    CurrentAnimationTime += (int)watch.ElapsedMilliseconds;
+                    CurrentAnimationTime += timeStep;
                 }
-
-                watch.Reset();
-                watch.Start();
                 Thread.Sleep(timeStep);
-                watch.Stop();
             }
         }
 

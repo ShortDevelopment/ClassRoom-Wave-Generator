@@ -29,6 +29,10 @@ namespace WaveGenerator.UI
                     MainContentFrame.Navigate(typeof(ReflectionWavePage));
                     break;
 
+                case "reflecting_waves_infinite":
+                    MainContentFrame.Navigate(typeof(InfiniteReflectionWavePage));
+                    break;
+
                 case "interferenz_2_waves":
                     MainContentFrame.Navigate(typeof(InterferencePage));
                     break;

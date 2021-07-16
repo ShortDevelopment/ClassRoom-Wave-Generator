@@ -22,6 +22,11 @@
                     <FontIcon Glyph="&#xEA3D;" />
                 </controls:NavigationViewItem.Icon>
             </controls:NavigationViewItem>
+            <controls:NavigationViewItem Content="2 Seitige Reflektion" Tag="reflecting_waves_infinite">
+                <controls:NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xEA3D;" />
+                </controls:NavigationViewItem.Icon>
+            </controls:NavigationViewItem>
             <controls:NavigationViewItemHeader Content="Interferenz" />
             <controls:NavigationViewItem Content="2 Wellen" Tag="interferenz_2_waves">
                 <controls:NavigationViewItem.Icon>

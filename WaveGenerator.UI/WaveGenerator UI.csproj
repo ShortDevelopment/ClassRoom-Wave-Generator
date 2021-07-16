@@ -144,14 +144,17 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\InfiniteReflectionWavePage.xaml.cs">
+      <DependentUpon>InfiniteReflectionWavePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\InterferencePage.xaml.cs">
       <DependentUpon>InterferencePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ReflectionWavePage.xaml.cs">
-      <DependentUpon>ReflectionWavePage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\DefaultWavePage.xaml.cs">
       <DependentUpon>DefaultWavePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ReflectionWavePage.xaml.cs">
+      <DependentUpon>ReflectionWavePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -205,15 +208,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\InfiniteReflectionWavePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\InterferencePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\ReflectionWavePage.xaml">
+    <Page Include="Pages\DefaultWavePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\DefaultWavePage.xaml">
+    <Page Include="Pages\ReflectionWavePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

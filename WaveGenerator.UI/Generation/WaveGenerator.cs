@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using Windows.UI;
@@ -77,6 +78,7 @@ namespace WaveGenerator.UI.Generation
             return GeneratePointsInternal(count, distance, m);
         }
 
+        [Obsolete("Doesn't work correctly!")]
         public Wave GenerateReflectedWaveBothSides(double tₒ, int count = 40, double distance = 0.25)
         {
             #region Settings Proxy
@@ -117,14 +119,17 @@ namespace WaveGenerator.UI.Generation
             {
                 int f_s = (int)((i + 1) / 2);
                 int f_m = (int)(i / 2);
-                double total = s(x, tₒ);
+                double total = 0;
                 for (int iteration = 0; iteration < f_s; iteration++)
                 {
-                    total += s(x, iteration * tₒ);
+                    var newx = s(x, tₒ - iteration * 2 * maxtime);
+                    total += newx;
+                    //if(iteration == 1)
+                    //    Debugger.Break();
                 }
-                for (int iteration = 0; iteration <= f_m; iteration++)
+                for (int iteration = 0; iteration < f_m; iteration++)
                 {
-                    total += factor * m(x, iteration * tₒ);
+                    total += factor * m(x, tₒ - iteration * 2 * maxtime);
                 }
                 return total;
             };
@@ -157,21 +162,6 @@ namespace WaveGenerator.UI.Generation
             double ω = 2 * π * 1 / T;
 
             return -ω * t;
-        }
-
-        public Wave MirrorWave(Wave wave)
-        {
-            WaveReflectionInfo reflectionInfo = Settings.Reflection;
-            Wave resultWave = new Wave();
-            resultWave.color = Colors.Blue;
-            // resultWave.RTL = true; ⚡
-
-            resultWave.data = wave.data.Where((p) => p.X >= reflectionInfo.EndPosition).Select((p) => new Vector2((float)(reflectionInfo.EndPosition - (p.X - reflectionInfo.EndPosition)), p.Y)).ToArray();
-
-            if (!reflectionInfo.HasFreeEnd)
-                resultWave.data = resultWave.data.Select((p) => new Vector2(p.X, -1 * p.Y)).ToArray();
-
-            return resultWave;
         }
 
         public Wave MergeWaves(Wave[] waves)

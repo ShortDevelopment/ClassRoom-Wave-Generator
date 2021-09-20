@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Numerics;
 using WaveGenerator.UI.Generation;
 using Windows.UI;
+using Windows.UI.Composition;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 
@@ -18,6 +20,8 @@ namespace WaveGenerator.UI.Rendering
         /// Gets undelaying <see cref="Windows.UI.Xaml.Controls.Canvas"/>
         /// </summary>
         public Canvas Canvas { get; private set; }
+
+        public ContainerVisual CanvasVisual { get; private set; }
 
         /// <summary>
         /// Gets or sets <see cref="RenderSettings"/>
@@ -34,6 +38,16 @@ namespace WaveGenerator.UI.Rendering
             this.Canvas.SizeChanged += Canvas_SizeChanged;
         }
 
+        private void EnsureContainerVisualInitialized()
+        {
+            if (CanvasVisual != null)
+                return;
+
+            var canvasVisual = ElementCompositionPreview.GetElementVisual(Canvas);
+            CanvasVisual = canvasVisual.Compositor.CreateContainerVisual();
+            ElementCompositionPreview.SetElementChildVisual(Canvas, CanvasVisual);
+        }
+
         private void Canvas_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
         {
             Canvas.Clip = new RectangleGeometry()
@@ -44,7 +58,10 @@ namespace WaveGenerator.UI.Rendering
 
         #region Render Methods
 
-        public void ClearCanvas() => Canvas.Children.Clear();
+        public void ClearCanvas()
+        {
+            Canvas.Children.Clear();
+        }
 
         public void RenderCoordinateSystem(Color color)
         {
@@ -79,35 +96,46 @@ namespace WaveGenerator.UI.Rendering
             }
         }
 
+
+        private List<ShapeVisual> visuals = new List<ShapeVisual>();
         public void Render(Wave wave)
         {
-            Vector2[] points = wave.data;
+            EnsureContainerVisualInitialized();
 
+            Vector2[] points = wave.data;
             double unit = YUnit;
 
             for (int i = 0; i < points.Length; i++)
             {
                 Vector2 point = points[i];
+                Vector2 size = new Vector2((float)Settings.Radius, (float)Settings.Radius);
 
-                Ellipse circle = new Ellipse();
+                ShapeVisual visual;
+                if (CanvasVisual.Children.Count != points.Length)
+                {
+                    CompositionEllipseGeometry circle = CanvasVisual.Compositor.CreateEllipseGeometry();
+                    circle.Center = size / 2;
+                    circle.Radius = new Vector2(50, 50);
 
-                // Set radius
-                circle.Width = Settings.Radius;
-                circle.Height = Settings.Radius;
+                    CompositionSpriteShape sprite = CanvasVisual.Compositor.CreateSpriteShape(circle);
+                    sprite.FillBrush = CanvasVisual.Compositor.CreateColorBrush(wave.color);
 
-                // Calculate position
-                if (wave.RTL)
-                    Canvas.SetLeft(circle, Canvas.ActualWidth - (unit * point.X - (Settings.Radius / 2) + Settings.Offset.X));
+                    visual = CanvasVisual.Compositor.CreateShapeVisual();
+                    visual.Shapes.Add(sprite);
+                    visual.Size = size;
+
+                    // Add to canvas
+                    CanvasVisual.Children.InsertAtTop(visual);
+                    visuals.Add(visual);
+                }
                 else
-                    Canvas.SetLeft(circle, unit * point.X - (Settings.Radius / 2) + Settings.Offset.X);
-                Canvas.SetTop(circle, (Canvas.ActualHeight / 2) - (unit * point.Y) - (Settings.Radius / 2) + Settings.Offset.Y);
+                {
+                    visual = visuals[i];
+                }
 
-                // Set style
-                circle.Fill = new SolidColorBrush(wave.color);
-                circle.StrokeThickness = 0;
-
-                // Add to canvas
-                Canvas.Children.Add(circle);
+                visual.Offset = new Vector3((float)(unit * point.X - (size.X / 2) + Settings.Offset.X),
+                                            (float)((Canvas.ActualHeight / 2) - (unit * point.Y) - (size.Y / 2) + Settings.Offset.Y),
+                                            0);
             }
         }
 

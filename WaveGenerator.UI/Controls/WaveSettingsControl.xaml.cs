@@ -20,6 +20,8 @@ namespace WaveGenerator.UI.Controls
             PeriodTextBox.Text = WaveSettings.Period.ToString();
             AmplitudeTextBox.Text = WaveSettings.Amplitude.ToString();
 
+            OnlyOneWaveLength_CheckBox.IsChecked = WaveSettings.OnlyOneWaveLength;
+
             if (WaveSettings.Reflection != null)
             {
                 ReflectionSettingsContainer.Visibility = Windows.UI.Xaml.Visibility.Visible;
@@ -91,13 +93,15 @@ namespace WaveGenerator.UI.Controls
 
         #endregion
 
-        private void ReflectionSettings_CheckBox_Checked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void Settings_CheckBox_Checked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             if (!loadedSettings)
                 return;
 
-            WaveSettings.Reflection.HasFreeEnd = (bool)HasFreeEnd_CheckBox.IsChecked;
+            if (WaveSettings.Reflection != null)
+                WaveSettings.Reflection.HasFreeEnd = (bool)HasFreeEnd_CheckBox.IsChecked;
+            WaveSettings.OnlyOneWaveLength = (bool)OnlyOneWaveLength_CheckBox.IsChecked;
         }
-       
+
     }
 }

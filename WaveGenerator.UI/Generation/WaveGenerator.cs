@@ -19,10 +19,47 @@ namespace WaveGenerator.UI.Generation
             this.Settings = settings;
         }
 
+        #region Global Calculation Vars & Functions
+
         #region Math Proxy
         const double π = Math.PI;
         Func<double, double> sin = (double a) => Math.Sin(a);
         Func<double, double, double> max = (double val1, double val2) => Math.Max(val1, val2);
+        #endregion
+
+        #region Settings Proxy
+        double λ { get => Settings.WaveLength; }
+        double ŝ { get => Settings.Amplitude; }
+        double T { get => Settings.Period; }
+        double l { get => Settings.Reflection.EndPosition; }
+        #endregion
+
+        double c { get => λ / T; }
+
+        #region Basic Calculation
+        double s(double x, double tₒ)
+        {
+            if (Settings.OnlyOneWaveLength)
+            {
+                double distanceToFirstMovingPart = c * tₒ - x;
+                if (distanceToFirstMovingPart >= λ)
+                    return 0;
+            }
+
+            return ŝ * sin(2 * π * 1 / T * max(tₒ - x / c, 0));
+        }
+
+        double m(double x, double tₒ)
+        {
+            if (x > l)
+                return 0;
+
+            double factor = Settings.Reflection.HasFreeEnd ? 1 : -1;
+
+            return s(2 * l - x, tₒ) * factor;
+        }
+        #endregion
+
         #endregion
 
         /// <summary>
@@ -34,46 +71,14 @@ namespace WaveGenerator.UI.Generation
         /// <returns></returns>
         public Wave Generate(double tₒ, int count = 40, double distance = 0.25)
         {
-            #region Settings Proxy
-            double λ = Settings.WaveLength;
-            double ŝ = Settings.Amplitude;
-            double T = Settings.Period;
-            #endregion
-
-            double c = λ / T;
-
-            Func<double, double> s = (double x) =>
-            {
-                return ŝ * sin(2 * π * 1 / T * max(tₒ - x / c, 0));
-            };
+            Func<double, double> s = (double x) => this.s(x, tₒ);
 
             return GeneratePointsInternal(count, distance, s);
         }
 
         public Wave GenerateReflectedWave(double tₒ, int count = 40, double distance = 0.25)
         {
-            #region Settings Proxy
-            double λ = Settings.WaveLength;
-            double ŝ = Settings.Amplitude;
-            double T = Settings.Period;
-            double l = Settings.Reflection.EndPosition;
-            #endregion
-
-            double c = λ / T;
-
-            Func<double, double> s = (double x) =>
-            {
-                return ŝ * sin(2 * π * 1 / T * max(tₒ - x / c, 0));
-            };
-
-            double factor = Settings.Reflection.HasFreeEnd ? 1 : -1;
-
-            Func<double, double> m = (double x) =>
-            {
-                if (x > l)
-                    return 0;
-                return s(2 * l - x) * factor;
-            };
+            Func<double, double> m = (double x) => this.m(x, tₒ);
 
             return GeneratePointsInternal(count, distance, m);
         }
@@ -81,15 +86,6 @@ namespace WaveGenerator.UI.Generation
         [Obsolete("Doesn't work correctly!")]
         public Wave GenerateReflectedWaveBothSides(double tₒ, int count = 40, double distance = 0.25)
         {
-            #region Settings Proxy
-            double λ = Settings.WaveLength;
-            double ŝ = Settings.Amplitude;
-            double T = Settings.Period;
-            double l = Settings.Reflection.EndPosition;
-            #endregion
-
-            double c = λ / T;
-
             double maxtime = l / c;
 
             // default wave function

@@ -37,6 +37,10 @@ namespace WaveGenerator.UI
                     MainContentFrame.Navigate(typeof(InterferencePage));
                     break;
 
+                case "n_fach_spalt":
+                    MainContentFrame.Navigate(typeof(SpaltPage));
+                    break;
+
                 default:
                     if (args.IsSettingsSelected)
                         MainContentFrame.Navigate(typeof(SettingsPage));

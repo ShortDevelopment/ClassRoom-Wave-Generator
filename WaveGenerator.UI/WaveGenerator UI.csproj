@@ -160,6 +160,9 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\SimulationPageBase.cs" />
+    <Compile Include="Pages\SpaltPage.xaml.cs">
+      <DependentUpon>SpaltPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\RenderSettings.cs" />
     <Compile Include="Rendering\WaveRenderer.cs" />
@@ -225,6 +228,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\SettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SpaltPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

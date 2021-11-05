@@ -33,6 +33,11 @@
                     <FontIcon Glyph="&#xEA3C;" />
                 </controls:NavigationViewItem.Icon>
             </controls:NavigationViewItem>
+            <controls:NavigationViewItem Content="n-fach Spalt" Tag="n_fach_spalt">
+                <controls:NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xEA3C;" />
+                </controls:NavigationViewItem.Icon>
+            </controls:NavigationViewItem>
         </controls:NavigationView.MenuItems>
         <Frame x:Name="MainContentFrame" />
     </controls:NavigationView>

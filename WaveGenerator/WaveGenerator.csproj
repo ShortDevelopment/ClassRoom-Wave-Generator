@@ -21,7 +21,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\WaveGenerator.UI\WaveGenerator UI.csproj" />
+	  <ProjectReference Include="..\WaveGenerator.UI\WaveGenerator UI.csproj" />
 	</ItemGroup>
 
 </Project>

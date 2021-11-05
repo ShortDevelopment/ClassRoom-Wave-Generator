@@ -4,25 +4,28 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WaveGenerator.UI.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Microsoft.UI.Xaml.Controls" xmlns:lvc="using:LiveCharts.Uwp"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel Padding="10">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <controls:NumberBox Grid.Column="0" Margin="5"
+    <ScrollViewer>
+        <StackPanel Padding="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <controls:NumberBox Grid.Column="0" Margin="5"
                                 x:Name="SpaltCount"  Header="Anzahl Spalte"
                                 AcceptsExpression="True" SpinButtonPlacementMode="Inline"
                                 ValueChanged="ValueChanged" Value="2" Minimum="1" />
-            <controls:NumberBox Grid.Column="1" Margin="5"
+                <controls:NumberBox Grid.Column="1" Margin="5"
                                 x:Name="GangUnterschied" Header="Gangunterschied in λ"
                                 AcceptsExpression="True" SpinButtonPlacementMode="Inline" 
                                 ValueChanged="ValueChanged" Value="1" SmallChange="0.05" LargeChange="0.1" />
-        </Grid>
-        <Canvas x:Name="ZeigerCanvas" HorizontalAlignment="Center" Margin="100" />
-    </StackPanel>
+            </Grid>
+            <Canvas x:Name="ZeigerCanvas" HorizontalAlignment="Center" Margin="0, 200, 0, 100" />
+            <lvc:CartesianChart x:Name="Chart" Series="{x:Bind ChartSeriesCollection}" Height="500" DisableAnimations="True" DataTooltip="{x:Null}" />
+        </StackPanel>
+    </ScrollViewer>
 </Page>

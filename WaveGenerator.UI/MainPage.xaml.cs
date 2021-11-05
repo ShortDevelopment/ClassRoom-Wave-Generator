@@ -14,7 +14,7 @@ namespace WaveGenerator.UI
 
         private void MainPage_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            NavigationView.SelectedItem = NavigationView.MenuItems[0];
+            MainNavigationView.SelectedItem = MainNavigationView.MenuItems[0];
         }
 
         private void NavigationView_SelectionChanged(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewSelectionChangedEventArgs args)

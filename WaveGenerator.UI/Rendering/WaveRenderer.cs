@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using WaveGenerator.UI.Generation;
 using Windows.UI;
@@ -21,8 +22,6 @@ namespace WaveGenerator.UI.Rendering
         /// </summary>
         public Canvas Canvas { get; private set; }
 
-        public ContainerVisual CanvasVisual { get; private set; }
-
         /// <summary>
         /// Gets or sets <see cref="RenderSettings"/>
         /// </summary>
@@ -38,15 +37,27 @@ namespace WaveGenerator.UI.Rendering
             this.Canvas.SizeChanged += Canvas_SizeChanged;
         }
 
-        private void EnsureContainerVisualInitialized()
+        #region Visuals
+        Dictionary<string, ContainerVisual> CanvasVisuals = new Dictionary<string, ContainerVisual>();
+        ContainerVisual baseContainerVisual = null;
+        private ContainerVisual CreateContainerVisual(string id)
         {
-            if (CanvasVisual != null)
-                return;
+            if (CanvasVisuals.ContainsKey(id))
+                return CanvasVisuals[id];
 
-            var canvasVisual = ElementCompositionPreview.GetElementVisual(Canvas);
-            CanvasVisual = canvasVisual.Compositor.CreateContainerVisual();
-            ElementCompositionPreview.SetElementChildVisual(Canvas, CanvasVisual);
+            if (baseContainerVisual == null)
+            {
+                baseContainerVisual = ElementCompositionPreview.GetElementVisual(Canvas).Compositor.CreateContainerVisual();
+                ElementCompositionPreview.SetElementChildVisual(Canvas, baseContainerVisual);
+            }
+
+            var containerVisual = baseContainerVisual.Compositor.CreateContainerVisual();
+            baseContainerVisual.Children.InsertAtTop(containerVisual);
+
+            CanvasVisuals.Add(id, containerVisual);
+            return containerVisual;
         }
+        #endregion
 
         private void Canvas_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
         {
@@ -96,11 +107,9 @@ namespace WaveGenerator.UI.Rendering
             }
         }
 
-
-        private List<ShapeVisual> visuals = new List<ShapeVisual>();
         public void Render(Wave wave)
         {
-            EnsureContainerVisualInitialized();
+            ContainerVisual CanvasVisual = CreateContainerVisual(wave.color.ToString());
 
             Vector2[] points = wave.data;
             double unit = YUnit;
@@ -126,16 +135,25 @@ namespace WaveGenerator.UI.Rendering
 
                     // Add to canvas
                     CanvasVisual.Children.InsertAtTop(visual);
-                    visuals.Add(visual);
                 }
                 else
                 {
-                    visual = visuals[i];
+                    visual = CanvasVisual.Children.ToArray()[i] as ShapeVisual;
                 }
 
+                visual.IsVisible = true;
                 visual.Offset = new Vector3((float)(unit * point.X - (size.X / 2) + Settings.Offset.X),
                                             (float)((Canvas.ActualHeight / 2) - (unit * point.Y) - (size.Y / 2) + Settings.Offset.Y),
                                             0);
+            }
+        }
+
+        public void HideWave(Color color)
+        {
+            ContainerVisual CanvasVisual = CreateContainerVisual(color.ToString());
+            foreach (Visual visual in CanvasVisual.Children)
+            {
+                visual.IsVisible = false;
             }
         }
 

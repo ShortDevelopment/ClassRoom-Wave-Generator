@@ -42,7 +42,7 @@ namespace WaveGenerator.UI.Generation
             if (Settings.OnlyOneWaveLength)
             {
                 double distanceToFirstMovingPart = c * tₒ - x;
-                if (distanceToFirstMovingPart >= λ)
+                if (distanceToFirstMovingPart >= λ / 2)
                     return 0;
             }
 
@@ -80,7 +80,9 @@ namespace WaveGenerator.UI.Generation
         {
             Func<double, double> m = (double x) => this.m(x, tₒ);
 
-            return GeneratePointsInternal(count, distance, m);
+            var wave = GeneratePointsInternal(count, distance, m);
+            wave.color = Colors.Blue;
+            return wave;
         }
 
         [Obsolete("Doesn't work correctly!")]

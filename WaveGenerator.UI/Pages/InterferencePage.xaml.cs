@@ -84,10 +84,18 @@ namespace WaveGenerator.UI.Pages
 
                     if (RenderSettings.ShowIncomingWave)
                         renderer.Render(primaryWave);
+                    else
+                        renderer.HideWave(primaryWave.color);
+
                     if (RenderSettings.ShowReflectedWave)
                         renderer.Render(secondaryWave);
+                    else
+                        renderer.HideWave(secondaryWave.color);
+
                     if (RenderSettings.ShowResultingWave)
                         renderer.Render(resultingWave);
+                    else
+                        renderer.HideWave(resultingWave.color);
                 });
 
                 // Handling timing

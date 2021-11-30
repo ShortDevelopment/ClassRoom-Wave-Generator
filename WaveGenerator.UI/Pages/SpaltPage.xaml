@@ -24,7 +24,7 @@
                                 AcceptsExpression="True" SpinButtonPlacementMode="Inline" 
                                 ValueChanged="ValueChanged" Value="1" SmallChange="0.05" LargeChange="0.1" />
             </Grid>
-            <Canvas x:Name="ZeigerCanvas" HorizontalAlignment="Center" Margin="0, 200, 0, 100" />
+            <Canvas x:Name="ZeigerCanvas" HorizontalAlignment="Center" Margin="0, 150, 0, 100" />
             <lvc:CartesianChart x:Name="Chart" Series="{x:Bind ChartSeriesCollection}" Height="500" DisableAnimations="True" DataTooltip="{x:Null}" />
         </StackPanel>
     </ScrollViewer>

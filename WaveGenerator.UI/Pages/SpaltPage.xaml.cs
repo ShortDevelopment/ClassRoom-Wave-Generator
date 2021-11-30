@@ -7,6 +7,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Windows.UI;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 
@@ -62,6 +63,18 @@ namespace WaveGenerator.UI.Pages
                 arrow.X2 = lastPosition.X;
                 arrow.Y2 = lastPosition.Y;
                 ZeigerCanvas.Children.Add(arrow);
+
+                //Geometry geometry = Utils.ConvertXamlValue<Geometry>("M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z");
+                //Path arrowHead = new Path
+                //{
+                //    Data = geometry,
+                //    Fill = new SolidColorBrush(Colors.Red),
+                //    CenterPoint = new Vector3((float)(geometry.Bounds.Width / 2), (float)(geometry.Bounds.Height / 2), 0),
+                //    Rotation = 90
+                //};
+                //Canvas.SetLeft(arrowHead, lastPosition.X);
+                //Canvas.SetTop(arrowHead, lastPosition.Y);
+                //ZeigerCanvas.Children.Add(arrowHead);
             }
 
             #region resultArrow
@@ -119,7 +132,7 @@ namespace WaveGenerator.UI.Pages
         #endregion
 
         #region Calculation
-        const double length = 100;
+        const double length = 40;
         private float CalculateResultingAmplitude(int spaltCount, double gangUnterschiedFactor, double arrowLength, out Vector2[] arrows)
         {
             List<Vector2> arrowList = new List<Vector2>();

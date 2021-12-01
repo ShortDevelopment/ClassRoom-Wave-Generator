@@ -52,7 +52,7 @@ namespace WaveGenerator.UI.Pages
             // Time animation intervals
             const int timeStep = 100;
 
-            var CurrentDispatcher = Dispatcher;
+            var CurrentDispatcher = DispatcherQueue;
 
             while (CurrentDispatcher != null)
             {

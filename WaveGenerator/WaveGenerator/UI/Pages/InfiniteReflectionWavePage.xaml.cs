@@ -55,7 +55,7 @@ namespace WaveGenerator.UI.Pages
             // Time animation intervals
             const int timeStep = 100;
 
-            var CurrentDispatcher = Dispatcher;
+            var CurrentDispatcher = DispatcherQueue;
 
             while (CurrentDispatcher != null)
             {
@@ -74,7 +74,7 @@ namespace WaveGenerator.UI.Pages
                 var angle = generater.CalculateZeigerAngle(CurrentAnimationTime / 1000.0);
 
                 // Render wave
-                _ = CurrentDispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.High, () =>
+                _ = CurrentDispatcher.TryEnqueue(() =>
                   {
                       renderer.ClearCanvas();
 

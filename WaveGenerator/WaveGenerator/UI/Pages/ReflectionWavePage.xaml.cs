@@ -58,7 +58,7 @@ namespace WaveGenerator.UI.Pages
             // Time animation intervals
             const int timeStep = 100;
 
-            var CurrentDispatcher = Dispatcher;
+            var CurrentDispatcher = DispatcherQueue;
 
             while (CurrentDispatcher != null)
             {
@@ -77,7 +77,7 @@ namespace WaveGenerator.UI.Pages
                 var resultingWave = generater.MergeWaves(new[] { primaryWave, secondaryWave });
 
                 // Render wave
-                _ = CurrentDispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                _ = CurrentDispatcher.TryEnqueue(() =>
                 {
                     double radius = WaveSettings.Amplitude * renderer.YUnit;
 

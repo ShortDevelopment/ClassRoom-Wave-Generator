@@ -52,7 +52,7 @@ namespace WaveGenerator.UI.Pages
             // Time animation intervals
             const int timeStep = 100;
 
-            var CurrentDispatcher = Dispatcher;
+            var CurrentDispatcher = DispatcherQueue;
 
             while (CurrentDispatcher != null)
             {
@@ -69,9 +69,9 @@ namespace WaveGenerator.UI.Pages
 
                 // Generate "Zeiger"
                 var angle = generater.CalculateZeigerAngle(CurrentAnimationTime / 1000.0);
-
+                
                 // Render wave
-                _ = CurrentDispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.High, () =>
+                _ = CurrentDispatcher.TryEnqueue(() =>
                   {
                       double radius = WaveSettings.Amplitude * renderer.YUnit;
                       RenderSettings.Offset = new System.Numerics.Vector2((float)radius * 2, 0);

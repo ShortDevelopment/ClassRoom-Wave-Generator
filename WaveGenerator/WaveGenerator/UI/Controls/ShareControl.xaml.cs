@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -10,8 +12,7 @@ using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Imaging;
+using WinRT;
 
 namespace WaveGenerator.UI.Controls
 {
@@ -60,7 +61,8 @@ namespace WaveGenerator.UI.Controls
         {
             FileSavePicker picker = new FileSavePicker();
 
-            ((IInitializeWithWindow)(object)picker).Initialize(Process.GetCurrentProcess().MainWindowHandle);
+            picker.As<IInitializeWithWindow>().Initialize(Process.GetCurrentProcess().MainWindowHandle);
+            // ((IInitializeWithWindow)(object)picker).Initialize(Process.GetCurrentProcess().MainWindowHandle);
 
             picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
             picker.FileTypeChoices.Add("Bild", new List<string>() { ".jpeg" });

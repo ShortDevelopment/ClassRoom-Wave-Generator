@@ -1,5 +1,6 @@
 ﻿using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
@@ -7,6 +8,7 @@ using Microsoft.UI.Xaml.Shapes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 
@@ -92,24 +94,27 @@ namespace WaveGenerator.UI.Pages
         #endregion
 
         #region Chart
-        private void InitChart()
-        {
-            //Chart.XAxes.Add(new Axis()
-            //{
-            //    LabelFormatter = (value) => $"{value * chartXStep} λ"
-            //});
-            //Chart.YAxes.Add(new Axis()
-            //{
-            //    MinValue = 0,
-            //    ShowLabels = false
-            //});
-        }
 
         private ObservableCollection<ISeries> ChartSeriesCollection = new();
+        private void InitChart()
+        {
+            Chart.XAxes = new[]
+            {
+                new Axis()
+                {
+                    Labeler = (value) => $"{(decimal)value * (decimal)chartXStep} λ"
+                }
+            };
+            ChartSeriesCollection.Add(new LineSeries<double>()
+            {
+                LineSmoothness = 1,
+                GeometrySize = 0.1
+            });
+        }
+
+
         private async void UpdateChart()
         {
-            ChartSeriesCollection.Clear();
-
             int spaltCount = (int)SpaltCount.Value;
             List<double> valueCollection = new List<double>();
             await Task.Run(() =>
@@ -120,13 +125,7 @@ namespace WaveGenerator.UI.Pages
                     valueCollection.Add(value);
                 }
             });
-
-            ChartSeriesCollection.Add(new LineSeries<double>()
-            {
-                Values = valueCollection,
-                LineSmoothness = 1,
-                GeometrySize = 0.1
-            });
+            ChartSeriesCollection[0].Values = valueCollection;
         }
         #endregion
 

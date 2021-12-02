@@ -12,7 +12,7 @@ namespace WaveGenerator.UI.Pages
 
         public SimulationPageBase()
         {
-            this.NavigationCacheMode = Microsoft.UI.Xaml.Navigation.NavigationCacheMode.Required;
+            // this.NavigationCacheMode = Microsoft.UI.Xaml.Navigation.NavigationCacheMode.Required;
             this.Loaded += SimulationPageBase_Loaded;
         }
 

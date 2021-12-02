@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using WaveGenerator.UI.Interop;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Foundation;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -25,9 +27,16 @@ namespace WaveGenerator.UI.Controls
             if (IsInDesignmode)
                 return;
 
+            this.Loaded += ShareControl_Loaded;
+
             //IntPtr hwnd = Process.GetCurrentProcess().MainWindowHandle;
             //DataTransferManager dataTransferManager = DataTransferManagerInterop.GetForWindow(hwnd);
             //dataTransferManager.DataRequested += DataTransferManager_DataRequested;
+        }
+
+        private void ShareControl_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        {
+            MainCanvas.Clip = new RectangleGeometry { Rect = new Rect(0, 0, MainCanvas.ActualWidth, MainCanvas.ActualHeight) };
         }
 
         public Canvas MainCanvas { get; set; }
@@ -38,10 +47,8 @@ namespace WaveGenerator.UI.Controls
             DataRequest request = args.Request;
             DataRequestDeferral deferral = request.GetDeferral();
 
-            RenderTargetBitmap renderTargetBitmap = await RenderImage();
-
             IRandomAccessStream stream = new InMemoryRandomAccessStream();
-            await WriteImageToStream(renderTargetBitmap, stream);
+            await RenderCanvasToStream(MainCanvas, stream);
             request.Data.SetBitmap(RandomAccessStreamReference.CreateFromStream(stream));
 
             var props = request.Data.Properties;
@@ -60,42 +67,41 @@ namespace WaveGenerator.UI.Controls
         private async void SaveButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
             FileSavePicker picker = new FileSavePicker();
-
             picker.As<IInitializeWithWindow>().Initialize(Process.GetCurrentProcess().MainWindowHandle);
-            // ((IInitializeWithWindow)(object)picker).Initialize(Process.GetCurrentProcess().MainWindowHandle);
-
             picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
             picker.FileTypeChoices.Add("Bild", new List<string>() { ".jpeg" });
+
             StorageFile file = await picker.PickSaveFileAsync();
             if (file != null)
-            {
-                RenderTargetBitmap renderTargetBitmap = await RenderImage();
-
                 using (IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite))
-                {
-                    await WriteImageToStream(renderTargetBitmap, stream);
-                }
-            }
+                    await RenderCanvasToStream(MainCanvas, stream);
         }
 
-        private async Task WriteImageToStream(RenderTargetBitmap bitmap, IRandomAccessStream stream)
+        private async void CopyButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
+            IRandomAccessStream stream = new InMemoryRandomAccessStream();
+            await RenderCanvasToStream(MainCanvas, stream);
+
+            DataPackage data = new();
+            data.SetBitmap(RandomAccessStreamReference.CreateFromStream(stream));
+            Clipboard.SetContent(data);
+        }
+
+        private async Task RenderCanvasToStream(Canvas canvas, IRandomAccessStream stream)
+        {
+            RenderTargetBitmap bitmap = new RenderTargetBitmap();
+            await bitmap.RenderAsync(MainCanvas);
+
             byte[] pixels = (await bitmap.GetPixelsAsync()).ToArray();
 
             const int dpi = 150; // 96;
 
             BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, stream);
             encoder.SetPixelData(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied, (uint)bitmap.PixelWidth, (uint)bitmap.PixelHeight, dpi, dpi, pixels);
+            // encoder.BitmapTransform.Bounds = new(0, 0, (uint)MainCanvas.ActualWidth * dpi, (uint)MainCanvas.ActualHeight * dpi);
             await encoder.FlushAsync();
 
             stream.Seek(0);
-        }
-
-        private async Task<RenderTargetBitmap> RenderImage()
-        {
-            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap();
-            await renderTargetBitmap.RenderAsync(MainCanvas);
-            return renderTargetBitmap;
         }
     }
 }

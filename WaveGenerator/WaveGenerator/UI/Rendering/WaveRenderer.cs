@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using WaveGenerator.UI.Generation;
+﻿using Microsoft.UI;
 using Microsoft.UI.Composition;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Hosting;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Shapes;
-using Microsoft.UI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using WaveGenerator.UI.Generation;
 using Windows.UI;
 
 namespace WaveGenerator.UI.Rendering
@@ -39,7 +39,8 @@ namespace WaveGenerator.UI.Rendering
         }
 
         #region Visuals
-        Dictionary<string, ContainerVisual> CanvasVisuals = new Dictionary<string, ContainerVisual>();
+
+        Dictionary<string, ContainerVisual> CanvasVisuals = new();
         ContainerVisual baseContainerVisual = null;
         private ContainerVisual CreateContainerVisual(string id)
         {
@@ -110,7 +111,8 @@ namespace WaveGenerator.UI.Rendering
 
         public void Render(Wave wave)
         {
-            ContainerVisual CanvasVisual = CreateContainerVisual(wave.color.ToString());
+            ContainerVisual canvasVisual = CreateContainerVisual(wave.color.ToString());
+            Visual[] children = canvasVisual.Children.ToArray();
 
             Vector2[] points = wave.data;
             double unit = YUnit;
@@ -120,26 +122,26 @@ namespace WaveGenerator.UI.Rendering
                 Vector2 point = points[i];
                 Vector2 size = new Vector2((float)Settings.Radius, (float)Settings.Radius);
 
-                ShapeVisual visual;
-                if (CanvasVisual.Children.Count != points.Length)
+                ShapeVisual visual = null;
+                if (children.Length != points.Length)
                 {
-                    CompositionEllipseGeometry circle = CanvasVisual.Compositor.CreateEllipseGeometry();
+                    CompositionEllipseGeometry circle = canvasVisual.Compositor.CreateEllipseGeometry();
                     circle.Center = size / 2;
                     circle.Radius = new Vector2(50, 50);
 
-                    CompositionSpriteShape sprite = CanvasVisual.Compositor.CreateSpriteShape(circle);
-                    sprite.FillBrush = CanvasVisual.Compositor.CreateColorBrush(wave.color);
+                    CompositionSpriteShape sprite = canvasVisual.Compositor.CreateSpriteShape(circle);
+                    sprite.FillBrush = canvasVisual.Compositor.CreateColorBrush(wave.color);
 
-                    visual = CanvasVisual.Compositor.CreateShapeVisual();
+                    visual = canvasVisual.Compositor.CreateShapeVisual();
                     visual.Shapes.Add(sprite);
                     visual.Size = size;
 
                     // Add to canvas
-                    CanvasVisual.Children.InsertAtTop(visual);
+                    canvasVisual.Children.InsertAtTop(visual);
                 }
                 else
                 {
-                    visual = CanvasVisual.Children.ToArray()[i] as ShapeVisual;
+                    visual = children[i] as ShapeVisual;
                 }
 
                 visual.IsVisible = true;
@@ -151,11 +153,9 @@ namespace WaveGenerator.UI.Rendering
 
         public void HideWave(Color color)
         {
-            ContainerVisual CanvasVisual = CreateContainerVisual(color.ToString());
-            foreach (Visual visual in CanvasVisual.Children)
-            {
+            ContainerVisual canvasVisual = CreateContainerVisual(color.ToString());
+            foreach (Visual visual in canvasVisual.Children)
                 visual.IsVisible = false;
-            }
         }
 
         public void RenderZeiger(double angle, Vector2 position, double radius)

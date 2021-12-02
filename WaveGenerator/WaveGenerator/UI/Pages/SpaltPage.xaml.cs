@@ -124,7 +124,8 @@ namespace WaveGenerator.UI.Pages
             ChartSeriesCollection.Add(new LineSeries<double>()
             {
                 Values = valueCollection,
-                LineSmoothness = 1
+                LineSmoothness = 1,
+                GeometrySize = 0.1
             });
         }
         #endregion

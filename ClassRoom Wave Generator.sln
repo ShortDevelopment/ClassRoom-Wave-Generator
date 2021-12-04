@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31321.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaveGenerator", "WaveGenerator\WaveGenerator\WaveGenerator.csproj", "{2860B5D4-B1CE-486F-9C12-8014ECB74E0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaveGenerator", "WaveGenerator\WaveGenerator.csproj", "{2860B5D4-B1CE-486F-9C12-8014ECB74E0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

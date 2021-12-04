@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using static WaveGenerator.Generation.MathProxy;
 
 namespace WaveGenerator.Generation
 {
@@ -19,12 +20,6 @@ namespace WaveGenerator.Generation
         }
 
         #region Global Calculation Vars & Functions
-
-        #region Math Proxy
-        const double π = Math.PI;
-        Func<double, double> sin = (double a) => Math.Sin(a);
-        Func<double, double, double> max = (double val1, double val2) => Math.Max(val1, val2);
-        #endregion
 
         #region Settings Proxy
         double λ { get => Settings.WaveLength; }

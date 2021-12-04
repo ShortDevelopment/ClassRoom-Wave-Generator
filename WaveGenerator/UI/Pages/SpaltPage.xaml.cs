@@ -1,16 +1,14 @@
 ﻿using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore.SkiaSharpView.Painting;
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Shapes;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using static WaveGenerator.Generation.MathProxy;
 
 namespace WaveGenerator.UI.Pages
 {
@@ -95,7 +93,7 @@ namespace WaveGenerator.UI.Pages
 
         #region Chart
 
-        private ObservableCollection<ISeries> ChartSeriesCollection = new();
+        private List<ISeries> ChartSeriesCollection;
         private void InitChart()
         {
             Chart.XAxes = new[]
@@ -105,33 +103,50 @@ namespace WaveGenerator.UI.Pages
                     Labeler = (value) => $"{(decimal)value * (decimal)chartXStep} λ"
                 }
             };
-            ChartSeriesCollection.Add(new LineSeries<double>()
+            ChartSeriesCollection = new()
             {
-                LineSmoothness = 1,
-                GeometrySize = 0.1
-            });
+                /* multi slit */
+                new LineSeries<double>()
+                {
+                    LineSmoothness = 1,
+                    GeometrySize = 0.1
+                },
+                /* single slit / cover */
+                new LineSeries<double>()
+                {
+                    LineSmoothness = 1,
+                    GeometrySize = 0.1,
+                    Fill = 0
+                }
+            };
         }
-
 
         private async void UpdateChart()
         {
             int spaltCount = (int)SpaltCount.Value;
-            List<double> valueCollection = new List<double>();
+            List<double> valueCollection = new();
+            List<double> valueCollection2 = new();
             await Task.Run(() =>
             {
                 for (double gangUnterschiedFactor = 0; gangUnterschiedFactor < 3; gangUnterschiedFactor += chartXStep)
                 {
                     double value = Math.Pow(CalculateResultingAmplitude(spaltCount, gangUnterschiedFactor, length, out _) / length, 2);
-                    valueCollection.Add(value);
+                    if (spaltCount > 1)
+                        valueCollection.Add(value);
+
+                    double value2 = CalculateSingleSlitIntensity(valueCollection.Count > 0 ? valueCollection[0] : 100, gangUnterschiedFactor);
+                    valueCollection2.Add(value2);
                 }
             });
+
             ChartSeriesCollection[0].Values = valueCollection;
+            ChartSeriesCollection[1].Values = valueCollection2;
         }
         #endregion
 
         #region Calculation
         const double length = 40;
-        private float CalculateResultingAmplitude(int spaltCount, double gangUnterschiedFactor, double arrowLength, out Vector2[] arrows)
+        private double CalculateResultingAmplitude(int spaltCount, double gangUnterschiedFactor, double arrowLength, out Vector2[] arrows)
         {
             List<Vector2> arrowList = new List<Vector2>();
 
@@ -151,6 +166,13 @@ namespace WaveGenerator.UI.Pages
 
             arrows = arrowList.ToArray();
             return resultingVector.Length();
+        }
+
+        private double CalculateSingleSlitIntensity(double baseIntensity, double gangUnterschiedFactor)
+        {
+            if (gangUnterschiedFactor == 0)
+                return baseIntensity;
+            return baseIntensity * Math.Pow(sin(π * gangUnterschiedFactor) / (π * gangUnterschiedFactor), 2);
         }
         #endregion
     }

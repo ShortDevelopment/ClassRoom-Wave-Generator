@@ -116,7 +116,7 @@ namespace WaveGenerator.UI.Pages
                 {
                     LineSmoothness = 1,
                     GeometrySize = 0.1,
-                    Fill = 0
+                    Fill = null
                 }
             };
         }

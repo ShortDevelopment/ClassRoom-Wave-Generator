@@ -1,4 +1,4 @@
-﻿using WaveGenerator.UI.Rendering;
+﻿using WaveGenerator.Rendering;
 using Microsoft.UI.Xaml.Controls;
 
 namespace WaveGenerator.UI.Controls

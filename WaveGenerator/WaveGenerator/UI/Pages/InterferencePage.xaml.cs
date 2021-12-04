@@ -1,8 +1,7 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.UI;
 using System.Threading;
-using WaveGenerator.UI.Generation;
-using WaveGenerator.UI.Rendering;
-using Microsoft.UI;
+using WaveGenerator.Generation;
+using WaveGenerator.Rendering;
 
 namespace WaveGenerator.UI.Pages
 {

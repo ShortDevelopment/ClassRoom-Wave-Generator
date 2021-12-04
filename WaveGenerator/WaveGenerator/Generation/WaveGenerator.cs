@@ -1,12 +1,10 @@
 ﻿using Microsoft.UI;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
-using Windows.UI;
 
-namespace WaveGenerator.UI.Generation
+namespace WaveGenerator.Generation
 {
     public class WaveGenerator
     {

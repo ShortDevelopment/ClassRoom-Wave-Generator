@@ -2,7 +2,7 @@
 using System.Numerics;
 using Windows.UI;
 
-namespace WaveGenerator.UI.Generation
+namespace WaveGenerator.Generation
 {
     public struct Wave
     {

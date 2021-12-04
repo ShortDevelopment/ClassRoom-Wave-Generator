@@ -1,4 +1,4 @@
-﻿namespace WaveGenerator.UI.Generation
+﻿namespace WaveGenerator.Generation
 {
     public class WaveReflectionInfo
     {

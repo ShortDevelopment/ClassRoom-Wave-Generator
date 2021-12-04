@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace WaveGenerator.UI.Rendering
+namespace WaveGenerator.Rendering
 {
     public class RenderSettings
     {

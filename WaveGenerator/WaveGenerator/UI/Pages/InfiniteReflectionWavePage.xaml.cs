@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI;
 using System.Threading;
-using WaveGenerator.UI.Generation;
-using WaveGenerator.UI.Rendering;
+using WaveGenerator.Generation;
+using WaveGenerator.Rendering;
 using Colors = Microsoft.UI.Colors;
 
 namespace WaveGenerator.UI.Pages

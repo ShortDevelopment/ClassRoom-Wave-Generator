@@ -8,10 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using WaveGenerator.UI.Generation;
+using WaveGenerator.Generation;
 using Windows.UI;
 
-namespace WaveGenerator.UI.Rendering
+namespace WaveGenerator.Rendering
 {
     public class WaveRenderer
     {

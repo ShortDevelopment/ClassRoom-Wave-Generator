@@ -33,10 +33,15 @@ namespace WaveGenerator.Generation
         #region Basic Calculation
         double s(double x, double tₒ)
         {
-            if (Settings.OnlyOneWaveLength)
+            double distanceToFirstMovingPart = c * tₒ - x;
+            if (Settings.GenerationMode == WaveGenerationMode.Einzelstörung)
             {
-                double distanceToFirstMovingPart = c * tₒ - x;
                 if (distanceToFirstMovingPart >= λ / 2)
+                    return 0;
+            }
+            else if (Settings.GenerationMode == WaveGenerationMode.Doppelstörung)
+            {
+                if (distanceToFirstMovingPart >= λ)
                     return 0;
             }
 

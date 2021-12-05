@@ -17,11 +17,12 @@
         /// </summary>
         public double Period { get; set; } = 6;
 
-        public bool OnlyOneWaveLength { get; set; } = false;
 
         /// <summary>
         /// Sets info about the reflection of the wave. "null" if the wave should ot be reflected.
         /// </summary>
         public WaveReflectionInfo Reflection { get; set; } = null;
+
+        public WaveGenerationMode GenerationMode { get; set; } = WaveGenerationMode.Alles;
     }
 }

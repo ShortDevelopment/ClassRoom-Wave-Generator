@@ -8,6 +8,8 @@ namespace WaveGenerator.UI.Controls
         public WaveSettingsControl()
         {
             this.InitializeComponent();
+
+            WaveGenerationModeComboBox.ItemsSource = new UI.EnumItemSource<Generation.WaveGenerationMode>();
         }
 
         public WaveSettings WaveSettings { get; set; }
@@ -20,7 +22,7 @@ namespace WaveGenerator.UI.Controls
             PeriodTextBox.Text = WaveSettings.Period.ToString();
             AmplitudeTextBox.Text = WaveSettings.Amplitude.ToString();
 
-            OnlyOneWaveLength_CheckBox.IsChecked = WaveSettings.OnlyOneWaveLength;
+            WaveGenerationModeComboBox.SelectedIndex = 0;
 
             if (WaveSettings.Reflection != null)
             {
@@ -99,9 +101,12 @@ namespace WaveGenerator.UI.Controls
                 return;
 
             if (WaveSettings.Reflection != null)
-                WaveSettings.Reflection.HasFreeEnd = (bool)HasFreeEnd_CheckBox.IsChecked;
-            WaveSettings.OnlyOneWaveLength = (bool)OnlyOneWaveLength_CheckBox.IsChecked;
+                WaveSettings.Reflection.HasFreeEnd = (bool)HasFreeEnd_CheckBox.IsChecked;            
         }
 
+        private void WaveGenerationModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            WaveSettings.GenerationMode = (WaveGenerationModeComboBox.SelectedValue as EnumValueReference<WaveGenerationMode>).Value;
+        }
     }
 }

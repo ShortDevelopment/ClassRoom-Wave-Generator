@@ -35,7 +35,8 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <TextBox Header="Amplitude in m" Name="AmplitudeTextBox" Margin="0,0,10,0" Grid.Column="0" KeyDown="AmplitudeTextBox_KeyDown" />
-            <CheckBox x:Name="OnlyOneWaveLength_CheckBox" VerticalAlignment="Bottom" Content="Nur ein λ" Grid.Column="1" Checked="Settings_CheckBox_Checked" Unchecked="Settings_CheckBox_Checked" />
+            <!--<CheckBox x:Name="OnlyOneWaveLength_CheckBox" VerticalAlignment="Bottom" Content="Nur ein λ" Grid.Column="1" Checked="Settings_CheckBox_Checked" Unchecked="Settings_CheckBox_Checked" />-->
+            <ComboBox x:Name="WaveGenerationModeComboBox" VerticalAlignment="Bottom" Grid.Column="1" SelectionChanged="WaveGenerationModeComboBox_SelectionChanged" PlaceholderText="Modus" />
         </Grid>
 
         <StackPanel Name="ReflectionSettingsContainer">

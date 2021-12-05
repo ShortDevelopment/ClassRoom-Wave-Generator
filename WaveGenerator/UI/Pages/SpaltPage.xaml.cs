@@ -22,20 +22,33 @@ namespace WaveGenerator.UI.Pages
             InitChart();
         }
 
+        bool hasFinishedLoading = false;
         private void SpaltPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
             // Force render
             UpdateArrowDisplay();
             UpdateChart();
+            hasFinishedLoading = true;
         }
-        private void ValueChanged(Microsoft.UI.Xaml.Controls.NumberBox sender, Microsoft.UI.Xaml.Controls.NumberBoxValueChangedEventArgs args)
+
+        private void ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
         {
+            if (!hasFinishedLoading)
+                return;
+
             UpdateArrowDisplay();
             UpdateChart();
         }
 
-        #region Arrow Display
-        const double chartXStep = 0.01;
+        private void ValueChanged2(NumberBox sender, NumberBoxValueChangedEventArgs args)
+        {
+            if (!hasFinishedLoading)
+                return;
+
+            UpdateArrowDisplay();
+        }
+
+        #region Arrow Display        
         private void UpdateArrowDisplay()
         {
             if (ZeigerCanvas == null)
@@ -45,7 +58,7 @@ namespace WaveGenerator.UI.Pages
             ZeigerCanvas.Children.Clear();
 
             Vector2[] arrowVectors;
-            CalculateResultingAmplitude((int)SpaltCount.Value, GangUnterschied.Value, length, out arrowVectors);
+            CalculateResultingAmplitude((int)SlitCountNumberBox.Value, GangUnterschiedNumberBox.Value, length, out arrowVectors);
 
             Vector2 lastPosition = new Vector2(0, 0);
             foreach (Vector2 arrowVector in arrowVectors)
@@ -92,6 +105,7 @@ namespace WaveGenerator.UI.Pages
         #endregion
 
         #region Chart
+        const double chartXStep = 0.02;
 
         private List<ISeries> ChartSeriesCollection;
         private void InitChart()
@@ -123,19 +137,22 @@ namespace WaveGenerator.UI.Pages
 
         private async void UpdateChart()
         {
-            int spaltCount = (int)SpaltCount.Value;
+            int spaltCount = (int)SlitCountNumberBox.Value;
+            double ratio = spaltCount > 1 ? SlitRatioNumberBox.Value / 100.0 : 1.0;
+            
             List<double> valueCollection = new();
             List<double> valueCollection2 = new();
             await Task.Run(() =>
             {
-                for (double gangUnterschiedFactor = 0; gangUnterschiedFactor < 3; gangUnterschiedFactor += chartXStep)
+                for (double gangUnterschiedFactor = 0; gangUnterschiedFactor < 5; gangUnterschiedFactor += chartXStep)
                 {
-                    double value = Math.Pow(CalculateResultingAmplitude(spaltCount, gangUnterschiedFactor, length, out _) / length, 2);
-                    if (spaltCount > 1)
-                        valueCollection.Add(value);
+                    double singleSlitIntensity = CalculateSingleSlitIntensity(gangUnterschiedFactor, ratio);
 
-                    double value2 = CalculateSingleSlitIntensity(valueCollection.Count > 0 ? valueCollection[0] : 100, gangUnterschiedFactor);
-                    valueCollection2.Add(value2);
+                    double intensity = Math.Pow(CalculateResultingAmplitude(spaltCount, gangUnterschiedFactor, length, out _) / length, 2);
+                    if (spaltCount > 1)
+                        valueCollection.Add(intensity * singleSlitIntensity);
+
+                    valueCollection2.Add(singleSlitIntensity * (valueCollection.Count > 0 ? valueCollection[0] : 100));
                 }
             });
 
@@ -168,11 +185,11 @@ namespace WaveGenerator.UI.Pages
             return resultingVector.Length();
         }
 
-        private double CalculateSingleSlitIntensity(double baseIntensity, double gangUnterschiedFactor)
+        private double CalculateSingleSlitIntensity(double gangUnterschiedFactor, double ratio = 0.25, double baseIntensity = 1.0)
         {
             if (gangUnterschiedFactor == 0)
                 return baseIntensity;
-            return baseIntensity * Math.Pow(sin(π * gangUnterschiedFactor) / (π * gangUnterschiedFactor), 2);
+            return baseIntensity * Math.Pow(sin(π * ratio * gangUnterschiedFactor) / (π * ratio * gangUnterschiedFactor), 2);
         }
         #endregion
     }

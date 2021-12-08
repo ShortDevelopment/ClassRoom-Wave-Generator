@@ -45,8 +45,6 @@
             <Canvas x:Name="ZeigerCanvas" HorizontalAlignment="Center" Margin="0, 150, 0, 100" />
             <Grid Height="500">
                 <lvc:CartesianChart x:Name="Chart" Series="{x:Bind ChartSeriesCollection}" TooltipPosition="Hidden" />
-                <!-- Cover chart to prevent crash on hover! -->
-                <Grid Background="#01FFFFFF"></Grid>
             </Grid>
         </StackPanel>
     </ScrollViewer>

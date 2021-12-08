@@ -35,8 +35,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <TextBox Header="Amplitude in m" Name="AmplitudeTextBox" Margin="0,0,10,0" Grid.Column="0" KeyDown="AmplitudeTextBox_KeyDown" />
-            <!--<CheckBox x:Name="OnlyOneWaveLength_CheckBox" VerticalAlignment="Bottom" Content="Nur ein λ" Grid.Column="1" Checked="Settings_CheckBox_Checked" Unchecked="Settings_CheckBox_Checked" />-->
-            <ComboBox x:Name="WaveGenerationModeComboBox" VerticalAlignment="Bottom" Grid.Column="1" SelectionChanged="WaveGenerationModeComboBox_SelectionChanged" PlaceholderText="Modus" />
+            <ComboBox x:Name="WaveGenerationModeComboBox" Header="Darstellung" HorizontalAlignment="Stretch" Margin="10,0,0,0" Grid.Column="1" SelectionChanged="WaveGenerationModeComboBox_SelectionChanged" PlaceholderText="Modus" />
         </Grid>
 
         <StackPanel Name="ReflectionSettingsContainer">
@@ -50,7 +49,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <TextBox Header="Ende in m" Name="EndDistanceTextBox" Margin="0,0,10,0" Grid.Column="0" KeyDown="EndDistanceTextBox_KeyDown"/>
-                <CheckBox x:Name="HasFreeEnd_CheckBox" VerticalAlignment="Bottom" Content="Loses Ende" Grid.Column="1" Checked="Settings_CheckBox_Checked" Unchecked="Settings_CheckBox_Checked" />
+                <CheckBox x:Name="HasFreeEnd_CheckBox" VerticalAlignment="Bottom" Margin="10,0,0,0" Content="Loses Ende" Grid.Column="1" Checked="Settings_CheckBox_Checked" Unchecked="Settings_CheckBox_Checked" />
             </Grid>
         </StackPanel>
     </StackPanel>

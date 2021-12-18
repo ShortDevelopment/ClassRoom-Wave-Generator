@@ -1,5 +1,5 @@
 ﻿using Microsoft.UI.Xaml;
-using static WaveGenerator.UI.Interop.WindowIconInterop;
+using WinUI.Interop.NativeWindow;
 
 namespace WaveGenerator
 {

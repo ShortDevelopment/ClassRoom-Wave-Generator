@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using WaveGenerator.UI.Interop;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
@@ -15,6 +14,8 @@ using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using WinRT;
+using WinUI.Interop.CoreWindow;
+using WinUI.Interop.NativeWindow;
 
 namespace WaveGenerator.UI.Controls
 {
@@ -29,9 +30,9 @@ namespace WaveGenerator.UI.Controls
 
             this.Loaded += ShareControl_Loaded;
 
-            //IntPtr hwnd = Process.GetCurrentProcess().MainWindowHandle;
-            //DataTransferManager dataTransferManager = DataTransferManagerInterop.GetForWindow(hwnd);
-            //dataTransferManager.DataRequested += DataTransferManager_DataRequested;
+            IntPtr hwnd = Process.GetCurrentProcess().MainWindowHandle;
+            DataTransferManager dataTransferManager = DataTransferManagerInterop.GetForWindow(hwnd);
+            dataTransferManager.DataRequested += DataTransferManager_DataRequested;
         }
 
         private void ShareControl_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

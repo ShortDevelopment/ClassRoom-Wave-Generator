@@ -57,8 +57,7 @@ namespace WaveGenerator.UI.Pages
             // Clear Canvas
             ZeigerCanvas.Children.Clear();
 
-            Vector2[] arrowVectors;
-            CalculateResultingAmplitude((int)SlitCountNumberBox.Value, GangUnterschiedNumberBox.Value, length, out arrowVectors);
+            Vector2[] arrowVectors = GenerateArrows((int)SlitCountNumberBox.Value, GangUnterschiedNumberBox.Value, length);
 
             Vector2 lastPosition = new Vector2(0, 0);
             foreach (Vector2 arrowVector in arrowVectors)
@@ -137,20 +136,20 @@ namespace WaveGenerator.UI.Pages
 
         private async void UpdateChart()
         {
-            int spaltCount = (int)SlitCountNumberBox.Value;
-            double ratio = spaltCount > 1 ? SlitRatioNumberBox.Value / 100.0 : 1.0;
-            
+            int slitCount = (int)SlitCountNumberBox.Value;
+            double ratio = slitCount > 1 ? SlitRatioNumberBox.Value / 100.0 : 1.0;
+
             List<double> valueCollection = new();
             List<double> valueCollection2 = new();
             await Task.Run(() =>
             {
-                for (double gangUnterschiedFactor = 0; gangUnterschiedFactor < 5; gangUnterschiedFactor += chartXStep)
+                for (double gangUnterschiedFactor = chartXStep; gangUnterschiedFactor < 5; gangUnterschiedFactor += chartXStep)
                 {
-                    double singleSlitIntensity = CalculateSingleSlitIntensity(gangUnterschiedFactor, ratio);
+                    double singleSlitIntensity = CalculateSingleSlitIntensityRelative(gangUnterschiedFactor, ratio);
 
-                    double intensity = Math.Pow(CalculateResultingAmplitude(spaltCount, gangUnterschiedFactor, length, out _) / length, 2);
-                    if (spaltCount > 1)
-                        valueCollection.Add(intensity * singleSlitIntensity);
+                    double intensity = CalculateSlitIntensity(gangUnterschiedFactor, slitCount);
+                    if (slitCount > 1)
+                        valueCollection.Add(intensity);
 
                     valueCollection2.Add(singleSlitIntensity * (valueCollection.Count > 0 ? valueCollection[0] : 100));
                 }
@@ -163,7 +162,7 @@ namespace WaveGenerator.UI.Pages
 
         #region Calculation
         const double length = 40;
-        private double CalculateResultingAmplitude(int spaltCount, double gangUnterschiedFactor, double arrowLength, out Vector2[] arrows)
+        private Vector2[] GenerateArrows(int spaltCount, double gangUnterschiedFactor, double arrowLength)
         {
             List<Vector2> arrowList = new List<Vector2>();
 
@@ -181,15 +180,23 @@ namespace WaveGenerator.UI.Pages
                 resultingVector += vector;
             }
 
-            arrows = arrowList.ToArray();
-            return resultingVector.Length();
+            return arrowList.ToArray();
         }
 
-        private double CalculateSingleSlitIntensity(double gangUnterschiedFactor, double ratio = 0.25, double baseIntensity = 1.0)
+        private double CalculateSlitIntensity(double gangUnterschiedFactor, int slitCount)
         {
             if (gangUnterschiedFactor == 0)
-                return baseIntensity;
-            return baseIntensity * Math.Pow(sin(π * ratio * gangUnterschiedFactor) / (π * ratio * gangUnterschiedFactor), 2);
+                return -1;
+
+            return Math.Pow(sin(slitCount * π * gangUnterschiedFactor) / sin(π * gangUnterschiedFactor), 2);
+        }
+
+        private double CalculateSingleSlitIntensityRelative(double gangUnterschiedFactor, double ratio = 1.0)
+        {
+            if (gangUnterschiedFactor == 0)
+                return 1.0;
+
+            return Math.Pow(sin(π * ratio * gangUnterschiedFactor) / (π * ratio * gangUnterschiedFactor), 2);
         }
         #endregion
     }

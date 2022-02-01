@@ -1,11 +1,10 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
-namespace WaveGenerator.UI.Interop
+namespace WaveGenerator.UI
 {
     public class FrameContentPage : Page
     {
-
         public FrameContentPage() : base() { }
 
         #region IsPageVisibleInFrame

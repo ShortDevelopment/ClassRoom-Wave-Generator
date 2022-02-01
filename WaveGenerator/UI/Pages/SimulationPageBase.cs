@@ -5,9 +5,8 @@ using WaveGenerator.Rendering;
 
 namespace WaveGenerator.UI.Pages
 {
-    public abstract class SimulationPageBase : Interop.FrameContentPage
+    public abstract class SimulationPageBase : FrameContentPage
     {
-
         public SimulationPageBase CurrentInstance { get => this; }
 
         public SimulationPageBase()

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Threading.Tasks;
+using Windows.UI;
 using static WaveGenerator.Generation.MathProxy;
 
 namespace WaveGenerator.UI.Pages
@@ -74,32 +75,40 @@ namespace WaveGenerator.UI.Pages
                 arrow.X2 = lastPosition.X;
                 arrow.Y2 = lastPosition.Y;
                 ZeigerCanvas.Children.Add(arrow);
-
-                //Geometry geometry = Utils.ConvertXamlValue<Geometry>("M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z");
-                //Path arrowHead = new Path
-                //{
-                //    Data = geometry,
-                //    Fill = new SolidColorBrush(Colors.Red),
-                //    CenterPoint = new Vector3((float)(geometry.Bounds.Width / 2), (float)(geometry.Bounds.Height / 2), 0),
-                //    Rotation = 90
-                //};
-                //Canvas.SetLeft(arrowHead, lastPosition.X);
-                //Canvas.SetTop(arrowHead, lastPosition.Y);
-                //ZeigerCanvas.Children.Add(arrowHead);
             }
 
-            #region resultArrow
-            Line resultArrow = new Line();
-            resultArrow.Stroke = new SolidColorBrush(Colors.Red);
-            resultArrow.StrokeThickness = 1;
+            DrawArrow(new(0, 0), lastPosition, Colors.Red);
+        }
 
-            resultArrow.X1 = 0;
-            resultArrow.Y1 = 0;
-            resultArrow.X2 = lastPosition.X;
-            resultArrow.Y2 = lastPosition.Y;
+        private void DrawArrow(Vector2 start, Vector2 end, Color color)
+        {
+            Line arrow = new Line();
+            arrow.Stroke = new SolidColorBrush(color);
+            arrow.StrokeThickness = 1;
 
-            ZeigerCanvas.Children.Add(resultArrow);
-            #endregion
+            arrow.X1 = start.X;
+            arrow.Y1 = start.Y;
+
+            arrow.X2 = end.X;
+            arrow.Y2 = end.Y;
+            ZeigerCanvas.Children.Add(arrow);
+
+            if ((end - start).Length() > 0.01)
+            {
+                Geometry geometry = Utils.ConvertXamlValue<Geometry>("M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z");
+                var bounds = geometry.Bounds;
+                double rotation = Math.Atan((end.Y - start.Y) / (end.X - start.X)) * 180.0 / Math.PI;
+                Path arrowHead = new Path
+                {
+                    Data = geometry,
+                    Fill = new SolidColorBrush(Colors.Red),
+                    CenterPoint = new Vector3((float)(bounds.Width / 2), (float)(bounds.Height / 2), 0)
+                };
+                Canvas.SetLeft(arrowHead, end.X - bounds.Width);
+                Canvas.SetTop(arrowHead, end.Y - bounds.Height);
+                arrowHead.Rotation = (float)rotation;
+                ZeigerCanvas.Children.Add(arrowHead);
+            }
         }
         #endregion
 

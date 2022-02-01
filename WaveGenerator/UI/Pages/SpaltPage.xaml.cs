@@ -147,7 +147,7 @@ namespace WaveGenerator.UI.Pages
                 {
                     double singleSlitIntensity = CalculateSingleSlitIntensityRelative(gangUnterschiedFactor, ratio);
 
-                    double intensity = CalculateSlitIntensity(gangUnterschiedFactor, slitCount);
+                    double intensity = singleSlitIntensity * CalculateSlitIntensity(gangUnterschiedFactor, slitCount);
                     if (slitCount > 1)
                         valueCollection.Add(intensity);
 
@@ -186,7 +186,7 @@ namespace WaveGenerator.UI.Pages
         private double CalculateSlitIntensity(double gangUnterschiedFactor, int slitCount)
         {
             if (gangUnterschiedFactor == 0)
-                return -1;
+                return CalculateSlitIntensity(1, slitCount);
 
             return Math.Pow(sin(slitCount * π * gangUnterschiedFactor) / sin(π * gangUnterschiedFactor), 2);
         }

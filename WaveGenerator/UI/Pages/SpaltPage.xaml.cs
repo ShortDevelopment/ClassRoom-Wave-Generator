@@ -116,6 +116,13 @@ namespace WaveGenerator.UI.Pages
                     Labeler = (value) => $"{(decimal)value * (decimal)chartXStep} λ"
                 }
             };
+            Chart.YAxes = new[]
+            {
+                new Axis()
+                {
+                    IsVisible = false
+                }
+            };
             ChartSeriesCollection = new()
             {
                 /* multi slit */

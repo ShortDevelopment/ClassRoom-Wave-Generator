@@ -117,13 +117,17 @@ namespace WaveGenerator.Rendering
             Vector2[] points = wave.data;
             double unit = YUnit;
 
+            bool shouldGenerateNew = children.Length != points.Length;
+            if (shouldGenerateNew)
+                canvasVisual.Children.RemoveAll();
+
             for (int i = 0; i < points.Length; i++)
             {
                 Vector2 point = points[i];
                 Vector2 size = new Vector2((float)Settings.Radius, (float)Settings.Radius);
 
                 ShapeVisual visual = null;
-                if (children.Length != points.Length)
+                if (shouldGenerateNew)
                 {
                     CompositionEllipseGeometry circle = canvasVisual.Compositor.CreateEllipseGeometry();
                     circle.Center = size / 2;
@@ -190,12 +194,14 @@ namespace WaveGenerator.Rendering
                 new Vector2((float)Canvas.ActualWidth, height), 1, Colors.Green);
         }
 
-        public void RenderReflectionWall(WaveReflectionInfo reflectionInfo)
+        public void RenderReflectionWall(WaveReflectionInfo reflectionInfo) => RenderWall(reflectionInfo.EndPosition, Colors.Red);
+
+        public void RenderWall(double endPosition, Color color)
         {
-            float x = (float)(XUnit * reflectionInfo.EndPosition + Settings.Offset.X);
+            float x = (float)(XUnit * endPosition + Settings.Offset.X);
             DrawLine(new Vector2(x, 0),
                 new Vector2(x, (float)Canvas.ActualHeight),
-                3, Colors.Red);
+                3, color);
         }
 
         #endregion

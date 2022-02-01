@@ -42,7 +42,9 @@
 
                 <StackPanel Grid.Row="2" Padding="30,0,30,0">
                     <controls1:SimulationCommandBarControl BasePage="{x:Bind CurrentInstance}" />
-
+                    
+                    <TextBox Header="Ende in m" Name="EndDistanceTextBox" Margin="30,10,30,10" KeyDown="EndDistanceTextBox_KeyDown" />
+                    
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />

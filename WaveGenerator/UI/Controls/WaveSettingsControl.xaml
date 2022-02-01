@@ -48,7 +48,7 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <TextBox Header="Ende in m" Name="EndDistanceTextBox" Margin="0,0,10,0" Grid.Column="0" KeyDown="EndDistanceTextBox_KeyDown"/>
+                <TextBox Header="Ende in m" Name="EndDistanceTextBox" Margin="0,0,10,0" Grid.Column="0" KeyDown="EndDistanceTextBox_KeyDown" />
                 <CheckBox x:Name="HasFreeEnd_CheckBox" VerticalAlignment="Bottom" Margin="10,0,0,0" Content="Loses Ende" Grid.Column="1" Checked="Settings_CheckBox_Checked" Unchecked="Settings_CheckBox_Checked" />
             </Grid>
         </StackPanel>

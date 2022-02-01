@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI;
+using System.Linq;
 using System.Threading;
 using WaveGenerator.Generation;
 using WaveGenerator.Rendering;
@@ -13,6 +14,7 @@ namespace WaveGenerator.UI.Pages
         public InterferencePage() : base()
         {
             this.InitializeComponent();
+            EndDistanceTextBox.Text = EndPosition.ToString();
         }
 
         protected override void OnLoaded()
@@ -70,6 +72,8 @@ namespace WaveGenerator.UI.Pages
                 // Generate wave
                 var primaryWave = generater.Generate(CurrentAnimationTime / 1000.0);
                 var secondaryWave = generater2.Generate(CurrentAnimationTime / 1000.0);
+                secondaryWave.color = Colors.Blue;
+                secondaryWave.Reverse((float)EndPosition);
                 var resultingWave = generater.MergeWaves(new[] { primaryWave, secondaryWave });
 
                 // Render wave
@@ -80,6 +84,7 @@ namespace WaveGenerator.UI.Pages
                     renderer.ClearCanvas();
 
                     renderer.RenderCoordinateSystem(Colors.Gray);
+                    renderer.RenderWall(this.EndPosition, Colors.Black);
 
                     if (RenderSettings.ShowIncomingWave)
                         renderer.Render(primaryWave);
@@ -109,5 +114,17 @@ namespace WaveGenerator.UI.Pages
 
         #endregion
 
+        double EndPosition = 10;
+        private void EndDistanceTextBox_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                try
+                {
+                    EndPosition = double.Parse(EndDistanceTextBox.Text);
+                }
+                catch { }
+            }
+        }
     }
 }

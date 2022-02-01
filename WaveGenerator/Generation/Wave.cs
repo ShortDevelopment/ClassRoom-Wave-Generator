@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI;
+using System.Linq;
 using System.Numerics;
 using Windows.UI;
 
@@ -13,6 +14,11 @@ namespace WaveGenerator.Generation
         {
             this.data = data;
             this.color = Colors.Black;
+        }
+
+        public void Reverse(float endDistance)
+        {
+            data = data.Select((x) => new Vector2(endDistance - x.X, x.Y)).ToArray();
         }
     }
 }

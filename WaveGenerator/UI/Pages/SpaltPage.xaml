@@ -6,6 +6,7 @@
     xmlns:ui="using:WaveGenerator.UI"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Microsoft.UI.Xaml.Controls" xmlns:lvc="using:LiveChartsCore.SkiaSharpView.WinUI"
+    xmlns:communityControls="using:CommunityToolkit.WinUI.UI.Controls" xmlns:controls1="using:WaveGenerator.UI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -42,9 +43,25 @@
                                     ValueChanged="ValueChanged" Value="25" Minimum="1" Maximum="100"
                                     NumberFormatter="{StaticResource NumberFormatter_percent}" />
             </Grid>
-            <Canvas x:Name="ZeigerCanvas" HorizontalAlignment="Center" Margin="0, 150, 0, 100" />
-            <Grid Height="500">
-                <lvc:CartesianChart x:Name="Chart" Series="{x:Bind ChartSeriesCollection}" TooltipPosition="Hidden" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid Height="500">
+                    <lvc:CartesianChart x:Name="Chart" Series="{x:Bind ChartSeriesCollection}" TooltipPosition="Hidden" />
+                </Grid>
+                <communityControls:GridSplitter
+                    Grid.Column="1"
+                    Background="#efefef"
+                    Foreground="White"
+                    FontSize="13">
+                    <communityControls:GridSplitter.RenderTransform>
+                        <TranslateTransform X="-8" />
+                    </communityControls:GridSplitter.RenderTransform>
+                </communityControls:GridSplitter>
+                <Canvas x:Name="ZeigerCanvas" HorizontalAlignment="Center" Margin="0, 150, 0, 100" Grid.Column="2" />
             </Grid>
         </StackPanel>
     </ScrollViewer>

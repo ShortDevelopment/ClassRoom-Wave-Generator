@@ -153,24 +153,28 @@ namespace WaveGenerator.UI.Pages
         private async void UpdateChart()
         {
             int slitCount = (int)SlitCountNumberBox.Value;
-            double ratio = slitCount > 1 ? SlitRatioNumberBox.Value / 100.0 : 1.0;
+            decimal ratio = (decimal)(slitCount > 1 ? SlitRatioNumberBox.Value / 100.0 : 1.0);
 
-            List<double> valueCollection = new();
-            List<double> valueCollection2 = new();
+            List<double> valueCollection = ChartSeriesCollection[0].Values as List<double> ?? new();
+            valueCollection.Clear();
+            List<double> valueCollection2 = ChartSeriesCollection[1].Values as List<double> ?? new();
+            valueCollection2.Clear();
             await Task.Run(() =>
             {
+                decimal intensity0 = -1;
                 for (decimal gangUnterschiedFactor = chartXStep; gangUnterschiedFactor < 5; gangUnterschiedFactor += chartXStep)
                 {
-                    decimal singleSlitIntensity = CalculateSingleSlitIntensityRelative(gangUnterschiedFactor, (decimal)ratio);
+                    decimal singleSlitIntensity = CalculateSingleSlitIntensityRelative(gangUnterschiedFactor, ratio);
 
-                    decimal intensity = singleSlitIntensity * CalculateSlitIntensity((decimal)gangUnterschiedFactor, slitCount);
+                    decimal intensity = singleSlitIntensity * CalculateSlitIntensity(gangUnterschiedFactor, slitCount);
+                    if (intensity0 == -1)
+                        intensity0 = intensity;
                     if (slitCount > 1)
-                        valueCollection.Add((double)intensity);
+                        valueCollection.Add((double)(100 * intensity));
 
-                    valueCollection2.Add((double)singleSlitIntensity * (valueCollection.Count > 0 ? valueCollection[0] : 100));
+                    valueCollection2.Add((double)(100 * singleSlitIntensity * (slitCount > 1 ? intensity0 : 100)));
                 }
             });
-
             ChartSeriesCollection[0].Values = valueCollection;
             ChartSeriesCollection[1].Values = valueCollection2;
         }
@@ -180,18 +184,14 @@ namespace WaveGenerator.UI.Pages
         const double length = 40;
         private Vector2[] GenerateArrows(int spaltCount, double gangUnterschiedFactor, double arrowLength)
         {
-            List<Vector2> arrowList = new List<Vector2>();
+            List<Vector2> arrowList = new();
 
-            Vector2 resultingVector = new Vector2(0, 0);
+            Vector2 resultingVector = new(0, 0);
             for (int i = 0; i < spaltCount; i++)
             {
-                const double π = Math.PI;
-                Func<double, double> sin = (double a) => Math.Sin(a);
-                Func<double, double> cos = (double a) => Math.Cos(a);
-
                 double α = -i * gangUnterschiedFactor * 2 * π;
 
-                Vector2 vector = new Vector2((float)(cos(α) * arrowLength), (float)(sin(α) * arrowLength));
+                Vector2 vector = new((float)(cos(α) * arrowLength), (float)(sin(α) * arrowLength));
                 arrowList.Add(vector);
                 resultingVector += vector;
             }
@@ -204,15 +204,23 @@ namespace WaveGenerator.UI.Pages
             if (gangUnterschiedFactor == 0)
                 return CalculateSlitIntensity(1, slitCount);
 
-            return (decimal)Math.Pow((double)(sin(slitCount * (decimal)π * gangUnterschiedFactor) / sin((decimal)π * gangUnterschiedFactor)), 2);
+            return (decimal)Math.Pow(
+                    (double)(sin(slitCount * (decimal)π * gangUnterschiedFactor)
+                    /
+                    sin((decimal)π * gangUnterschiedFactor))
+                , 2);
         }
 
         private decimal CalculateSingleSlitIntensityRelative(decimal gangUnterschiedFactor, decimal ratio = 1.0M)
         {
             if (gangUnterschiedFactor == 0)
-                return 1.0M;
+                return CalculateSingleSlitIntensityRelative(1, ratio);
 
-            return (decimal)Math.Pow((double)(sin((decimal)π * ratio * gangUnterschiedFactor) / ((decimal)π * ratio * gangUnterschiedFactor)), 2);
+            return (decimal)Math.Pow(
+                    (double)(sin((decimal)π * ratio * gangUnterschiedFactor)
+                    /
+                    ((decimal)π * ratio * gangUnterschiedFactor))
+                , 2);
         }
         #endregion
     }

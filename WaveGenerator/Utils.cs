@@ -1,4 +1,4 @@
-﻿using Microsoft.UI.Xaml.Markup;
+﻿using Windows.UI.Xaml.Markup;
 
 namespace WaveGenerator
 {

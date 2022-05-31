@@ -1,5 +1,5 @@
 ﻿using WaveGenerator.Generation;
-using Microsoft.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls;
 
 namespace WaveGenerator.UI.Controls
 {
@@ -26,14 +26,14 @@ namespace WaveGenerator.UI.Controls
 
             if (WaveSettings.Reflection != null)
             {
-                ReflectionSettingsContainer.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+                ReflectionSettingsContainer.Visibility = Windows.UI.Xaml.Visibility.Visible;
 
                 HasFreeEnd_CheckBox.IsChecked = WaveSettings.Reflection.HasFreeEnd;
                 EndDistanceTextBox.Text = WaveSettings.Reflection.EndPosition.ToString();
             }
             else
             {
-                ReflectionSettingsContainer.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+                ReflectionSettingsContainer.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             }
 
             loadedSettings = true;
@@ -41,7 +41,7 @@ namespace WaveGenerator.UI.Controls
 
         #region Settings TextBoxes        
 
-        private void WaveLengthTextBox_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+        private void WaveLengthTextBox_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter)
             {
@@ -54,7 +54,7 @@ namespace WaveGenerator.UI.Controls
             }
         }
 
-        private void PeriodTextBox_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+        private void PeriodTextBox_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter)
             {
@@ -67,7 +67,7 @@ namespace WaveGenerator.UI.Controls
             }
         }
 
-        private void AmplitudeTextBox_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+        private void AmplitudeTextBox_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter)
             {
@@ -80,7 +80,7 @@ namespace WaveGenerator.UI.Controls
             }
         }
 
-        private void EndDistanceTextBox_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+        private void EndDistanceTextBox_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter)
             {
@@ -95,7 +95,7 @@ namespace WaveGenerator.UI.Controls
 
         #endregion
 
-        private void Settings_CheckBox_Checked(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private void Settings_CheckBox_Checked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             if (!loadedSettings)
                 return;

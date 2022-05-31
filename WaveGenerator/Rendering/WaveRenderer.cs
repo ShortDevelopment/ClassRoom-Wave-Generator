@@ -1,9 +1,9 @@
 ﻿using Microsoft.UI;
-using Microsoft.UI.Composition;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Hosting;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Shapes;
+using Windows.UI.Composition;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Hosting;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Shapes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +61,7 @@ namespace WaveGenerator.Rendering
         }
         #endregion
 
-        private void Canvas_SizeChanged(object sender, Microsoft.UI.Xaml.SizeChangedEventArgs e)
+        private void Canvas_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
         {
             Canvas.Clip = new RectangleGeometry()
             {

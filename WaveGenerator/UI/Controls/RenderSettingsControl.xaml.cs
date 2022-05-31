@@ -1,5 +1,5 @@
 ﻿using WaveGenerator.Rendering;
-using Microsoft.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls;
 
 namespace WaveGenerator.UI.Controls
 {
@@ -23,7 +23,7 @@ namespace WaveGenerator.UI.Controls
             loadedSettings = true;
         }
 
-        private void ReflectionSettings_CheckBox_Checked(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private void ReflectionSettings_CheckBox_Checked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             if (!loadedSettings)
                 return;

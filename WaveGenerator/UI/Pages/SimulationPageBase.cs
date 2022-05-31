@@ -17,7 +17,7 @@ namespace WaveGenerator.UI.Pages
 
         #region Load
 
-        private void SimulationPageBase_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private void SimulationPageBase_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             Task.Run(RenderLoop);
 

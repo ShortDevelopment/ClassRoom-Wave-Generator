@@ -1,14 +1,17 @@
-﻿using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
-using Microsoft.UI;
+﻿//using LiveChartsCore;
+//using LiveChartsCore.SkiaSharpView;
+//using LiveChartsCore.SkiaSharpView.UWP;
+using LiveCharts;
+using LiveCharts.Uwp;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Shapes;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Threading.Tasks;
 using Windows.UI;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Shapes;
 using static WaveGenerator.Generation.MathProxy;
 
 namespace WaveGenerator.UI.Pages
@@ -24,7 +27,7 @@ namespace WaveGenerator.UI.Pages
         }
 
         bool hasFinishedLoading = false;
-        private void SpaltPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private void SpaltPage_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             // Force render
             UpdateArrowDisplay();
@@ -115,36 +118,45 @@ namespace WaveGenerator.UI.Pages
         #region Chart
         const decimal chartXStep = 0.01M;
 
-        private List<ISeries> ChartSeriesCollection;
+        private SeriesCollection ChartSeriesCollection;
         private void InitChart()
         {
-            Chart.XAxes = new[]
+            //Chart.XAxes = new[]
+            //{
+            //    new Axis()
+            //    {
+            //        Labeler = (value) => $"{(decimal)value * (decimal)chartXStep} λ"
+            //    }
+            //};
+            //Chart.YAxes = new[]
+            //{
+            //    new Axis()
+            //    {
+            //        IsVisible = false
+            //    }
+            //};
+            Chart.AxisX.Add(new Axis()
             {
-                new Axis()
-                {
-                    Labeler = (value) => $"{(decimal)value * (decimal)chartXStep} λ"
-                }
-            };
-            Chart.YAxes = new[]
+                LabelFormatter = (value) => $"{value * (double)chartXStep} λ"
+            });
+            Chart.AxisY.Add(new Axis()
             {
-                new Axis()
-                {
-                    IsVisible = false
-                }
-            };
+                MinValue = 0,
+                ShowLabels = false
+            });
             ChartSeriesCollection = new()
             {
                 /* multi slit */
-                new LineSeries<double>()
+                new LineSeries()
                 {
                     LineSmoothness = 1,
-                    GeometrySize = 0.1
+                    PointGeometry = null
                 },
                 /* single slit / cover */
-                new LineSeries<double>()
+                new LineSeries()
                 {
                     LineSmoothness = 1,
-                    GeometrySize = 0.1,
+                    PointGeometry = null,
                     Fill = null
                 }
             };
@@ -155,9 +167,9 @@ namespace WaveGenerator.UI.Pages
             int slitCount = (int)SlitCountNumberBox.Value;
             decimal ratio = (decimal)(slitCount > 1 ? SlitRatioNumberBox.Value / 100.0 : 1.0);
 
-            List<double> valueCollection = ChartSeriesCollection[0].Values as List<double> ?? new();
+            ChartValues<double> valueCollection = ChartSeriesCollection[0].Values as ChartValues<double> ?? new();
             valueCollection.Clear();
-            List<double> valueCollection2 = ChartSeriesCollection[1].Values as List<double> ?? new();
+            ChartValues<double> valueCollection2 = ChartSeriesCollection[1].Values as ChartValues<double> ?? new();
             valueCollection2.Clear();
             await Task.Run(() =>
             {

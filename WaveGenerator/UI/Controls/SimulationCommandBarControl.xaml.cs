@@ -1,5 +1,5 @@
 ﻿using WaveGenerator.UI.Pages;
-using Microsoft.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls;
 
 namespace WaveGenerator.UI.Controls
 {
@@ -12,7 +12,7 @@ namespace WaveGenerator.UI.Controls
 
         public SimulationPageBase BasePage { get; set; }
 
-        private void PlayAppBarButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private void PlayAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             BasePage.IsRunning = true;
 
@@ -22,7 +22,7 @@ namespace WaveGenerator.UI.Controls
             ResetAppBarButton.IsEnabled = true;
         }
 
-        private void PauseAppBarButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private void PauseAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             BasePage.IsRunning = false;
 
@@ -30,12 +30,12 @@ namespace WaveGenerator.UI.Controls
             PauseAppBarButton.IsEnabled = false;
         }
 
-        private void StepAppBarButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private void StepAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             BasePage.InvokeSingleStep();
         }
 
-        private void ResetAppBarButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private void ResetAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             BasePage.CurrentAnimationTime = 0;
 

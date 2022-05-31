@@ -1,4 +1,4 @@
-﻿using Microsoft.UI;
+﻿using Windows.UI;
 using System.Linq;
 using System.Threading;
 using WaveGenerator.Generation;
@@ -25,7 +25,7 @@ namespace WaveGenerator.UI.Pages
             this.KeyDown += MainPage_KeyDown;
         }
 
-        private void MainPage_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+        private void MainPage_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Left)
             {
@@ -59,7 +59,7 @@ namespace WaveGenerator.UI.Pages
             // Time animation intervals
             const int timeStep = 100;
 
-            var CurrentDispatcher = DispatcherQueue;
+            var CurrentDispatcher = Dispatcher;
 
             while (CurrentDispatcher != null)
             {
@@ -77,7 +77,7 @@ namespace WaveGenerator.UI.Pages
                 var resultingWave = generater.MergeWaves(new[] { primaryWave, secondaryWave });
 
                 // Render wave
-                _ = CurrentDispatcher.TryEnqueue(() =>
+                _ = CurrentDispatcher.RunIdleAsync((x) =>
                 {
                     double radius = WaveSettings.Amplitude * renderer.YUnit;
 
@@ -115,7 +115,7 @@ namespace WaveGenerator.UI.Pages
         #endregion
 
         double EndPosition = 10;
-        private void EndDistanceTextBox_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+        private void EndDistanceTextBox_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter)
             {

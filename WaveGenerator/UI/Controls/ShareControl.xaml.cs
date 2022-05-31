@@ -1,6 +1,6 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Imaging;
+﻿using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,9 +13,6 @@ using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
-using WinRT;
-using WinUI.Interop.CoreWindow;
-using WinUI.Interop.NativeWindow;
 
 namespace WaveGenerator.UI.Controls
 {
@@ -31,11 +28,11 @@ namespace WaveGenerator.UI.Controls
             this.Loaded += ShareControl_Loaded;
 
             IntPtr hwnd = Process.GetCurrentProcess().MainWindowHandle;
-            DataTransferManager dataTransferManager = DataTransferManagerInterop.GetForWindow(hwnd);
+            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
             dataTransferManager.DataRequested += DataTransferManager_DataRequested;
         }
 
-        private void ShareControl_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private void ShareControl_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             MainCanvas.Clip = new RectangleGeometry { Rect = new Rect(0, 0, MainCanvas.ActualWidth, MainCanvas.ActualHeight) };
         }
@@ -60,15 +57,15 @@ namespace WaveGenerator.UI.Controls
             deferral.Complete();
         }
 
-        private void ShareButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private void ShareButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            DataTransferManagerInterop.ShowShareUIForWindow(Process.GetCurrentProcess().MainWindowHandle);
+            DataTransferManager.ShowShareUI();
         }
 
-        private async void SaveButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private async void SaveButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             FileSavePicker picker = new FileSavePicker();
-            picker.As<IInitializeWithWindow>().Initialize(Process.GetCurrentProcess().MainWindowHandle);
+            // picker.As<IInitializeWithWindow>().Initialize(Process.GetCurrentProcess().MainWindowHandle);
             picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
             picker.FileTypeChoices.Add("Bild", new List<string>() { ".jpeg" });
 
@@ -78,7 +75,7 @@ namespace WaveGenerator.UI.Controls
                     await RenderCanvasToStream(MainCanvas, stream);
         }
 
-        private async void CopyButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private async void CopyButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             IRandomAccessStream stream = new InMemoryRandomAccessStream();
             await RenderCanvasToStream(MainCanvas, stream);

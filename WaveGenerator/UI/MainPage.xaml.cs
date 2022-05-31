@@ -1,5 +1,5 @@
 ﻿using WaveGenerator.UI.Pages;
-using Microsoft.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls;
 
 namespace WaveGenerator.UI
 {
@@ -12,14 +12,14 @@ namespace WaveGenerator.UI
             this.Loaded += MainPage_Loaded;
         }
 
-        private void MainPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private void MainPage_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             MainNavigationView.SelectedItem = MainNavigationView.MenuItems[0];
         }
 
-        private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        private void NavigationView_SelectionChanged(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewSelectionChangedEventArgs args)
         {
-            switch ((sender.SelectedItem as NavigationViewItem).Tag)
+            switch ((sender.SelectedItem as Microsoft.UI.Xaml.Controls.NavigationViewItem).Tag)
             {
                 case "normal_wave":
                     MainContentFrame.Navigate(typeof(DefaultWavePage));

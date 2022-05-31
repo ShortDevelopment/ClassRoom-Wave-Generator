@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WaveGenerator.Launcher": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

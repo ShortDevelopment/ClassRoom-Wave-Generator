@@ -1,0 +1,44 @@
+﻿<Page
+    x:Class="WaveGenerator.UI.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WaveGenerator.UI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <controls:NavigationView x:Name="MainNavigationView" IsBackButtonVisible="Collapsed" PaneTitle="Wave Generator" SelectionChanged="NavigationView_SelectionChanged" Background="#F3F3F3">
+        <controls:NavigationView.MenuItems>
+            <controls:NavigationViewItem Content="Normale Welle" Tag="normal_wave">
+                <controls:NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xEA52;" />
+                </controls:NavigationViewItem.Icon>
+            </controls:NavigationViewItem>
+            <controls:NavigationViewItemSeparator />
+            <controls:NavigationViewItemHeader Content="Reflektion" />
+            <controls:NavigationViewItem Content="Einfache Reflektion" Tag="reflecting_waves">
+                <controls:NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xEA3D;" />
+                </controls:NavigationViewItem.Icon>
+            </controls:NavigationViewItem>
+            <controls:NavigationViewItem Content="2 Seitige Reflektion" Tag="reflecting_waves_infinite">
+                <controls:NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xEA3D;" />
+                </controls:NavigationViewItem.Icon>
+            </controls:NavigationViewItem>
+            <controls:NavigationViewItemHeader Content="Interferenz" />
+            <controls:NavigationViewItem Content="2 Wellen" Tag="interferenz_2_waves">
+                <controls:NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xEA3C;" />
+                </controls:NavigationViewItem.Icon>
+            </controls:NavigationViewItem>
+            <controls:NavigationViewItem Content="n-fach Spalt" Tag="n_fach_spalt">
+                <controls:NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xEA3C;" />
+                </controls:NavigationViewItem.Icon>
+            </controls:NavigationViewItem>
+        </controls:NavigationView.MenuItems>
+        <Frame x:Name="MainContentFrame" />
+    </controls:NavigationView>
+</Page>

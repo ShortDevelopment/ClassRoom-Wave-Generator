@@ -1,0 +1,68 @@
+﻿<Page
+    x:Class="WaveGenerator.UI.Pages.SpaltPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WaveGenerator.UI.Pages"
+    xmlns:ui="using:WaveGenerator.UI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Microsoft.UI.Xaml.Controls" xmlns:lvc="using:LiveChartsCore.SkiaSharpView.WinUI"
+    xmlns:communityControls="using:CommunityToolkit.WinUI.UI.Controls" xmlns:controls1="using:WaveGenerator.UI.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <ui:PostFixNumberFormatter x:Key="NumberFormatter_lambda" PostFix="λ" />
+        <ui:PostFixNumberFormatter x:Key="NumberFormatter_percent" PostFix="%" />
+    </Page.Resources>
+
+    <ScrollViewer>
+        <StackPanel Padding="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <controls:NumberBox Grid.Column="0" Margin="5"
+                                    x:Name="SlitCountNumberBox"  Header="Anzahl Spalte"
+                                    AcceptsExpression="True" SpinButtonPlacementMode="Inline"
+                                    ValueChanged="ValueChanged" Value="2" Minimum="1" />
+                <controls:NumberBox Grid.Column="1" Margin="5"
+                                    x:Name="GangUnterschiedNumberBox" Header="Gangunterschied in λ"
+                                    AcceptsExpression="True" SpinButtonPlacementMode="Inline" 
+                                    ValueChanged="ValueChanged2" Value="1" SmallChange="0.1" LargeChange="0.1"
+                                    NumberFormatter="{StaticResource NumberFormatter_lambda}"/>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <controls:NumberBox Grid.Column="0" Margin="5"
+                                    x:Name="SlitRatioNumberBox" Header="Offener Anteil in %"
+                                    AcceptsExpression="True" SpinButtonPlacementMode="Inline"
+                                    ValueChanged="ValueChanged" Value="25" Minimum="1" Maximum="100"
+                                    NumberFormatter="{StaticResource NumberFormatter_percent}" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid Height="500">
+                    <lvc:CartesianChart x:Name="Chart" Series="{x:Bind ChartSeriesCollection}" TooltipPosition="Hidden" />
+                </Grid>
+                <communityControls:GridSplitter
+                    Grid.Column="1"
+                    Background="#efefef"
+                    Foreground="White"
+                    FontSize="13">
+                    <communityControls:GridSplitter.RenderTransform>
+                        <TranslateTransform X="-8" />
+                    </communityControls:GridSplitter.RenderTransform>
+                </communityControls:GridSplitter>
+                <Canvas x:Name="ZeigerCanvas" HorizontalAlignment="Center" Margin="0, 150, 0, 100" Grid.Column="2" />
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

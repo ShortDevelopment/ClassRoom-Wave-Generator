@@ -1,8 +1,8 @@
-﻿using Microsoft.UI;
+﻿using Windows.UI;
 using System.Threading;
 using WaveGenerator.Generation;
 using WaveGenerator.Rendering;
-using Colors = Microsoft.UI.Colors;
+using Colors = Windows.UI.Colors;
 
 namespace WaveGenerator.UI.Pages
 {
@@ -24,7 +24,7 @@ namespace WaveGenerator.UI.Pages
             this.KeyDown += MainPage_KeyDown;
         }
 
-        private void MainPage_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+        private void MainPage_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Left)
             {
@@ -55,7 +55,7 @@ namespace WaveGenerator.UI.Pages
             // Time animation intervals
             const int timeStep = 100;
 
-            var CurrentDispatcher = DispatcherQueue;
+            var CurrentDispatcher = Dispatcher;
 
             while (CurrentDispatcher != null)
             {
@@ -74,7 +74,7 @@ namespace WaveGenerator.UI.Pages
                 var angle = generater.CalculateZeigerAngle(CurrentAnimationTime / 1000.0);
 
                 // Render wave
-                _ = CurrentDispatcher.TryEnqueue(() =>
+                _ = CurrentDispatcher.RunIdleAsync((x) =>
                   {
                       renderer.ClearCanvas();
 

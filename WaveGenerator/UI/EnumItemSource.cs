@@ -10,7 +10,7 @@ namespace WaveGenerator.UI
         private List<EnumValueReference<TEnum>> _data;
         public EnumItemSource()
         {
-            _data = Enum.GetNames<TEnum>().Select((x) => (EnumValueReference<TEnum>)x).ToList();
+            _data = Enum.GetNames(typeof(TEnum)).Select((x) => (EnumValueReference<TEnum>)x).ToList();
         }
 
         public EnumValueReference<TEnum> this[int index] { get => _data[index]; set => throw new NotImplementedException(); }

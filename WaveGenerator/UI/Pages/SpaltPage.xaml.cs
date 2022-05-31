@@ -113,7 +113,7 @@ namespace WaveGenerator.UI.Pages
         #endregion
 
         #region Chart
-        const double chartXStep = 0.02;
+        const decimal chartXStep = 0.01M;
 
         private List<ISeries> ChartSeriesCollection;
         private void InitChart()
@@ -159,15 +159,15 @@ namespace WaveGenerator.UI.Pages
             List<double> valueCollection2 = new();
             await Task.Run(() =>
             {
-                for (double gangUnterschiedFactor = chartXStep; gangUnterschiedFactor < 5; gangUnterschiedFactor += chartXStep)
+                for (decimal gangUnterschiedFactor = chartXStep; gangUnterschiedFactor < 5; gangUnterschiedFactor += chartXStep)
                 {
-                    double singleSlitIntensity = CalculateSingleSlitIntensityRelative(gangUnterschiedFactor, ratio);
+                    decimal singleSlitIntensity = CalculateSingleSlitIntensityRelative(gangUnterschiedFactor, (decimal)ratio);
 
-                    double intensity = singleSlitIntensity * CalculateSlitIntensity(gangUnterschiedFactor, slitCount);
+                    decimal intensity = singleSlitIntensity * CalculateSlitIntensity((decimal)gangUnterschiedFactor, slitCount);
                     if (slitCount > 1)
-                        valueCollection.Add(intensity);
+                        valueCollection.Add((double)intensity);
 
-                    valueCollection2.Add(singleSlitIntensity * (valueCollection.Count > 0 ? valueCollection[0] : 100));
+                    valueCollection2.Add((double)singleSlitIntensity * (valueCollection.Count > 0 ? valueCollection[0] : 100));
                 }
             });
 
@@ -199,20 +199,20 @@ namespace WaveGenerator.UI.Pages
             return arrowList.ToArray();
         }
 
-        private double CalculateSlitIntensity(double gangUnterschiedFactor, int slitCount)
+        private decimal CalculateSlitIntensity(decimal gangUnterschiedFactor, int slitCount)
         {
             if (gangUnterschiedFactor == 0)
                 return CalculateSlitIntensity(1, slitCount);
 
-            return Math.Pow(sin(slitCount * π * gangUnterschiedFactor) / sin(π * gangUnterschiedFactor), 2);
+            return (decimal)Math.Pow((double)(sin(slitCount * (decimal)π * gangUnterschiedFactor) / sin((decimal)π * gangUnterschiedFactor)), 2);
         }
 
-        private double CalculateSingleSlitIntensityRelative(double gangUnterschiedFactor, double ratio = 1.0)
+        private decimal CalculateSingleSlitIntensityRelative(decimal gangUnterschiedFactor, decimal ratio = 1.0M)
         {
             if (gangUnterschiedFactor == 0)
-                return 1.0;
+                return 1.0M;
 
-            return Math.Pow(sin(π * ratio * gangUnterschiedFactor) / (π * ratio * gangUnterschiedFactor), 2);
+            return (decimal)Math.Pow((double)(sin((decimal)π * ratio * gangUnterschiedFactor) / ((decimal)π * ratio * gangUnterschiedFactor)), 2);
         }
         #endregion
     }

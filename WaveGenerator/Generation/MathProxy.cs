@@ -6,6 +6,7 @@ namespace WaveGenerator.Generation
     {
         public static readonly double π = Math.PI;
         public static double sin(double a) => Math.Sin(a);
+        public static decimal sin(decimal a) => (decimal)Math.Sin((double)a);
         public static double cos(double a) => Math.Cos(a);
         public static double tan(double a) => Math.Tan(a);
 

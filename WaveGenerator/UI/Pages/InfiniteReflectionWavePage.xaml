@@ -42,13 +42,6 @@
 
                 <StackPanel Grid.Row="2" Padding="30,0,30,0">
 
-                    <controls2:InfoBar
-                        IsOpen="True"
-                        Margin="0,10,0,10"
-                        Severity="Warning"
-                        Title="Warnung"
-                        Message="Die erzeugten Werte stimmen (noch) nicht!" />
-
                     <controls1:SimulationCommandBarControl BasePage="{x:Bind CurrentInstance}" />
 
                     <controls1:WaveSettingsControl x:Name="WaveSettingsControl" WaveSettings="{x:Bind WaveSettings}" />

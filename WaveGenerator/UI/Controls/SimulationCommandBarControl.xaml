@@ -22,6 +22,11 @@
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarSeparator />
+            <AppBarButton Label="Einzelschritt" Name="StepBackAppBarButton" Click="StepBackAppBarButton_Click">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xeb9e;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
             <AppBarButton Label="Einzelschritt" Name="StepAppBarButton" Click="StepAppBarButton_Click">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xEB9D;" />

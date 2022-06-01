@@ -35,6 +35,11 @@ namespace WaveGenerator.UI.Controls
             BasePage.InvokeSingleStep();
         }
 
+        private void StepBackAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            BasePage.InvokeSingleStepReverse();
+        }
+
         private void ResetAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             BasePage.CurrentAnimationTime = 0;

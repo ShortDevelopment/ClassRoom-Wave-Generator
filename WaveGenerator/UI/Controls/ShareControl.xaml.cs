@@ -13,6 +13,7 @@ using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
+using WinUI.Interop.CoreWindow;
 
 namespace WaveGenerator.UI.Controls
 {
@@ -27,7 +28,6 @@ namespace WaveGenerator.UI.Controls
 
             this.Loaded += ShareControl_Loaded;
 
-            IntPtr hwnd = Process.GetCurrentProcess().MainWindowHandle;
             DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
             dataTransferManager.DataRequested += DataTransferManager_DataRequested;
         }
@@ -64,8 +64,8 @@ namespace WaveGenerator.UI.Controls
 
         private async void SaveButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            FileSavePicker picker = new FileSavePicker();
-            // picker.As<IInitializeWithWindow>().Initialize(Process.GetCurrentProcess().MainWindowHandle);
+            FileSavePicker picker = new();
+            (picker as object as IInitializeWithWindow).Initialize(Process.GetCurrentProcess().MainWindowHandle);
             picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
             picker.FileTypeChoices.Add("Bild", new List<string>() { ".jpeg" });
 

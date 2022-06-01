@@ -221,6 +221,9 @@
     <PackageReference Include="SkiaSharp.Views">
       <Version>2.88.1-preview.1</Version>
     </PackageReference>
+    <PackageReference Include="WinUI.Interop">
+      <Version>0.2.4</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Segoe Fluent Icons.ttf" />

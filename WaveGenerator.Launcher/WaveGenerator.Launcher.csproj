@@ -9,6 +9,11 @@
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+		<SelfContained>true</SelfContained>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Toolkit.Win32.UI.SDK" Version="6.1.2" />
 		<PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.19041.1" />
@@ -20,11 +25,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  
+
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Update="Microsoft.VCRTForwarders.140" Version="1.0.7" />
+		<PackageReference Update="Microsoft.VCRTForwarders.140" Version="1.0.7" />
 	</ItemGroup>
 
 </Project>

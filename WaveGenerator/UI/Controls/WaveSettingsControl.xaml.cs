@@ -20,7 +20,7 @@ namespace WaveGenerator.UI.Controls
         {
             WaveLengthTextBox.Text = WaveSettings.WaveLength.ToString();
             PeriodTextBox.Text = WaveSettings.Period.ToString();
-            AmplitudeTextBox.Text = WaveSettings.Amplitude.ToString();
+            AmplitudeTextBox.Text = WaveSettings.MaxElongation.ToString();
 
             WaveGenerationModeComboBox.SelectedIndex = 0;
 
@@ -73,7 +73,7 @@ namespace WaveGenerator.UI.Controls
             {
                 try
                 {
-                    WaveSettings.Amplitude = double.Parse(AmplitudeTextBox.Text);
+                    WaveSettings.MaxElongation = double.Parse(AmplitudeTextBox.Text);
                 }
                 catch { }
                 LoadSettings();

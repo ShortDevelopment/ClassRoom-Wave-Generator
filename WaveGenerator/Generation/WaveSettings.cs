@@ -1,11 +1,20 @@
-﻿namespace WaveGenerator.Generation
+﻿using System;
+
+namespace WaveGenerator.Generation
 {
     public class WaveSettings
     {
         /// <summary>
-        /// Sets the amplitude (ŝ) of the wave
+        /// Gets the amplitude (ŝ) of the wave (absolute value)
         /// </summary>
-        public double Amplitude { get; set; } = 1;
+        public double Amplitude
+            => Math.Abs(MaxElongation);
+
+        /// <summary>
+        /// Sets the max elongation (ŝ) of the wave <br/>
+        /// May be negative!
+        /// </summary>
+        public double MaxElongation { get; set; } = 1;
 
         /// <summary>
         /// Sets the wavelength (λ)

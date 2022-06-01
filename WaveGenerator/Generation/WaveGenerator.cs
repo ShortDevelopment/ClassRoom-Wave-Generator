@@ -23,7 +23,7 @@ namespace WaveGenerator.Generation
 
         #region Settings Proxy
         double λ { get => Settings.WaveLength; }
-        double ŝ { get => Settings.Amplitude; }
+        double ŝ { get => Settings.MaxElongation; }
         double T { get => Settings.Period; }
         double l { get => Settings.Reflection.EndPosition; }
         #endregion

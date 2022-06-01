@@ -122,6 +122,9 @@
     <Compile Include="UI\Pages\SpaltPage.xaml.cs">
       <DependentUpon>SpaltPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Pages\WaveMediumSimulationPage.xaml.cs">
+      <DependentUpon>WaveMediumSimulationPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\PostFixNumberFormatter.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
@@ -192,6 +195,10 @@
     <Page Include="UI\Pages\SpaltPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Pages\WaveMediumSimulationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

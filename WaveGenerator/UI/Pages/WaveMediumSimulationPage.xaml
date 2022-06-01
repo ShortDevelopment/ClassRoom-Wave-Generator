@@ -1,0 +1,73 @@
+﻿<Page
+    x:Class="WaveGenerator.UI.Pages.WaveMediumSimulationPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WaveGenerator.UI.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:communityControls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="250" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Background="#efefef"  Padding="30" Grid.Row="0" x:Name="NodesContainer" />
+
+        <communityControls:GridSplitter
+                    Grid.Row="1"
+                    Background="#efefef"
+                    Foreground="White"
+                    FontSize="13">
+            <communityControls:GridSplitter.Element>
+                <Grid>
+                    <TextBlock HorizontalAlignment="Center"
+                                IsHitTestVisible="False"
+                                VerticalAlignment="Center"
+                                Text="&#xE76F;"
+                                Foreground="Black"
+                                FontFamily="Segoe MDL2 Assets" />
+                </Grid>
+            </communityControls:GridSplitter.Element>
+        </communityControls:GridSplitter>
+        <StackPanel Grid.Row="2">
+            <CommandBar DefaultLabelPosition="Right" Background="Transparent" HorizontalAlignment="Left">
+                <AppBarButton Label="Reset" Name="ResetAppBarButton" Click="ResetAppBarButton_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xE72C;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </CommandBar>
+
+            <StackPanel Padding="30,10,30,10">
+
+                <UserControl Height="20" />
+                <TextBlock Text="Einstellungen" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <UserControl Height="15" />
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Header="Knotenanzahl" Name="NodesCountTextBox" Margin="0,0,10,0" Grid.Column="0" Text="10" />
+                </Grid>
+
+                <UserControl Height="20" />
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Header="Federhärte D in N/m" Name="FederHärteTextBox" Margin="0,0,10,0" Grid.Column="0" Text="10" />
+                    <TextBox Header="Masse m in kg" Name="MassTextBox" Margin="10,0,0,0" Grid.Column="1" Text="0,1" />
+                </Grid>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

@@ -41,6 +41,10 @@ namespace WaveGenerator.UI
                     MainContentFrame.Navigate(typeof(SpaltPage));
                     break;
 
+                case "wave_medium_simulation":
+                    MainContentFrame.Navigate(typeof(WaveMediumSimulationPage));
+                    break;
+
                 default:
                     if (args.IsSettingsSelected)
                         MainContentFrame.Navigate(typeof(SettingsPage));

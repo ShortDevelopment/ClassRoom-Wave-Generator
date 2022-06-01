@@ -15,6 +15,11 @@
                     <FontIcon Glyph="&#xEA52;" />
                 </controls:NavigationViewItem.Icon>
             </controls:NavigationViewItem>
+            <controls:NavigationViewItem Content="Wellenträger" Tag="wave_medium_simulation">
+                <controls:NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xEA52;" />
+                </controls:NavigationViewItem.Icon>
+            </controls:NavigationViewItem>
             <controls:NavigationViewItemSeparator />
             <controls:NavigationViewItemHeader Content="Reflektion" />
             <controls:NavigationViewItem Content="Einfache Reflektion" Tag="reflecting_waves">

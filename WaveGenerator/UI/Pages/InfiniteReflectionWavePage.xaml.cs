@@ -70,9 +70,6 @@ namespace WaveGenerator.UI.Pages
                 // Generate wave
                 var data = generater.GenerateReflectedWaveBothSides(CurrentAnimationTime / 1000.0);
 
-                // Generate "Zeiger"
-                var angle = generater.CalculateZeigerAngle(CurrentAnimationTime / 1000.0);
-
                 // Render wave
                 _ = CurrentDispatcher.RunIdleAsync((x) =>
                   {

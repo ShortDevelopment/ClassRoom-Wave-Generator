@@ -9,10 +9,12 @@ namespace WaveGenerator.Generation
     {
         public Vector2[] data { get; set; }
         public Color color { get; set; }
+        public double time { get; set; }
 
-        public Wave(Vector2[] data)
+        public Wave(Vector2[] data, double time)
         {
             this.data = data;
+            this.time = time;
             this.color = Colors.Black;
         }
 

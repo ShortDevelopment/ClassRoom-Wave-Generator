@@ -30,20 +30,34 @@ namespace WaveGenerator.Generation
 
         double c { get => λ / T; }
 
-        #region Basic Calculation
-        double s(double x, double tₒ)
+        public bool CanNodeMove(double x, double tₒ, bool checkReflectionEnd = false)
         {
+            if (x < 0)
+                return false;
+
+            if (checkReflectionEnd && Settings.Reflection != null && x > Settings.Reflection.EndPosition)
+                return false;
+
             double distanceToFirstMovingPart = c * tₒ - x;
             if (Settings.GenerationMode == WaveGenerationMode.Einzelstörung)
             {
                 if (distanceToFirstMovingPart >= λ / 2)
-                    return 0;
+                    return false;
             }
             else if (Settings.GenerationMode == WaveGenerationMode.Doppelstörung)
             {
                 if (distanceToFirstMovingPart >= λ)
-                    return 0;
+                    return false;
             }
+
+            return true;
+        }
+
+        #region Basic Calculation
+        double s(double x, double tₒ)
+        {
+            if (!CanNodeMove(x, tₒ))
+                return 0;
 
             return ŝ * sin(2 * π * 1 / T * max(tₒ - x / c, 0));
         }
@@ -72,19 +86,18 @@ namespace WaveGenerator.Generation
         {
             Func<double, double> s = (double x) => this.s(x, tₒ);
 
-            return GeneratePointsInternal(count, distance, s);
+            return GeneratePointsInternal(tₒ, count, distance, s);
         }
 
         public Wave GenerateReflectedWave(double tₒ, int count = 40, double distance = 0.25)
         {
             Func<double, double> m = (double x) => this.m(x, tₒ);
 
-            var wave = GeneratePointsInternal(count, distance, m);
+            var wave = GeneratePointsInternal(tₒ, count, distance, m);
             wave.color = Colors.Blue;
             return wave;
         }
 
-        [Obsolete("Doesn't work correctly!")]
         public Wave GenerateReflectedWaveBothSides(double tₒ, int count = 40, double distance = 0.25)
         {
             double maxtime = l / c;
@@ -131,39 +144,21 @@ namespace WaveGenerator.Generation
                 return total;
             };
 
-            return GeneratePointsInternal(count, distance, g);
+            return GeneratePointsInternal(tₒ, count, distance, g);
         }
 
-        protected Wave GeneratePointsInternal(int count, double distance, Func<double, double> s)
+        protected Wave GeneratePointsInternal(double tₒ, int count, double distance, Func<double, double> s)
         {
-            List<Vector2> list = new List<Vector2>();
+            List<Vector2> list = new();
             for (double x = 0; x < count; x += distance)
-            {
                 list.Add(new Vector2((float)x, (float)s(x)));
-            }
-            return new Wave(list.ToArray());
-        }
 
-        /// <summary>
-        /// Calculates the angle of the "Zeiger"
-        /// </summary>
-        /// <param name="t"></param>
-        /// <returns></returns>
-        public double CalculateZeigerAngle(double t)
-        {
-            #region Math Proxy
-            const double π = Math.PI;
-            #endregion
-
-            double T = Settings.Period;
-            double ω = 2 * π * 1 / T;
-
-            return -ω * t;
+            return new Wave(list.ToArray(), tₒ);
         }
 
         public Wave MergeWaves(Wave[] waves)
         {
-            Wave resultWave = new Wave();
+            Wave resultWave = new();
             resultWave.color = Colors.Red;
 
             Dictionary<float, float> points = new Dictionary<float, float>();
@@ -174,10 +169,13 @@ namespace WaveGenerator.Generation
                 for (int i = 0; i < wave.data.Length; i++)
                 {
                     Vector2 p = wave.data[i];
+                    float y = p.Y;
+                    if (!CanNodeMove(p.X, wave.time, checkReflectionEnd: true))
+                        y = 0;
                     if (points.ContainsKey(p.X))
-                        points[p.X] += p.Y;
+                        points[p.X] += y;
                     else
-                        points.Add(p.X, p.Y);
+                        points.Add(p.X, y);
                 }
             }
 
@@ -186,5 +184,20 @@ namespace WaveGenerator.Generation
             return resultWave;
         }
 
+        /// <summary>
+        /// Calculates the angle of the "Zeiger"
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public double CalculateZeigerAngle(double x, double t)
+        {
+            if (!CanNodeMove(x, t))
+                return 0;
+
+            double T = Settings.Period;
+            double ω = 2 * π * 1 / T;
+
+            return -ω * t;
+        }
     }
 }

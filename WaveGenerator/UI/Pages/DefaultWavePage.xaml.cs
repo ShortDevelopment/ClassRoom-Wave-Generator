@@ -68,8 +68,8 @@ namespace WaveGenerator.UI.Pages
                 var data = generater.Generate(CurrentAnimationTime / 1000.0);
 
                 // Generate "Zeiger"
-                var angle = generater.CalculateZeigerAngle(CurrentAnimationTime / 1000.0);
-                
+                var angle = generater.CalculateZeigerAngle(0, CurrentAnimationTime / 1000.0);
+
                 // Render wave
                 _ = CurrentDispatcher.RunIdleAsync((x) =>
                   {

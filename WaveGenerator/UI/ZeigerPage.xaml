@@ -1,0 +1,39 @@
+﻿<Page
+    x:Class="WaveGenerator.UI.ZeigerPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WaveGenerator.UI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:Width="200"
+    d:Height="200"
+    Background="Transparent">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Border 
+                Background="{ThemeResource LayerFillColorDefaultBrush}" 
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" 
+                CornerRadius="8"            
+                Margin="10">
+            <Grid Padding="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="NodePositionTextBox" KeyDown="NodePositionTextBox_KeyDown"
+                    Header="Teilchen-Position" PlaceholderText="Position" Text="0" />
+                <CheckBox x:Name="IsWindowTransparentCheckBox" Checked="IsWindowTransparentCheckBox_Checked" Unchecked="IsWindowTransparentCheckBox_Checked"
+                          Grid.Column="1" IsChecked="True" Content="Transparent"
+                          Margin="10,0,0,0" VerticalAlignment="Bottom" />
+            </Grid>
+        </Border>
+        <Grid Margin="10" Grid.Row="1">
+            <Canvas x:Name="Canvas" />
+        </Grid>
+    </Grid>
+</Page>

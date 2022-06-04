@@ -197,7 +197,7 @@ namespace WaveGenerator.Generation
             double T = Settings.Period;
             double ω = 2 * π * 1 / T;
 
-            return -ω * t;
+            return -ω * (t - x / c);
         }
     }
 }

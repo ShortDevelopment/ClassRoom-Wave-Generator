@@ -1,4 +1,5 @@
-﻿using WaveGenerator.UI.Pages;
+﻿using ShortDev.Uwp.FullTrust.Core.Xaml;
+using WaveGenerator.UI.Pages;
 using Windows.UI.Xaml.Controls;
 
 namespace WaveGenerator.UI.Controls
@@ -30,6 +31,16 @@ namespace WaveGenerator.UI.Controls
             PauseAppBarButton.IsEnabled = false;
         }
 
+
+        private void ResetAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            BasePage.CurrentAnimationTime = 0;
+
+            if (!BasePage.IsRunning)
+                ResetAppBarButton.IsEnabled = false;
+        }
+
+
         private void StepAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             BasePage.InvokeSingleStep();
@@ -40,12 +51,21 @@ namespace WaveGenerator.UI.Controls
             BasePage.InvokeSingleStepReverse();
         }
 
-        private void ResetAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            BasePage.CurrentAnimationTime = 0;
 
-            if (!BasePage.IsRunning)
-                ResetAppBarButton.IsEnabled = false;
+        private void ZeigerAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            XamlWindowActivator.CreateNewThread(() =>
+            {
+                var window = XamlWindowActivator.CreateNewWindow(new("Zeiger")
+                {
+                    IsTopMost = true,
+                    HasTransparentBackground = true
+                });
+                window.Content = new ZeigerPage(BasePage);
+                window.Activate();
+
+                window.Dispatcher.ProcessEvents(Windows.UI.Core.CoreProcessEventsOption.ProcessUntilQuit);
+            });
         }
     }
 }

@@ -162,13 +162,16 @@ namespace WaveGenerator.Rendering
                 visual.IsVisible = false;
         }
 
-        public void RenderZeiger(double angle, Vector2 position, double radius)
+        public void RenderZeiger(double angle, Vector2 position, double radius, bool renderAmplitudeLine = true)
+            => RenderZeiger(angle, position, radius, Colors.Green, renderAmplitudeLine);
+
+        public void RenderZeiger(double angle, Vector2 position, double radius, Color color, bool renderAmplitudeLine = true)
         {
             double unit = YUnit;
 
             Ellipse circle = new Ellipse();
             circle.Fill = new SolidColorBrush(Colors.Transparent);
-            circle.Stroke = new SolidColorBrush(Colors.Green);
+            circle.Stroke = new SolidColorBrush(color);
             circle.StrokeThickness = 1;
 
             // Set radius
@@ -185,13 +188,15 @@ namespace WaveGenerator.Rendering
 
             Vector2 pos1 = new Vector2((float)(radius + position.X * unit), (float)((Canvas.ActualHeight / 2) + position.Y * unit));
             DrawLine(pos1,
-                new Vector2((float)(pos1.X + Math.Cos(angle) * radius + position.X * unit), (float)(pos1.Y + Math.Sin(angle) * radius + position.Y * unit)), 1, Colors.Green);
+                new Vector2((float)(pos1.X + Math.Cos(angle) * radius + position.X * unit), (float)(pos1.Y + Math.Sin(angle) * radius + position.Y * unit)), 1, color);
 
             // == // ŝ Renderer // == //
-
-            float height = (float)(Canvas.ActualHeight / 2) + Settings.Offset.Y + (float)(Math.Sin(angle) * radius);
-            DrawLine(new Vector2(0, height),
-                new Vector2((float)Canvas.ActualWidth, height), 1, Colors.Green);
+            if (renderAmplitudeLine)
+            {
+                float height = (float)(Canvas.ActualHeight / 2) + Settings.Offset.Y + (float)(Math.Sin(angle) * radius);
+                DrawLine(new Vector2(0, height),
+                    new Vector2((float)Canvas.ActualWidth, height), 1, color);
+            }
         }
 
         public void RenderReflectionWall(WaveReflectionInfo reflectionInfo) => RenderWall(reflectionInfo.EndPosition, Colors.Red);

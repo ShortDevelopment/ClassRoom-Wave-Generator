@@ -81,7 +81,7 @@ namespace WaveGenerator.UI.Pages
                       renderer.RenderCoordinateSystem(Colors.Gray);
 
                       renderer.Render(data);
-                      renderer.RenderZeiger(angle, new System.Numerics.Vector2(0, 0), radius);
+                      renderer.RenderZeiger(angle, new System.Numerics.Vector2(0, 0), radius, renderAmplitudeLine: ShowAmplitude_CheckBox.IsChecked == true);
                   });
 
                 // Handling timing
@@ -94,6 +94,5 @@ namespace WaveGenerator.UI.Pages
         }
 
         #endregion
-
     }
 }

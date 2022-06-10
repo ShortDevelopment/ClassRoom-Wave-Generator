@@ -12,7 +12,12 @@
 	<PropertyGroup>
 		<RuntimeIdentifier>win10-x64</RuntimeIdentifier>
 		<SelfContained>true</SelfContained>
+		<ApplicationIcon>Logo.ico</ApplicationIcon>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Logo.ico" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Toolkit.Win32.UI.SDK" Version="6.1.2" />
@@ -22,10 +27,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\WaveGenerator\WaveGenerator.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-
 	</ItemGroup>
 
 	<ItemGroup>

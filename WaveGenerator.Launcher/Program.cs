@@ -1,4 +1,5 @@
 ﻿using ShortDev.Uwp.FullTrust.Core.Xaml;
+using WinUI.Interop.NativeWindow;
 
 namespace WaveGenerator.Launcher
 {
@@ -13,6 +14,8 @@ namespace WaveGenerator.Launcher
                     HasWin32Frame = true
                 });
                 window.Content = new UI.MainPage();
+
+                WindowExtensions.SetIcon(window.CoreWindow.GetHwnd(), "WaveGenerator.Launcher.Logo.ico");
 
                 XamlWindowSubclass.ForWindow(window).CurrentFrameworkView!.Run();
             }

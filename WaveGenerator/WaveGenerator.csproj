@@ -232,7 +232,7 @@
       <Version>2.88.1-preview.1</Version>
     </PackageReference>
     <PackageReference Include="WinUI.Interop">
-      <Version>0.2.4</Version>
+      <Version>0.2.5</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

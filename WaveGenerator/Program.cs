@@ -15,7 +15,7 @@ namespace WaveGenerator.Launcher
                 });
                 window.Content = new UI.MainPage();
 
-                WindowExtensions.SetIcon(window.CoreWindow.GetHwnd(), "WaveGenerator.Launcher.Logo.ico");
+                WindowExtensions.SetIcon(window.CoreWindow.GetHwnd(), "WaveGenerator.Logo.ico");
 
                 XamlWindowSubclass.ForWindow(window).CurrentFrameworkView!.Run();
             }

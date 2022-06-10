@@ -173,18 +173,16 @@ namespace WaveGenerator.UI.Pages
             valueCollection2.Clear();
             await Task.Run(() =>
             {
-                decimal intensity0 = -1;
+                decimal intensity0 = (decimal)Math.Pow(slitCount, 2);
                 for (decimal gangUnterschiedFactor = chartXStep; gangUnterschiedFactor < 5; gangUnterschiedFactor += chartXStep)
                 {
                     decimal singleSlitIntensity = CalculateSingleSlitIntensityRelative(gangUnterschiedFactor, ratio);
 
                     decimal intensity = singleSlitIntensity * CalculateSlitIntensity(gangUnterschiedFactor, slitCount);
-                    if (intensity0 == -1)
-                        intensity0 = intensity;
                     if (slitCount > 1)
-                        valueCollection.Add((double)(100 * intensity));
+                        valueCollection.Add((double)intensity);
 
-                    valueCollection2.Add((double)(100 * singleSlitIntensity * (slitCount > 1 ? intensity0 : 100)));
+                    valueCollection2.Add((double)(singleSlitIntensity * intensity0));
                 }
             });
             ChartSeriesCollection[0].Values = valueCollection;
@@ -213,8 +211,8 @@ namespace WaveGenerator.UI.Pages
 
         private decimal CalculateSlitIntensity(decimal gangUnterschiedFactor, int slitCount)
         {
-            if (gangUnterschiedFactor == 0)
-                return CalculateSlitIntensity(1, slitCount);
+            if (gangUnterschiedFactor % 1 == 0)
+                return (decimal)Math.Pow(slitCount, 2);
 
             return (decimal)Math.Pow(
                     (double)(sin(slitCount * (decimal)π * gangUnterschiedFactor)
@@ -226,7 +224,7 @@ namespace WaveGenerator.UI.Pages
         private decimal CalculateSingleSlitIntensityRelative(decimal gangUnterschiedFactor, decimal ratio = 1.0M)
         {
             if (gangUnterschiedFactor == 0)
-                return CalculateSingleSlitIntensityRelative(1, ratio);
+                return 1;
 
             return (decimal)Math.Pow(
                     (double)(sin((decimal)π * ratio * gangUnterschiedFactor)

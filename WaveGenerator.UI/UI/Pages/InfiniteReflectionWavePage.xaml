@@ -1,6 +1,5 @@
 ﻿<pages:SimulationPageBase
     xmlns:pages="using:WaveGenerator.UI.Pages"
-    xmlns:interop="using:WaveGenerator.UI.Interop"
     x:Class="WaveGenerator.UI.Pages.InfiniteReflectionWavePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -45,7 +44,7 @@
                     <controls1:SimulationCommandBarControl BasePage="{x:Bind CurrentInstance}" />
 
                     <controls1:WaveSettingsControl x:Name="WaveSettingsControl" WaveSettings="{x:Bind WaveSettings}" />
-                    <controls1:RenderSettingsControl x:Name="RenderSettingsControl"  RenderSettings="{x:Bind RenderSettings}" IsEnabled="False" />
+                    <controls1:RenderSettingsControl x:Name="RenderSettingsControl" RenderSettings="{x:Bind RenderSettings}" ShowReflectionSettings="False" />
                 </StackPanel>
             </Grid>
 

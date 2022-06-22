@@ -18,6 +18,7 @@ namespace WaveGenerator.UI.Pages
         protected override void OnLoaded()
         {
             WaveSettingsControl.LoadSettings();
+            RenderSettingsControl.LoadSettings();
             this.KeyDown += MainPage_KeyDown;
         }
 
@@ -61,7 +62,7 @@ namespace WaveGenerator.UI.Pages
 
                 // Sync settings
                 generater.Settings = WaveSettings;
-                RenderSettings.YStepCount = WaveSettings.Amplitude + 1;
+                // RenderSettings.YStepCount = WaveSettings.Amplitude + 1;
                 renderer.Settings = RenderSettings;
 
                 // Generate wave

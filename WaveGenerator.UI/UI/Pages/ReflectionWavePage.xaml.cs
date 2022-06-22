@@ -67,7 +67,7 @@ namespace WaveGenerator.UI.Pages
 
                 // Sync settings
                 generater.Settings = WaveSettings;
-                RenderSettings.YStepCount = WaveSettings.Amplitude + 1;
+                // RenderSettings.YStepCount = WaveSettings.Amplitude + 1;
                 renderer.Settings = RenderSettings;
 
                 // Generate wave

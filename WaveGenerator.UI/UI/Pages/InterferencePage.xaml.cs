@@ -67,7 +67,7 @@ namespace WaveGenerator.UI.Pages
                     continue;
 
                 // Sync settings
-                RenderSettings.YStepCount = WaveSettings.Amplitude + 1;
+                // RenderSettings.YStepCount = WaveSettings.Amplitude + 1;
 
                 // Generate wave
                 var primaryWave = generater.Generate(CurrentAnimationTime / 1000.0);

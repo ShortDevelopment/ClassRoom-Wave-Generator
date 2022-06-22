@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:Width="200"
+    d:Width="300"
     d:Height="200"
     Background="Transparent">
 
@@ -14,6 +14,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition />
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Border 
                 Background="{ThemeResource LayerFillColorDefaultBrush}" 
@@ -26,14 +27,25 @@
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
                 <TextBox x:Name="NodePositionTextBox" KeyDown="NodePositionTextBox_KeyDown"
-                    Header="Teilchen-Position" PlaceholderText="Position" Text="0" />
-                <CheckBox x:Name="IsWindowTransparentCheckBox" Checked="IsWindowTransparentCheckBox_Checked" Unchecked="IsWindowTransparentCheckBox_Checked"
-                          Grid.Column="1" IsChecked="True" Content="Transparent"
-                          Margin="10,0,0,0" VerticalAlignment="Bottom" />
+                        Header="Teilchen-Position" PlaceholderText="Position" Text="0" />
+                <CheckBox x:Name="UseReflectedWaveCheckBox"
+                            IsChecked="False" Content="Reflektion" 
+                            Grid.Column="1" Margin="10,0,0,0"  VerticalAlignment="Bottom" />
             </Grid>
         </Border>
         <Grid Margin="10" Grid.Row="1">
             <Canvas x:Name="Canvas" />
         </Grid>
+        <Border 
+                Background="{ThemeResource LayerFillColorDefaultBrush}" 
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" 
+                CornerRadius="8"            
+                Margin="10"
+                Grid.Row="2">
+            <Grid Padding="10">
+                <ToggleSwitch x:Name="IsWindowTransparentToggleSwitch" Toggled="IsWindowTransparentToggleSwitch_Toggled"
+                          IsOn="True" OnContent="Transparent" OffContent="Hintergrund" />
+            </Grid>
+        </Border>
     </Grid>
 </Page>

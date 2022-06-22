@@ -44,7 +44,11 @@ namespace WaveGenerator.UI
         private void Timer_Tick(object sender, object e)
         {
             Generation.WaveGenerator generater = new(BasePage.WaveSettings);
-            var angle = generater.CalculateZeigerAngle(NodePosition, BasePage.CurrentAnimationTime / 1000.0);
+            var angle = generater.CalculateZeigerAngle(
+                NodePosition, 
+                BasePage.CurrentAnimationTime / 1000.0, 
+                useReflectedWave: UseReflectedWaveCheckBox.IsChecked == true
+            );
 
             WaveRenderer renderer = new(Canvas, BasePage.RenderSettings);
             renderer.ClearCanvas();
@@ -53,9 +57,10 @@ namespace WaveGenerator.UI
             renderer.RenderZeiger(angle, new(0, 0), radius, renderAmplitudeLine: false);
         }
 
-        private void IsWindowTransparentCheckBox_Checked(object sender, RoutedEventArgs e)
+        private void IsWindowTransparentToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {
-            if (IsWindowTransparentCheckBox.IsChecked == true)
+
+            if (IsWindowTransparentToggleSwitch.IsOn)
                 this.Background = new SolidColorBrush(Colors.Transparent);
             else
                 this.Background = App.Current.Resources["ApplicationPageBackgroundThemeBrush"] as Brush;

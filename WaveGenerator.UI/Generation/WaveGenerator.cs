@@ -187,10 +187,15 @@ namespace WaveGenerator.Generation
         /// <summary>
         /// Calculates the angle of the "Zeiger"
         /// </summary>
-        /// <param name="t"></param>
-        /// <returns></returns>
-        public double CalculateZeigerAngle(double x, double t)
+        public double CalculateZeigerAngle(double x, double t, bool useReflectedWave = false)
         {
+            if (useReflectedWave && Settings.Reflection != null)
+            {
+                if (!Settings.Reflection.HasFreeEnd)
+                    t += π;
+                x = Settings.Reflection.EndPosition * 2 - x;
+            }
+
             if (!CanNodeMove(x, t))
                 return 0;
 

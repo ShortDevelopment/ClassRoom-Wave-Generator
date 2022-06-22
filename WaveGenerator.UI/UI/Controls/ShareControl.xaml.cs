@@ -45,14 +45,21 @@ namespace WaveGenerator.UI.Controls
             DataRequest request = args.Request;
             DataRequestDeferral deferral = request.GetDeferral();
 
-            IRandomAccessStream stream = new InMemoryRandomAccessStream();
-            await RenderCanvasToStream(MainCanvas, stream);
-            request.Data.SetBitmap(RandomAccessStreamReference.CreateFromStream(stream));
+            TaskCompletionSource<bool> promise = new();
+            _ = Dispatcher.RunIdleAsync(async (x) =>
+            {
+                IRandomAccessStream stream = new InMemoryRandomAccessStream();
+                await RenderCanvasToStream(MainCanvas, stream);
+                request.Data.SetBitmap(RandomAccessStreamReference.CreateFromStream(stream));
 
-            var props = request.Data.Properties;
-            props.ApplicationName = "Wave Generator";
-            props.Title = "Welle teilen";
-            props.Description = "Snapshot der aktuelle Welle teilen";
+                var props = request.Data.Properties;
+                props.ApplicationName = "Wave Generator";
+                props.Title = "Welle teilen";
+                props.Description = "Snapshot der aktuelle Welle teilen";
+
+                promise.SetResult(true);
+            });
+            await promise.Task;
 
             deferral.Complete();
         }

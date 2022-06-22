@@ -216,7 +216,7 @@
       <Version>7.1.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.8.0-prerelease.210927001</Version>
+      <Version>2.8.0-prerelease.220601001</Version>
     </PackageReference>
     <PackageReference Include="LiveCharts.Uwp">
       <Version>0.8.0</Version>

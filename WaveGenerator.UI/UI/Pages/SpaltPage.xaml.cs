@@ -164,13 +164,16 @@ namespace WaveGenerator.UI.Pages
 
         private async void UpdateChart()
         {
+            if (ShowSingleSlitCheckBox.IsChecked == true)
+                (ChartSeriesCollection[1] as LineSeries)!.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            else
+                (ChartSeriesCollection[1] as LineSeries)!.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+
             int slitCount = (int)SlitCountNumberBox.Value;
             decimal ratio = (decimal)(slitCount > 1 ? SlitRatioNumberBox.Value / 100.0 : 1.0);
 
-            ChartValues<double> valueCollection = ChartSeriesCollection[0].Values as ChartValues<double> ?? new();
-            valueCollection.Clear();
-            ChartValues<double> valueCollection2 = ChartSeriesCollection[1].Values as ChartValues<double> ?? new();
-            valueCollection2.Clear();
+            ChartValues<double> nSlitValues = new();
+            ChartValues<double> singleSlitValues = new();
             await Task.Run(() =>
             {
                 decimal intensity0 = (decimal)Math.Pow(slitCount, 2);
@@ -180,13 +183,13 @@ namespace WaveGenerator.UI.Pages
 
                     decimal intensity = singleSlitIntensity * CalculateSlitIntensity(gangUnterschiedFactor, slitCount);
                     if (slitCount > 1)
-                        valueCollection.Add((double)intensity);
+                        nSlitValues.Add((double)intensity);
 
-                    valueCollection2.Add((double)(singleSlitIntensity * intensity0));
+                    singleSlitValues.Add((double)(singleSlitIntensity * intensity0));
                 }
             });
-            ChartSeriesCollection[0].Values = valueCollection;
-            ChartSeriesCollection[1].Values = valueCollection2;
+            ChartSeriesCollection[0].Values = nSlitValues;
+            ChartSeriesCollection[1].Values = singleSlitValues;
         }
         #endregion
 
@@ -233,5 +236,13 @@ namespace WaveGenerator.UI.Pages
                 , 2);
         }
         #endregion
+
+        private void ShowSingleSlitCheckBox_Checked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            if (!hasFinishedLoading)
+                return;
+
+            UpdateChart();
+        }
     }
 }

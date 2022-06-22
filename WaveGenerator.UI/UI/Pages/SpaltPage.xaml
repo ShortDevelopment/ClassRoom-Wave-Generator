@@ -42,6 +42,9 @@
                                     AcceptsExpression="True" SpinButtonPlacementMode="Inline"
                                     ValueChanged="ValueChanged" Value="25" Minimum="1" Maximum="100"
                                     NumberFormatter="{StaticResource NumberFormatter_percent}" />
+                <CheckBox x:Name="ShowSingleSlitCheckBox" Content="Einhüllende anzeigen" IsChecked="True"
+                          Grid.Column="1" Margin="5" VerticalAlignment="Bottom"
+                          Checked="ShowSingleSlitCheckBox_Checked" Unchecked="ShowSingleSlitCheckBox_Checked" />
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>

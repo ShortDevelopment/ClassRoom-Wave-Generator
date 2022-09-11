@@ -4,11 +4,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WaveGenerator.UI.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
 
     <ScrollViewer>
         <StackPanel Padding="30,10,30,10">
+
+            <UserControl Height="20" />
+            <TextBlock Text="Einstellungen" Style="{StaticResource SubtitleTextBlockStyle}"/>
+            <UserControl Height="15" />
+
+            <controls:InfoBar IsOpen="true" IsClosable="False" Message="Einstellungen werden nicht gespeichert!" Margin="0,0,0,10" />
+
+            <CheckBox IsChecked="{x:Bind local:SettingsPage.LabelWavePoints, Mode=TwoWay}" Content="Teilchen beschriften" />
+            <CheckBox IsChecked="{x:Bind local:SettingsPage.InterpolateWavePoints, Mode=TwoWay}" Content="Teilchen verbinden (Interpolation)" />
 
             <UserControl Height="20" />
             <TextBlock Text="Info zu dieser App" Style="{StaticResource SubtitleTextBlockStyle}"/>

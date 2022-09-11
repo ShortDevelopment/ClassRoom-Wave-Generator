@@ -7,6 +7,9 @@ namespace WaveGenerator.UI.Pages
 {
     public sealed partial class SettingsPage : Page
     {
+        public static bool LabelWavePoints { get; set; } = false;
+        public static bool InterpolateWavePoints { get; set; } = false;
+
         public SettingsPage()
         {
             this.InitializeComponent();

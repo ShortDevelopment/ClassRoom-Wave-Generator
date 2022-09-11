@@ -27,15 +27,8 @@ namespace WaveGenerator.UI.Controls
             if (IsInDesignmode)
                 return;
 
-            this.Loaded += ShareControl_Loaded;
-
             DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
             dataTransferManager.DataRequested += DataTransferManager_DataRequested;
-        }
-
-        private void ShareControl_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            MainCanvas.Clip = new RectangleGeometry { Rect = new Rect(0, 0, MainCanvas.ActualWidth, MainCanvas.ActualHeight) };
         }
 
         public CanvasControl MainCanvas { get; set; }

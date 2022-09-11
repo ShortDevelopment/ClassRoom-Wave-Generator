@@ -8,6 +8,7 @@ namespace WaveGenerator.Launcher
 {
     internal class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
             using (XamlApplicationWrapper appWrapper = new(() => new App()))

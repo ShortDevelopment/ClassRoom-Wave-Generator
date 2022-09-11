@@ -7,8 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Microsoft.UI.Xaml.Controls" xmlns:lvc="using:LiveChartsCore.SkiaSharpView.UWP"
     xmlns:lvcOld="using:LiveCharts.Uwp"
     xmlns:communityControls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    mc:Ignorable="d">
 
     <Page.Resources>
         <ui:PostFixNumberFormatter x:Key="NumberFormatter_lambda" PostFix="λ" />

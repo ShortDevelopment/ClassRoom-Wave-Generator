@@ -56,9 +56,6 @@ namespace WaveGenerator.UI.Pages
             var generater2 = new Generation.WaveGenerator(Wave2Settings);
             var renderer = new WaveRenderer(MainCanvas, RenderSettings);
 
-            // Time animation intervals
-            const int timeStep = 100;
-
             var CurrentDispatcher = Dispatcher;
 
             while (CurrentDispatcher != null)
@@ -81,25 +78,21 @@ namespace WaveGenerator.UI.Pages
                 {
                     double radius = WaveSettings.Amplitude * renderer.YUnit;
 
-                    renderer.ClearCanvas();
+                    renderer.Clear();
 
-                    renderer.RenderCoordinateSystem(Colors.Gray);
-                    renderer.RenderWall(this.EndPosition, Colors.Black);
+                    renderer.ShowCoordinateSystem = true;
+                    renderer.VisibleWalls.Add(new(EndPosition, Colors.Black));
 
                     if (RenderSettings.ShowIncomingWave)
-                        renderer.Render(primaryWave);
-                    else
-                        renderer.HideWave(primaryWave.color);
+                        renderer.VisibleWaves.Add(primaryWave);
 
                     if (RenderSettings.ShowReflectedWave)
-                        renderer.Render(secondaryWave);
-                    else
-                        renderer.HideWave(secondaryWave.color);
+                        renderer.VisibleWaves.Add(secondaryWave);
 
                     if (RenderSettings.ShowResultingWave)
-                        renderer.Render(resultingWave);
-                    else
-                        renderer.HideWave(resultingWave.color);
+                        renderer.VisibleWaves.Add(resultingWave);
+
+                    renderer.Render();
                 });
 
                 // Handling timing

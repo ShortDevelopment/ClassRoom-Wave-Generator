@@ -50,10 +50,7 @@ namespace WaveGenerator.UI.Pages
 
             // Initializing helpers
             var generater = new Generation.WaveGenerator(WaveSettings);
-            var renderer = new WaveRenderer(MainCanvas, RenderSettings);
-
-            // Time animation intervals
-            const int timeStep = 100;
+            var renderer = new WaveRenderer(MainCanvas, RenderSettings);            
 
             var CurrentDispatcher = Dispatcher;
 
@@ -73,12 +70,14 @@ namespace WaveGenerator.UI.Pages
                 // Render wave
                 _ = CurrentDispatcher.RunIdleAsync((x) =>
                   {
-                      renderer.ClearCanvas();
+                      renderer.Clear();
 
-                      renderer.RenderCoordinateSystem(Colors.Gray);
+                      renderer.ShowCoordinateSystem = true;
 
-                      renderer.Render(data);
-                      renderer.RenderReflectionWall(WaveSettings.Reflection);
+                      renderer.VisibleWaves.Add(data);
+                      renderer.VisibleWalls.Add(WallInfo.FromReflectionInfo(WaveSettings.Reflection));
+
+                      renderer.Render();
                   });
 
                 // Handling timing

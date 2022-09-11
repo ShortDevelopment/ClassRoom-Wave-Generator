@@ -1,27 +1,22 @@
-﻿using Microsoft.UI;
-using Windows.UI.Composition;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Hosting;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Shapes;
+﻿using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 using WaveGenerator.Generation;
 using Windows.UI;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace WaveGenerator.Rendering
 {
     public class WaveRenderer
     {
-
         #region Settings
 
         /// <summary>
         /// Gets undelaying <see cref="Microsoft.UI.Xaml.Controls.Canvas"/>
         /// </summary>
-        public Canvas Canvas { get; private set; }
+        public CanvasControl Canvas { get; private set; }
 
         /// <summary>
         /// Gets or sets <see cref="RenderSettings"/>
@@ -30,225 +25,143 @@ namespace WaveGenerator.Rendering
 
         #endregion
 
-        public WaveRenderer(Canvas canvas, RenderSettings settings)
+        public WaveRenderer(CanvasControl canvas, RenderSettings settings)
         {
             this.Canvas = canvas;
             this.Settings = settings;
 
-            this.Canvas.SizeChanged += Canvas_SizeChanged;
+            this.Canvas.Draw += Canvas_Draw;
         }
 
-        #region Visuals
-
-        Dictionary<string, ContainerVisual> CanvasVisuals = new();
-        ContainerVisual baseContainerVisual = null;
-        private ContainerVisual CreateContainerVisual(string id)
+        private void Canvas_Draw(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            if (CanvasVisuals.ContainsKey(id))
-                return CanvasVisuals[id];
+            var session = args.DrawingSession;
 
-            if (baseContainerVisual == null)
+            if (ShowCoordinateSystem)
             {
-                baseContainerVisual = ElementCompositionPreview.GetElementVisual(Canvas).Compositor.CreateContainerVisual();
-                ElementCompositionPreview.SetElementChildVisual(Canvas, baseContainerVisual);
-            }
+                double xunit = XUnit;
+                double yunit = YUnit;
 
-            var containerVisual = baseContainerVisual.Compositor.CreateContainerVisual();
-            baseContainerVisual.Children.InsertAtTop(containerVisual);
+                // X-Axis
+                session.DrawLine(
+                    new Vector2(0, (float)(Canvas.ActualHeight / 2) + Settings.Offset.Y),
+                    new Vector2((float)Canvas.ActualWidth, (float)(Canvas.ActualHeight / 2) + Settings.Offset.Y),
+                    CoordinatesPrimaryColor
+                );
 
-            CanvasVisuals.Add(id, containerVisual);
-            return containerVisual;
-        }
-        #endregion
+                // Y-Axis
+                session.DrawLine(
+                    new Vector2(Settings.Offset.X, (float)Canvas.ActualHeight),
+                    new Vector2(Settings.Offset.X, 0),
+                    CoordinatesPrimaryColor
+                );
 
-        private void Canvas_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
-        {
-            Canvas.Clip = new RectangleGeometry()
-            {
-                Rect = new Windows.Foundation.Rect(0, 0, Canvas.ActualWidth, Canvas.ActualHeight)
-            };
-        }
-
-        #region Render Methods
-
-        public void ClearCanvas()
-        {
-            Canvas.Children.Clear();
-        }
-
-        public void RenderCoordinateSystem(Color color)
-        {
-            double xunit = XUnit;
-            double yunit = YUnit;
-
-            // X-Axis
-            DrawLine(new Vector2(0, (float)(Canvas.ActualHeight / 2) + Settings.Offset.Y),
-                new Vector2((float)Canvas.ActualWidth, (float)(Canvas.ActualHeight / 2) + Settings.Offset.Y));
-
-            // Y-Axis
-            DrawLine(new Vector2(Settings.Offset.X, (float)Canvas.ActualHeight),
-                new Vector2(Settings.Offset.X, 0));
-
-            for (double x = 0; x < Canvas.ActualWidth; x += xunit)
-            {
-                double thickness = 0.25;
-                if (x % (xunit * 5) == 0)
-                    thickness = 0.5;
-
-                DrawLine(new Vector2(Settings.Offset.X + (float)x, (float)Canvas.ActualHeight),
-                    new Vector2(Settings.Offset.X + (float)x, 0), thickness, color);
-            }
-            for (double y = (Canvas.ActualHeight / 2) - yunit * (int)((Canvas.ActualHeight / 2 / yunit) + 1); y < Canvas.ActualHeight; y += yunit)
-            {
-                double thickness = 0.25;
-                if (y % (yunit * 5) == 0)
-                    thickness = 0.5;
-
-                DrawLine(new Vector2(Settings.Offset.X, (float)y + Settings.Offset.Y),
-                new Vector2((float)Canvas.ActualWidth, (float)y + Settings.Offset.Y), thickness, color);
-            }
-        }
-
-        public void Render(Wave wave)
-        {
-            ContainerVisual canvasVisual = CreateContainerVisual(wave.color.ToString());
-            Visual[] children = canvasVisual.Children.ToArray();
-
-            Vector2[] points = wave.data;
-            double unit = YUnit;
-
-            bool shouldGenerateNew = children.Length != points.Length;
-            if (shouldGenerateNew)
-                canvasVisual.Children.RemoveAll();
-
-            for (int i = 0; i < points.Length; i++)
-            {
-                Vector2 point = points[i];
-                Vector2 size = new Vector2((float)Settings.Radius, (float)Settings.Radius);
-
-                ShapeVisual visual = null;
-                if (shouldGenerateNew)
+                for (double x = 0; x < Canvas.ActualWidth; x += xunit)
                 {
-                    CompositionEllipseGeometry circle = canvasVisual.Compositor.CreateEllipseGeometry();
-                    circle.Center = size / 2;
-                    circle.Radius = new Vector2(50, 50);
+                    float thickness = 0.25f;
+                    if (x % (xunit * 5) == 0)
+                        thickness = 0.5f;
 
-                    CompositionSpriteShape sprite = canvasVisual.Compositor.CreateSpriteShape(circle);
-                    sprite.FillBrush = canvasVisual.Compositor.CreateColorBrush(wave.color);
-
-                    visual = canvasVisual.Compositor.CreateShapeVisual();
-                    visual.Shapes.Add(sprite);
-                    visual.Size = size;
-
-                    // Add to canvas
-                    canvasVisual.Children.InsertAtTop(visual);
+                    session.DrawLine(
+                        new Vector2(Settings.Offset.X + (float)x, (float)Canvas.ActualHeight),
+                        new Vector2(Settings.Offset.X + (float)x, 0),
+                        CoordinatesSecondaryColor,
+                        thickness
+                    );
                 }
-                else
+                for (double y = (Canvas.ActualHeight / 2) - yunit * (int)((Canvas.ActualHeight / 2 / yunit) + 1); y < Canvas.ActualHeight; y += yunit)
                 {
-                    visual = children[i] as ShapeVisual;
+                    float thickness = 0.25f;
+                    if (y % (yunit * 5) == 0)
+                        thickness = 0.5f;
+
+                    session.DrawLine(
+                        new Vector2(Settings.Offset.X, (float)y + Settings.Offset.Y),
+                        new Vector2((float)Canvas.ActualWidth, (float)y + Settings.Offset.Y),
+                        CoordinatesSecondaryColor,
+                        thickness
+                    );
                 }
-
-                visual.IsVisible = true;
-                visual.Offset = new Vector3((float)(unit * point.X - (size.X / 2) + Settings.Offset.X),
-                                            (float)((Canvas.ActualHeight / 2) - (unit * point.Y) - (size.Y / 2) + Settings.Offset.Y),
-                                            0);
             }
-        }
 
-        public void HideWave(Color color)
-        {
-            ContainerVisual canvasVisual = CreateContainerVisual(color.ToString());
-            foreach (Visual visual in canvasVisual.Children)
-                visual.IsVisible = false;
-        }
-
-        public void RenderZeiger(double angle, Vector2 position, double radius, bool renderAmplitudeLine = true)
-            => RenderZeiger(angle, position, radius, Colors.Green, renderAmplitudeLine);
-
-        public void RenderZeiger(double angle, Vector2 position, double radius, Color color, bool renderAmplitudeLine = true)
-        {
-            double unit = YUnit;
-
-            Ellipse circle = new Ellipse();
-            circle.Fill = new SolidColorBrush(Colors.Transparent);
-            circle.Stroke = new SolidColorBrush(color);
-            circle.StrokeThickness = 1;
-
-            // Set radius
-            circle.Width = radius * 2;
-            circle.Height = radius * 2;
-
-            // Calculate position
-            Canvas.SetTop(circle, (Canvas.ActualHeight / 2) - radius);
-
-            // Add to canvas
-            Canvas.Children.Add(circle);
-
-            // == // Zeiger // == //
-
-            Vector2 pos1 = new Vector2((float)(radius + position.X * unit), (float)((Canvas.ActualHeight / 2) + position.Y * unit));
-            DrawLine(pos1,
-                new Vector2((float)(pos1.X + Math.Cos(angle) * radius + position.X * unit), (float)(pos1.Y + Math.Sin(angle) * radius + position.Y * unit)), 1, color);
-
-            // == // ŝ Renderer // == //
-            if (renderAmplitudeLine)
+            foreach (var wave in VisibleWaves)
             {
-                float height = (float)(Canvas.ActualHeight / 2) + Settings.Offset.Y + (float)(Math.Sin(angle) * radius);
-                DrawLine(new Vector2(0, height),
-                    new Vector2((float)Canvas.ActualWidth, height), 1, color);
+                Vector2[] points = wave.data;
+                double unit = YUnit;
+                for (int i = 0; i < points.Length; i++)
+                {
+                    Vector2 point = points[i];
+                    var pos = new Vector2(
+                        (float)(unit * point.X + Settings.Offset.X),
+                        (float)((Canvas.ActualHeight / 2) - (unit * point.Y) + Settings.Offset.Y)
+                    );
+                    session.FillCircle(pos, (float)Settings.Radius, wave.color);
+                }
+            }
+
+            foreach (var zeiger in VisibleZeiger)
+            {
+                double unit = YUnit;
+
+                Vector2 pos1 = new Vector2((float)(zeiger.Radius + zeiger.Position.X * unit), (float)((Canvas.ActualHeight / 2) + zeiger.Position.Y * unit));
+
+                session.DrawCircle(
+                    pos1,
+                    zeiger.Radius,
+                    zeiger.Color
+                ); ;
+
+                // == // Zeiger // == //
+                
+                session.DrawLine(
+                    pos1,
+                    new Vector2((float)(pos1.X + Math.Cos(zeiger.Angle) * zeiger.Radius + zeiger.Position.X * unit), (float)(pos1.Y + Math.Sin(zeiger.Angle) * zeiger.Radius + zeiger.Position.Y * unit)),
+                    zeiger.Color
+                );
+
+                // == // ŝ Renderer // == //
+                if (zeiger.ShowAmplitude)
+                {
+                    float height = (float)(Canvas.ActualHeight / 2) + Settings.Offset.Y + (float)(Math.Sin(zeiger.Angle) * zeiger.Radius);
+                    session.DrawLine(
+                        new Vector2(0, height),
+                        new Vector2((float)Canvas.ActualWidth, height),
+                        zeiger.Color
+                    );
+                }
+            }
+
+            foreach (var wall in VisibleWalls)
+            {
+                float x = (float)(XUnit * wall.EndPosition + Settings.Offset.X);
+                session.DrawLine(
+                    new Vector2(x, 0),
+                    new Vector2(x, (float)Canvas.ActualHeight),
+                    wall.Color,
+                    3
+                );
             }
         }
 
-        public void RenderReflectionWall(WaveReflectionInfo reflectionInfo) => RenderWall(reflectionInfo.EndPosition, Colors.Red);
+        public bool ShowCoordinateSystem { get; set; } = false;
+        public Color CoordinatesPrimaryColor { get; set; } = Colors.Black;
+        public Color CoordinatesSecondaryColor { get; set; } = Colors.Gray;
 
-        public void RenderWall(double endPosition, Color color)
+        public List<Wave> VisibleWaves { get; } = new();
+        public List<ZeigerInfo> VisibleZeiger { get; } = new();
+        public List<WallInfo> VisibleWalls { get; } = new();
+
+        public void Clear()
         {
-            float x = (float)(XUnit * endPosition + Settings.Offset.X);
-            DrawLine(new Vector2(x, 0),
-                new Vector2(x, (float)Canvas.ActualHeight),
-                3, color);
+            VisibleWaves.Clear();
+            VisibleZeiger.Clear();
+            VisibleWalls.Clear();
         }
 
-        #endregion
-
-        #region Helper Functions
-
-        private void DrawLine(Vector2 p1, Vector2 p2, double thickness = 1)
-        {
-            DrawLine(p1, p2, thickness, Colors.Black);
-        }
-
-        private void DrawLine(Vector2 p1, Vector2 p2, double thickness, Color color)
-        {
-            Line line = new Line();
-            line.StrokeThickness = thickness;
-            line.Stroke = new SolidColorBrush(color);
-
-            // Calculate position
-            line.X1 = p1.X;
-            line.Y1 = p1.Y;
-            line.X2 = p2.X;
-            line.Y2 = p2.Y;
-
-            // Add to canvas
-            Canvas.Children.Add(line);
-        }
-
-        #endregion
+        public void Render()
+            => Canvas.Invalidate();
 
         public double XUnit => YUnit;
         public double YUnit => Canvas.ActualHeight / (Settings.YStepCount * 2);
-
-        public static Vector2[] GenerateTestData(int count = 10)
-        {
-            var random = new Random(DateTime.Now.Millisecond);
-            List<Vector2> list = new List<Vector2>();
-            for (int i = 0; i < count; i++)
-            {
-                list.Add(new Vector2(i, random.Next(-10, 10)));
-            }
-            return list.ToArray();
-        }
-
     }
 }

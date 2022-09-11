@@ -5,6 +5,7 @@
     xmlns:local="using:WaveGenerator.UI"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:win2d="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d"
     d:Width="300"
     d:Height="200"
@@ -34,7 +35,7 @@
             </Grid>
         </Border>
         <Grid Margin="10" Grid.Row="1">
-            <Canvas x:Name="Canvas" />
+            <win2d:CanvasControl x:Name="Canvas" />
         </Grid>
         <Border 
                 Background="{ThemeResource LayerFillColorDefaultBrush}" 

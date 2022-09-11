@@ -81,26 +81,22 @@ namespace WaveGenerator.UI.Pages
                 {
                     double radius = WaveSettings.Amplitude * renderer.YUnit;
 
-                    renderer.ClearCanvas();
+                    renderer.Clear();
 
-                    renderer.RenderCoordinateSystem(Colors.Gray);
+                    renderer.ShowCoordinateSystem = true;
 
                     if (RenderSettings.ShowIncomingWave)
-                        renderer.Render(primaryWave);
-                    else
-                        renderer.HideWave(primaryWave.color);
+                        renderer.VisibleWaves.Add(primaryWave);
 
                     if (RenderSettings.ShowReflectedWave)
-                        renderer.Render(secondaryWave);
-                    else
-                        renderer.HideWave(secondaryWave.color);
+                        renderer.VisibleWaves.Add(secondaryWave);
 
                     if (RenderSettings.ShowResultingWave)
-                        renderer.Render(resultingWave);
-                    else
-                        renderer.HideWave(resultingWave.color);
+                        renderer.VisibleWaves.Add(resultingWave);
 
-                    renderer.RenderReflectionWall(WaveSettings.Reflection);
+                    renderer.VisibleWalls.Add(WallInfo.FromReflectionInfo(WaveSettings.Reflection));
+
+                    renderer.Render();
                 });
 
                 // Handling timing

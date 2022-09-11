@@ -1,13 +1,12 @@
-﻿using Windows.UI;
-using System.Threading;
+﻿using System.Threading;
 using WaveGenerator.Generation;
 using WaveGenerator.Rendering;
+using Windows.UI.Xaml;
 
 namespace WaveGenerator.UI.Pages
 {
     public sealed partial class DefaultWavePage : SimulationPageBase
     {
-
         #region System // FrameWork
 
         public DefaultWavePage() : base()
@@ -20,6 +19,7 @@ namespace WaveGenerator.UI.Pages
             WaveSettingsControl.LoadSettings();
             RenderSettingsControl.LoadSettings();
             this.KeyDown += MainPage_KeyDown;
+            var test = Window.Current.Visible;
         }
 
         private void MainPage_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
@@ -50,9 +50,6 @@ namespace WaveGenerator.UI.Pages
             var generater = new Generation.WaveGenerator(WaveSettings);
             var renderer = new WaveRenderer(MainCanvas, RenderSettings);
 
-            // Time animation intervals
-            const int timeStep = 100;
-
             var CurrentDispatcher = Dispatcher;
 
             while (CurrentDispatcher != null)
@@ -74,15 +71,20 @@ namespace WaveGenerator.UI.Pages
                 // Render wave
                 _ = CurrentDispatcher.RunIdleAsync((x) =>
                   {
-                      double radius = WaveSettings.Amplitude * renderer.YUnit;
-                      RenderSettings.Offset = new System.Numerics.Vector2((float)radius * 2, 0);
+                      float radius = (float)(WaveSettings.Amplitude * renderer.YUnit);
+                      RenderSettings.Offset = new System.Numerics.Vector2(radius * 2, 0);
 
-                      renderer.ClearCanvas();
+                      renderer.Clear();
 
-                      renderer.RenderCoordinateSystem(Colors.Gray);
+                      renderer.ShowCoordinateSystem = true;
 
-                      renderer.Render(data);
-                      renderer.RenderZeiger(angle, new System.Numerics.Vector2(0, 0), radius, renderAmplitudeLine: ShowAmplitude_CheckBox.IsChecked == true);
+                      renderer.VisibleWaves.Add(data);
+                      renderer.VisibleZeiger.Add(new(angle, new(0, 0), radius)
+                      {
+                          ShowAmplitude = ShowAmplitude_CheckBox.IsChecked == true
+                      });
+
+                      renderer.Render();
                   });
 
                 // Handling timing

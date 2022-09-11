@@ -14,6 +14,7 @@ using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using WinUI.Interop.CoreWindow;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 
 namespace WaveGenerator.UI.Controls
 {
@@ -37,7 +38,7 @@ namespace WaveGenerator.UI.Controls
             MainCanvas.Clip = new RectangleGeometry { Rect = new Rect(0, 0, MainCanvas.ActualWidth, MainCanvas.ActualHeight) };
         }
 
-        public Canvas MainCanvas { get; set; }
+        public CanvasControl MainCanvas { get; set; }
         public bool IsInDesignmode => DesignMode.DesignModeEnabled || DesignMode.DesignMode2Enabled;
 
         private async void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
@@ -49,7 +50,7 @@ namespace WaveGenerator.UI.Controls
             _ = Dispatcher.RunIdleAsync(async (x) =>
             {
                 IRandomAccessStream stream = new InMemoryRandomAccessStream();
-                await RenderCanvasToStream(MainCanvas, stream);
+                await RenderCanvasToStream(stream);
                 request.Data.SetBitmap(RandomAccessStreamReference.CreateFromStream(stream));
 
                 var props = request.Data.Properties;
@@ -79,20 +80,20 @@ namespace WaveGenerator.UI.Controls
             StorageFile file = await picker.PickSaveFileAsync();
             if (file != null)
                 using (IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite))
-                    await RenderCanvasToStream(MainCanvas, stream);
+                    await RenderCanvasToStream(stream);
         }
 
         private async void CopyButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             IRandomAccessStream stream = new InMemoryRandomAccessStream();
-            await RenderCanvasToStream(MainCanvas, stream);
+            await RenderCanvasToStream(stream);
 
             DataPackage data = new();
             data.SetBitmap(RandomAccessStreamReference.CreateFromStream(stream));
             Clipboard.SetContent(data);
         }
 
-        private async Task RenderCanvasToStream(Canvas canvas, IRandomAccessStream stream)
+        private async Task RenderCanvasToStream(IRandomAccessStream stream)
         {
             RenderTargetBitmap bitmap = new RenderTargetBitmap();
             await bitmap.RenderAsync(MainCanvas);

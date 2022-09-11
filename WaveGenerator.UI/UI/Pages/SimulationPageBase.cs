@@ -51,6 +51,9 @@ namespace WaveGenerator.UI.Pages
 
         #endregion
 
+        // Time animation intervals
+        protected const int timeStep = 25;
+
         /// <summary>
         /// Handles rendering calls and time
         /// </summary>

@@ -5,7 +5,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WaveGenerator.UI"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:controls1="using:WaveGenerator.UI.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:controls1="using:WaveGenerator.UI.Controls"
+    xmlns:win2d="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -19,7 +22,7 @@
                 </Grid.RowDefinitions>
 
                 <Grid Background="#efefef"  Padding="30,0,30,0" Grid.Row="0">
-                    <Canvas Background="#efefef" Name="MainCanvas" />
+                    <win2d:CanvasControl ClearColor="#efefef" Name="MainCanvas" />
                 </Grid>
 
                 <controls:GridSplitter

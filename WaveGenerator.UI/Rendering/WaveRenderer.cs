@@ -1,11 +1,10 @@
-﻿using Microsoft.Graphics.Canvas.UI.Xaml;
+﻿using Microsoft.Graphics.Canvas.Text;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
 using WaveGenerator.Generation;
 using Windows.UI;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 namespace WaveGenerator.Rendering
 {
@@ -96,6 +95,19 @@ namespace WaveGenerator.Rendering
                         (float)((Canvas.ActualHeight / 2) - (unit * point.Y) + Settings.Offset.Y)
                     );
                     session.FillCircle(pos, (float)Settings.Radius, wave.color);
+
+                    if (Settings.LabelWavePoints)
+                        session.DrawText(
+                            (i + 1).ToString(),
+                            pos + new Vector2(0, -1.2f * (float)Settings.Radius),
+                            wave.color,
+                            new()
+                            {
+                                FontSize = 15,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Center,
+                                VerticalAlignment = CanvasVerticalAlignment.Bottom
+                            }
+                        );
                 }
             }
 
@@ -112,7 +124,7 @@ namespace WaveGenerator.Rendering
                 ); ;
 
                 // == // Zeiger // == //
-                
+
                 session.DrawLine(
                     pos1,
                     new Vector2((float)(pos1.X + Math.Cos(zeiger.Angle) * zeiger.Radius + zeiger.Position.X * unit), (float)(pos1.Y + Math.Sin(zeiger.Angle) * zeiger.Radius + zeiger.Position.Y * unit)),

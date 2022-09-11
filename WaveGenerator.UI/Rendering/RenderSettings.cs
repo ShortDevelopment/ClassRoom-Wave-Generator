@@ -19,6 +19,8 @@ namespace WaveGenerator.Rendering
         /// </summary>
         public Vector2 Offset { get; set; } = new(0, 0);
 
+        public bool LabelWavePoints { get; set; } = true;
+
         #region Reflection
 
         public bool ShowIncomingWave { get; set; } = true;

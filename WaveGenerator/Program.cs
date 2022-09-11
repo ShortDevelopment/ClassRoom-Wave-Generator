@@ -1,4 +1,5 @@
-﻿using ShortDev.Uwp.FullTrust.Core.Xaml;
+﻿using ShortDev.Uwp.FullTrust.Xaml;
+using WinUI.Interop.CoreWindow;
 using WinUI.Interop.NativeWindow;
 
 namespace WaveGenerator.Launcher

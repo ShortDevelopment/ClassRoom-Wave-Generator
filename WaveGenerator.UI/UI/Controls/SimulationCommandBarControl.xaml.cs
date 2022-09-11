@@ -1,5 +1,5 @@
-﻿using ShortDev.Uwp.FullTrust.Core.Xaml;
-using WaveGenerator.UI.Pages;
+﻿using WaveGenerator.UI.Pages;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace WaveGenerator.UI.Controls
@@ -54,17 +54,16 @@ namespace WaveGenerator.UI.Controls
 
         private void ZeigerAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            XamlWindowActivator.CreateNewThread(() =>
+            var coreAppView = FullTrustApplication.CreateNewView(new("Zeiger")
             {
-                var window = XamlWindowActivator.CreateNewWindow(new("Zeiger")
-                {
-                    IsTopMost = true,
-                    HasTransparentBackground = true
-                });
+                IsTopMost = true,
+                HasTransparentBackground = true                
+            });
+            _ = coreAppView.CoreWindow.Dispatcher.RunIdleAsync(_ =>
+            {
+                var window = Window.Current;
                 window.Content = new ZeigerPage(BasePage);
                 window.Activate();
-
-                window.Dispatcher.ProcessEvents(Windows.UI.Core.CoreProcessEventsOption.ProcessUntilQuit);
             });
         }
     }

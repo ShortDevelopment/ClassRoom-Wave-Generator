@@ -81,6 +81,7 @@
     <Compile Include="Generation\WaveReflectionInfo.cs" />
     <Compile Include="Generation\WaveSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rendering\Extensions.cs" />
     <Compile Include="Rendering\RenderSettings.cs" />
     <Compile Include="Rendering\WallInfo.cs" />
     <Compile Include="Rendering\WaveRenderer.cs" />

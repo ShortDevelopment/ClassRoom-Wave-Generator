@@ -3,11 +3,14 @@
 //using LiveChartsCore.SkiaSharpView.UWP;
 using LiveCharts;
 using LiveCharts.Uwp;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using WaveGenerator.Rendering;
 using Windows.UI;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -52,66 +55,28 @@ namespace WaveGenerator.UI.Pages
             UpdateArrowDisplay();
         }
 
-        #region Arrow Display        
+        #region Arrow Display      
+        Vector2[] _arrowVectors;
         private void UpdateArrowDisplay()
         {
-            if (ZeigerCanvas == null)
-                return;
+            _arrowVectors = GenerateArrows((int)SlitCountNumberBox.Value, GangUnterschiedNumberBox.Value, length)
+                                        .Select((x) => x * 1.5f)
+                                        .ToArray();
 
-            // Clear Canvas
-            ZeigerCanvas.Children.Clear();
-
-            Vector2[] arrowVectors = GenerateArrows((int)SlitCountNumberBox.Value, GangUnterschiedNumberBox.Value, length);
-
-            Vector2 lastPosition = new Vector2(0, 0);
-            foreach (Vector2 arrowVector in arrowVectors)
-            {
-                Line arrow = new Line();
-                arrow.Stroke = new SolidColorBrush(Colors.Black);
-                arrow.StrokeThickness = 1;
-
-                arrow.X1 = lastPosition.X;
-                arrow.Y1 = lastPosition.Y;
-
-                lastPosition += arrowVector;
-
-                arrow.X2 = lastPosition.X;
-                arrow.Y2 = lastPosition.Y;
-                ZeigerCanvas.Children.Add(arrow);
-            }
-
-            DrawArrow(new(0, 0), lastPosition, Colors.Red);
+            ZeigerCanvas?.Invalidate();
         }
 
-        private void DrawArrow(Vector2 start, Vector2 end, Color color)
+        private void ZeigerCanvas_Draw(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            Line arrow = new Line();
-            arrow.Stroke = new SolidColorBrush(color);
-            arrow.StrokeThickness = 1;
-
-            arrow.X1 = start.X;
-            arrow.Y1 = start.Y;
-
-            arrow.X2 = end.X;
-            arrow.Y2 = end.Y;
-            ZeigerCanvas.Children.Add(arrow);
-
-            if ((end - start).Length() > 0.01)
+            Vector2 offset = new((float)sender.ActualWidth / 2, (float)sender.ActualHeight / 2);
+            Vector2 lastPosition = offset;
+            foreach (Vector2 arrowVector in _arrowVectors)
             {
-                Geometry geometry = Utils.ConvertXamlValue<Geometry>("M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z");
-                var bounds = geometry.Bounds;
-                double rotation = Math.Atan((end.Y - start.Y) / (end.X - start.X)) * 180.0 / Math.PI;
-                Path arrowHead = new Path
-                {
-                    Data = geometry,
-                    Fill = new SolidColorBrush(Colors.Red),
-                    CenterPoint = new Vector3((float)(bounds.Width / 2), (float)(bounds.Height / 2), 0)
-                };
-                Canvas.SetLeft(arrowHead, end.X - bounds.Width);
-                Canvas.SetTop(arrowHead, end.Y - bounds.Height);
-                arrowHead.Rotation = (float)rotation;
-                ZeigerCanvas.Children.Add(arrowHead);
+                var start = lastPosition;
+                lastPosition += arrowVector;
+                args.DrawingSession.DrawArrow(start, lastPosition, Colors.Black, 2, 10);
             }
+            args.DrawingSession.DrawArrow(offset, lastPosition, Colors.Red, 2, 10);
         }
         #endregion
 

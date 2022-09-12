@@ -1,19 +1,17 @@
 ﻿using Microsoft.Graphics.Canvas.Geometry;
 using Microsoft.Graphics.Canvas.Text;
 using Microsoft.Graphics.Canvas.UI.Xaml;
-using Microsoft.Toolkit.Uwp.UI.Media.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Runtime.ExceptionServices;
 using WaveGenerator.Generation;
 using WaveGenerator.UI.Pages;
 using Windows.UI;
 
 namespace WaveGenerator.Rendering
 {
-    public class WaveRenderer
+    public sealed class WaveRenderer
     {
         #region Settings
 

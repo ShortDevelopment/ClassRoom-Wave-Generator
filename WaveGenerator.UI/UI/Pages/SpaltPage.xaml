@@ -4,9 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ui="using:WaveGenerator.UI"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Microsoft.UI.Xaml.Controls" xmlns:lvc="using:LiveChartsCore.SkiaSharpView.UWP"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:lvc="using:LiveChartsCore.SkiaSharpView.UWP"
     xmlns:lvcOld="using:LiveCharts.Uwp"
-    xmlns:communityControls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:communityControls="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:win2d="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -64,7 +66,7 @@
                         <TranslateTransform X="-8" />
                     </communityControls:GridSplitter.RenderTransform>
                 </communityControls:GridSplitter>
-                <Canvas x:Name="ZeigerCanvas" HorizontalAlignment="Center" Margin="0, 150, 0, 100" Grid.Column="2" />
+                <win2d:CanvasControl Draw="ZeigerCanvas_Draw" x:Name="ZeigerCanvas" Grid.Column="2" />
             </Grid>
         </StackPanel>
     </ScrollViewer>

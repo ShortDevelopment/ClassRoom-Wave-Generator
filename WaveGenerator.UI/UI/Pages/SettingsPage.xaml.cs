@@ -10,6 +10,13 @@ namespace WaveGenerator.UI.Pages
         public static bool LabelWavePoints { get; set; } = false;
         public static bool InterpolateWavePoints { get; set; } = false;
 
+        /// <summary>
+        /// Sets radius of each circle in wave display
+        /// </summary>
+        public static double WavePointRadius { get; set; } = 4;
+
+        public static double WavePointDistance { get; set; } = 0.25;
+
         public SettingsPage()
         {
             this.InitializeComponent();

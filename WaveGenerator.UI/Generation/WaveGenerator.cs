@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using static WaveGenerator.Generation.MathProxy;
+using WaveGenerator.UI.Pages;
 
 namespace WaveGenerator.Generation
 {
@@ -73,6 +74,8 @@ namespace WaveGenerator.Generation
         }
         #endregion
 
+        static double distance => SettingsPage.WavePointDistance;
+
         #endregion
 
         /// <summary>
@@ -82,14 +85,14 @@ namespace WaveGenerator.Generation
         /// <param name="count">Number of part in wave in units</param>
         /// <param name="distance">Distance between each part in units</param>
         /// <returns></returns>
-        public Wave Generate(double tₒ, int count = 40, double distance = 0.25)
+        public Wave Generate(double tₒ, int count = 40)
         {
             Func<double, double> s = (double x) => this.s(x, tₒ);
 
             return GeneratePointsInternal(tₒ, count, distance, s);
         }
 
-        public Wave GenerateReflectedWave(double tₒ, int count = 40, double distance = 0.25)
+        public Wave GenerateReflectedWave(double tₒ, int count = 40)
         {
             Func<double, double> m = (double x) => this.m(x, tₒ);
 
@@ -98,7 +101,7 @@ namespace WaveGenerator.Generation
             return wave;
         }
 
-        public Wave GenerateReflectedWaveBothSides(double tₒ, int count = 40, double distance = 0.25)
+        public Wave GenerateReflectedWaveBothSides(double tₒ, int count = 40)
         {
             double maxtime = l / c;
 

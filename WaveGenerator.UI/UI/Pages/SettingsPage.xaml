@@ -19,6 +19,14 @@
             <CheckBox IsChecked="{x:Bind local:SettingsPage.LabelWavePoints, Mode=TwoWay}" Content="Teilchen beschriften" />
             <CheckBox IsChecked="{x:Bind local:SettingsPage.InterpolateWavePoints, Mode=TwoWay}" Content="Teilchen verbinden (Interpolation)" />
 
+            <UserControl Height="15" />
+
+            <Slider Header="Teilchenabstand" Minimum="0.1" Maximum="1" StepFrequency="0.1"
+                    Value="{x:Bind local:SettingsPage.WavePointDistance, Mode=TwoWay}" />
+
+            <Slider Header="Teilchengröße" Minimum="1" Maximum="10" StepFrequency="1"
+                    Value="{x:Bind local:SettingsPage.WavePointRadius, Mode=TwoWay}" />
+
             <UserControl Height="20" />
             <TextBlock Text="Info zu dieser App" Style="{StaticResource SubtitleTextBlockStyle}"/>
             <UserControl Height="15" />

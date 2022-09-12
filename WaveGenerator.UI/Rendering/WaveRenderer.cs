@@ -117,12 +117,12 @@ namespace WaveGenerator.Rendering
                 for (int i = 0; i < points.Length; i++)
                 {
                     var pos = points[i];
-                    session.FillCircle(pos, (float)Settings.Radius, wave.color);
+                    session.FillCircle(pos, (float)SettingsPage.WavePointRadius, wave.color);
 
                     if (SettingsPage.LabelWavePoints)
                         session.DrawText(
                             (i + 1).ToString(),
-                            pos + new Vector2(0, -1.2f * (float)Settings.Radius),
+                            pos + new Vector2(0, -1.2f * (float)SettingsPage.WavePointRadius),
                             wave.color,
                             new()
                             {
